@@ -49,20 +49,18 @@ public class VideoListAdapter extends ArrayAdapter<String> {
 		if (v == null) {
 			LayoutInflater vi = (LayoutInflater)getContext().getSystemService(
 					Context.LAYOUT_INFLATER_SERVICE);
-			v = vi.inflate(R.layout.row, null);
+			v = vi.inflate(R.layout.videorow, null);
 		}
 		if (videos.get(i) != null) {
 			final ImageView thumb = (ImageView) v.findViewById(R.id.thumb);
-			final TextView title = (TextView) v.findViewById(R.id.title);
+			final TextView title = (TextView) v.findViewById(R.id.videotitle);
 			final TextView desc = (TextView) v.findViewById(R.id.desc);
 			if (title != null) {
 				title.setText(videos.get(i).getTitle());
 			}
 			if (desc != null) {
 				desc.setText(videos.get(i).getDesc());
-				System.out.println(title.getText() + " has " + title.getLineCount());
 				if (title.getText().length() > 37) { //check if the title is going to be 2 lines or not
-					System.out.println(title.getText() + " has " + title.getLineCount());
 					desc.setMaxLines(1); //set max lines for desc accordingly
 				} else {
 					desc.setMaxLines(2);

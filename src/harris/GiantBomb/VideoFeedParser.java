@@ -17,10 +17,10 @@ import android.util.Xml;
  * This class parses the feed given to it, and returns a list of video objects
  *
  */
-public class FeedParser {
+public class VideoFeedParser implements api{
 
 	private final URL feedUrl;
-	public FeedParser(String feedUrl) {
+	public VideoFeedParser(String feedUrl) {
 		try {
 			this.feedUrl = new URL(feedUrl);
 		} catch (MalformedURLException e) {
@@ -58,9 +58,9 @@ public class FeedParser {
 			public void end(String body) {
 				//template: http://media.giantbomb.com/video/vf_buzzquizworld_ql_ip.m4v?api_key=98a36880538752a0bc32691ff737a408bc82fd94
 				if(body.indexOf(".flv") != -1) { //Get the iPhone formatted GB video. Some videos are formatted a little different.
-					body = "http://media.giantbomb.com/video/" + body.substring(0, body.indexOf(".flv")) + "_ip.m4v?api_key=98a36880538752a0bc32691ff737a408bc82fd94";
+					body = "http://media.giantbomb.com/video/" + body.substring(0, body.indexOf(".flv")) + "_ip.m4v?api_key=" + API_KEY;
 				} else {
-					body = "http://media.giantbomb.com/video/" + body + "_ip.m4v?api_key=98a36880538752a0bc32691ff737a408bc82fd94";
+					body = "http://media.giantbomb.com/video/" + body + "_ip.m4v?api_key=" + API_KEY;
 				}
 				currentVideo.setLink(body);
 			}

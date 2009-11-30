@@ -15,13 +15,17 @@ public final class R {
         public static final int loading=0x7f020001;
     }
     public static final class id {
-        public static final int desc=0x7f050002;
-        public static final int thumb=0x7f050000;
-        public static final int title=0x7f050001;
+        public static final int desc=0x7f050003;
+        public static final int newstitle=0x7f050000;
+        public static final int thumb=0x7f050001;
+        public static final int videotitle=0x7f050002;
     }
     public static final class layout {
         public static final int main=0x7f030000;
-        public static final int row=0x7f030001;
+        public static final int newslist=0x7f030001;
+        public static final int newsrow=0x7f030002;
+        public static final int videolist=0x7f030003;
+        public static final int videorow=0x7f030004;
     }
     public static final class string {
         public static final int android_sax=0x7f040001;
