@@ -12,12 +12,14 @@ public class Tabs extends TabActivity {
         setContentView(R.layout.main);
 
         Intent news = new Intent(this, NewsList.class);
+        Intent reviews = new Intent(this, ReviewList.class);
         Intent videos = new Intent(this, VideoList.class);
         
         TabHost tabs = getTabHost();
 
-        tabs.addTab(tabs.newTabSpec("news").setIndicator("News").setContent(news));
-        tabs.addTab(tabs.newTabSpec("videos").setIndicator("Videos").setContent(videos));
+        tabs.addTab(tabs.newTabSpec("news").setIndicator("News", getResources().getDrawable(R.drawable.news)).setContent(news));
+        tabs.addTab(tabs.newTabSpec("reviews").setIndicator("Reviews", getResources().getDrawable(R.drawable.reviews)).setContent(reviews));
+        tabs.addTab(tabs.newTabSpec("videos").setIndicator("Videos", getResources().getDrawable(R.drawable.videos)).setContent(videos));
         
         tabs.setCurrentTab(0);
     }

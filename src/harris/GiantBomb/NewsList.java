@@ -16,14 +16,13 @@ public class NewsList extends ListActivity{
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.newslist);
-		System.out.println("onCreate");
         loadFeed();
     }
     
 	@Override
 	protected void onListItemClick(ListView l, View v, int position, long id) {
 		super.onListItemClick(l, v, position, id);
-		Intent myIntent = new Intent(this, NewsView.class);
+		Intent myIntent = new Intent(this, WebPlayer.class);
 		Bundle bundle = new Bundle();
 		bundle.putString("URL", news.get(position).getLink());
 		bundle.putString("data", news.get(position).getContent());
@@ -33,12 +32,10 @@ public class NewsList extends ListActivity{
     
 	private void loadFeed(){
     	try{
-    		System.out.println("loadFeed");
 	    	NewsFeedParser parser = new NewsFeedParser("http://feeds.feedburner.com/GiantBombNews?format=xml");
 	    	news = (ArrayList<News>) parser.parse();
 	    	List<String> titles = new ArrayList<String>(news.size());
 	    	for (News i : news) {
-	    		System.out.println(i.getTitle());
 	    		titles.add(i.getTitle());
 	    	}
 	    	ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.newsrow, titles);
