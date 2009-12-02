@@ -48,6 +48,7 @@ public class VidPlayer extends Activity {
 			@Override
 			public void handleMessage(Message message) {
 					dialog.dismiss();
+					vid.start();
 			}
 		};
 
@@ -55,7 +56,16 @@ public class VidPlayer extends Activity {
 			@Override
 			public void run() {
 				try{
-					while(!vid.isPlaying()) {}
+					Boolean buffering = true;
+					int buffer = 0;
+					while(buffering) {
+						if(buffer < vid.getBufferPercentage())
+							buffer = vid.getBufferPercentage();
+						if(buffer >= 25)
+							buffering = false;
+						if(vid.isPlaying())
+							buffering = false;
+					}
 					
             		handler.sendEmptyMessage(0);
 				} catch (Throwable t){
