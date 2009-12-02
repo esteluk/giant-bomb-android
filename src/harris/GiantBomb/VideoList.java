@@ -8,9 +8,13 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.view.ContextMenu;
+import android.view.MenuItem;
 import android.view.View;
+import android.view.ContextMenu.ContextMenuInfo;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.AdapterView.AdapterContextMenuInfo;
 
 /**
  * Lists videos, launches video player when one is clicked
@@ -46,6 +50,24 @@ public class VideoList extends ListActivity implements api{
 			VideoList.this.startActivity(myIntent);
 		}
 	} 
+	
+	public void onCreateContextMenu(ContextMenu menu, View v,
+			ContextMenuInfo menuInfo) {
+		super.onCreateContextMenu(menu, v, menuInfo);
+		menu.add(0, 1, 0, "Share");
+	}
+
+	public boolean onContextItemSelected(MenuItem item) {
+		  AdapterContextMenuInfo info = (AdapterContextMenuInfo) item.getMenuInfo();
+		  if (item.getItemId() == 1) {
+			  System.out.println(info.id);
+			  Intent shareIntent = new Intent(android.content.Intent.ACTION_SEND);
+			  shareIntent.setType("text/plain");
+			  shareIntent.putExtra(Intent.EXTRA_TEXT, videos.get((int) info.id).getSiteDetailURL());				
+			  startActivity(Intent.createChooser(shareIntent, "Share link with..."));
+		  }
+		  return super.onContextItemSelected(item);
+	}
 
 	@SuppressWarnings("unchecked")
 	private void loadFeed(){
@@ -59,6 +81,7 @@ public class VideoList extends ListActivity implements api{
         	public void handleMessage(Message message) {
                 dialog.dismiss();
         		list.setListAdapter(((ArrayAdapter) message.obj));
+				registerForContextMenu(getListView());
         		list.setSelection(offset - 25);
         	}
         };
