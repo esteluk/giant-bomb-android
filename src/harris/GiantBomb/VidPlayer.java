@@ -35,7 +35,6 @@ public class VidPlayer extends Activity {
 			public void handleMessage(Message message) {
 				if(message.what == -1) {
 					dialog.dismiss();
-					vid.start();
 				}
 			}
 		};
@@ -46,11 +45,8 @@ public class VidPlayer extends Activity {
 				
 				try{
 					Boolean buffering = true;
-					int buffer = 0;
 					while(buffering) {
-						if(buffer < vid.getBufferPercentage())
-							buffer = vid.getBufferPercentage();
-						if(buffer > 24)
+						if(vid.isPlaying()) 
 							buffering = false;
 					}
 					Message message;
