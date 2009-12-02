@@ -1,7 +1,6 @@
 package harris.GiantBomb;
 
 import android.app.Activity;
-import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.net.Uri;
@@ -41,25 +40,17 @@ public class VidPlayer extends Activity {
 		final Handler handler = new Handler() {
 			@Override
 			public void handleMessage(Message message) {
-				if(message.what == -1) {
 					dialog.dismiss();
-				}
 			}
 		};
 
 		Thread thread = new Thread() {
 			@Override
 			public void run() {
-				
 				try{
-					Boolean buffering = true;
-					while(buffering) {
-						if(vid.isPlaying()) 
-							buffering = false;
-					}
-					Message message;
-            		message = handler.obtainMessage(-1);
-            		handler.sendMessage(message);
+					while(!vid.isPlaying()) {}
+					
+            		handler.sendEmptyMessage(0);
 				} catch (Throwable t){
 				}
 			}
