@@ -4,7 +4,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.lang.StringEscapeUtils;
@@ -22,6 +25,9 @@ import android.util.Xml;
 public class NewsFeedParser implements api{
 
 	private final URL feedUrl;
+	private SimpleDateFormat dateFromFormater = new SimpleDateFormat("EEE, d MMM yyyy HH:mm:ss Z");
+	private SimpleDateFormat dateToFormater = new SimpleDateFormat("yyyy-MM-dd");
+	
 	public NewsFeedParser(String feedUrl) {
 		try {
 			this.feedUrl = new URL(feedUrl);
@@ -58,6 +64,12 @@ public class NewsFeedParser implements api{
 				currentNews.setContent(body);
 			}
 		});
+		item.getChild("pubDate").setEndTextElementListener(new EndTextElementListener(){
+			public void end(String body) {
+				body = StringEscapeUtils.unescapeHtml(body);
+				currentNews.setPubdate(parseDate(body));
+			}
+		});
 		try {
 			Xml.parse(this.getInputStream(), Xml.Encoding.UTF_8, root.getContentHandler());
 		} catch (Exception e) {
@@ -72,6 +84,17 @@ public class NewsFeedParser implements api{
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}
+	}
+	
+	private String parseDate(String dateStr) {
+		Date d = null;
+		try {
+			d = dateFromFormater.parse(dateStr);
+			return dateToFormater.format(d);
+		} catch (ParseException e) {
+			e.printStackTrace();
+		} 
+		return dateToFormater.format(new Date());
 	}
 	
 	

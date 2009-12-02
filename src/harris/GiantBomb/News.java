@@ -4,6 +4,7 @@ public class News implements Comparable<News>{
 	private String title;
 	private String link;
 	private String content;
+	private String pubdate;
 	/**
 	 * @param title the title to set
 	 */
@@ -39,6 +40,7 @@ public class News implements Comparable<News>{
 		copy.title = title;
 		copy.link = link;
 		copy.content = content;
+		copy.pubdate = pubdate;
 		return copy;
 	}
 	/**
@@ -52,5 +54,21 @@ public class News implements Comparable<News>{
 	 */
 	public String getContent() {
 		return content;
+	}
+	/**
+	 * @param pubdate the pubdate to set
+	 */
+	public void setPubdate(String pubdate) {
+		this.pubdate = pubdate;
+	}
+	/**
+	 * @return the pubdate
+	 */
+	public String getPubdate() {
+		return pubdate;
+	}
+	
+	public String toString() {
+		return getPubdate() + " " + getTitle();
 	}
 }

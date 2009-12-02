@@ -1,12 +1,11 @@
 package harris.GiantBomb;
 
 import java.util.ArrayList;
-import java.util.List;
+
 import android.app.ListActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 public class NewsList extends ListActivity{
@@ -34,12 +33,12 @@ public class NewsList extends ListActivity{
     	try{
 	    	NewsFeedParser parser = new NewsFeedParser("http://feeds.feedburner.com/GiantBombNews?format=xml");
 	    	news = (ArrayList<News>) parser.parse();
-	    	List<String> titles = new ArrayList<String>(news.size());
-	    	for (News i : news) {
-	    		titles.add(i.getTitle());
-	    	}
-	    	ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.newsrow, titles);
+	    	//ArrayAdapter<News> adapter = new ArrayAdapter<News>(this, R.layout.newsrow, news);
+	    	
+	    	NewsListAdapter adapter = new NewsListAdapter(this, R.layout.newsrow, news);
 	    	this.setListAdapter(adapter);
+	    	
+	    	//this.setListAdapter(adapter);
     	} catch (Throwable t){
     	}
     }
