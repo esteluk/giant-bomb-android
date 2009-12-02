@@ -54,6 +54,11 @@ public class VideoFeedParser implements api{
 				currentVideo.setId(Integer.decode(body));
 			}
 		});
+		item.getChild("site_detail_url").setEndTextElementListener(new EndTextElementListener(){
+			public void end(String body) {
+				currentVideo.setSiteDetailURL(body);
+			}
+		});
 		item.getChild("url").setEndTextElementListener(new EndTextElementListener(){
 			public void end(String body) {
 				//template: http://media.giantbomb.com/video/vf_buzzquizworld_ql_ip.m4v?api_key=98a36880538752a0bc32691ff737a408bc82fd94

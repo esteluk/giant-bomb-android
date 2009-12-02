@@ -10,6 +10,7 @@ public class Video implements Comparable<Video>{
 	private String link;
 	private String thumbLink;
 	private String desc;
+	private String siteDetailURL;
 	private int id;
 
 	
@@ -59,6 +60,7 @@ public class Video implements Comparable<Video>{
 		copy.link = link;
 		copy.thumbLink = thumbLink;
 		copy.id = id;
+		copy.siteDetailURL = siteDetailURL;
 		return copy;
 	}
 	
@@ -136,6 +138,20 @@ public class Video implements Comparable<Video>{
 	 */
 	public String getDesc() {
 		return desc;
+	}
+
+	/**
+	 * @param siteDetailURL the siteDetailURL to set
+	 */
+	public void setSiteDetailURL(String siteDetailURL) {
+		this.siteDetailURL = siteDetailURL;
+	}
+
+	/**
+	 * @return the siteDetailURL
+	 */
+	public String getSiteDetailURL() {
+		return siteDetailURL;
 	}
 
 }

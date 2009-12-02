@@ -41,6 +41,7 @@ public class VideoList extends ListActivity implements api{
 			Bundle bundle = new Bundle();
 			bundle.putString("URL", videos.get(position).getLink());
 			bundle.putString("title", videos.get(position).getTitle());
+			bundle.putString("siteDetailURL", videos.get(position).getSiteDetailURL());
 			myIntent.putExtras(bundle);
 			VideoList.this.startActivity(myIntent);
 		}
@@ -67,7 +68,7 @@ public class VideoList extends ListActivity implements api{
         	public void run() {
         		
         		try{
-            		VideoFeedParser parser = new VideoFeedParser("http://api.giantbomb.com/videos/?api_key=" + API_KEY + "&sort=-publish_date&limit=25&field_list=name,deck,id,url,image&format=xml&offset=" + offset);
+            		VideoFeedParser parser = new VideoFeedParser("http://api.giantbomb.com/videos/?api_key=" + API_KEY + "&sort=-publish_date&limit=25&field_list=name,deck,id,url,image,site_detail_url&format=xml&offset=" + offset);
         			offset = offset + 25;
         			ArrayList<Video> add = new ArrayList<Video>(25);
         			add = (ArrayList<Video>) parser.parse();
