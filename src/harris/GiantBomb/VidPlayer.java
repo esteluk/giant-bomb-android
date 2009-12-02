@@ -1,7 +1,9 @@
 package harris.GiantBomb;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -24,10 +26,16 @@ public class VidPlayer extends Activity {
 		vid.setMediaController(controller);
 		Bundle bundle = getIntent().getExtras();
 		vid.setVideoURI(Uri.parse(bundle.getString("URL")));
-		vid.stopPlayback();
 		
-		final ProgressDialog dialog = ProgressDialog.show(VidPlayer.this, "", 
-                "Buffering. Please wait...", true);
+		final ProgressDialog dialog = new ProgressDialog(VidPlayer.this, ProgressDialog.STYLE_SPINNER);
+		dialog.setMessage("Buffering. Please wait...");
+		dialog.setButton(ProgressDialog.BUTTON_NEGATIVE,"Cancel", new DialogInterface.OnClickListener() {
+			
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				VidPlayer.this.finish();
+			}
+		});
         dialog.show();
 		
 		final Handler handler = new Handler() {
