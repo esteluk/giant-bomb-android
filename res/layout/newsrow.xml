@@ -5,24 +5,25 @@
     android:layout_width="fill_parent"
     android:layout_height="?android:attr/listPreferredItemHeight"
     android:orientation="vertical">
-	    
-	    
-	    <TextView xmlns:android="http://schemas.android.com/apk/res/android" 
-			android:id="@+id/newsdate" 
-			android:layout_width="wrap_content" 
-			android:layout_height="wrap_content"
-			android:textSize="11sp"
-			android:maxLines="2"  />
-			
-		<TextView
-		    android:id="@+id/newstitle" 
-		    android:layout_width="wrap_content"
-		    android:layout_height="wrap_content"
-		    android:layout_weight="1"
-		    android:textSize="13sp" 
-		    android:paddingBottom="1sp" 
-		    android:textColor="#ffffff" />
+            
+                <TextView
+                    android:id="@+id/newstitle" 
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:textSize="13sp" 
+                    android:paddingBottom="1sp" 
+                    android:textColor="#ffffff" 
+                    android:singleLine="true"/>
+            
+            <TextView xmlns:android="http://schemas.android.com/apk/res/android" 
+                        android:id="@+id/newsdate" 
+                        android:layout_width="wrap_content" 
+                        android:layout_height="wrap_content"
+                        android:textSize="11sp"
+                        android:maxLines="2"  />
+                        
 
-					   
-	
+                                           
+        
 </LinearLayout>

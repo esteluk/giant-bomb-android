@@ -3,9 +3,13 @@ package harris.GiantBomb;
 import java.util.ArrayList;
 
 import android.app.ListActivity;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 /**
@@ -15,13 +19,14 @@ import android.widget.ListView;
 public class VideoList extends ListActivity implements api{
 	
 	private ArrayList<Video> videos;
-	private int offset = 25;
+	private int offset = 0;
 	
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.videolist);
         videos = new ArrayList<Video>();
+
         loadFeed();
     }
     
@@ -30,15 +35,7 @@ public class VideoList extends ListActivity implements api{
 		super.onListItemClick(l, v, position, id);
 		if (videos.get(position).getId() == -1) {
 			videos.remove(position);
-			VideoFeedParser parser = new VideoFeedParser("http://api.giantbomb.com/videos/?api_key=" + API_KEY + "&sort=-publish_date&limit=25&format=xml&offset=" + offset);
-			ArrayList<Video> add = new ArrayList<Video>(25);
-			add = (ArrayList<Video>) parser.parse();
-			for(Video i : add) {
-				videos.add(i);
-			}
-			offset = offset + 25;
 			loadFeed();
-			this.setSelection(offset - 25);
 		} else {
 			Intent myIntent = new Intent(this, VidPlayer.class);
 			Bundle bundle = new Bundle();
@@ -49,19 +46,45 @@ public class VideoList extends ListActivity implements api{
 		}
 	} 
 
+	@SuppressWarnings("unchecked")
 	private void loadFeed(){
-    	try{
-    		if(offset == 25) {
-    			VideoFeedParser parser = new VideoFeedParser("http://api.giantbomb.com/videos/?api_key=" + API_KEY + "&sort=-publish_date&limit=25&format=xml");
-    			videos = (ArrayList<Video>) parser.parse();
-	    	}
-	    	Video loadMore = new Video();
-	    	loadMore.setTitle("Load 25 More...");
-	    	loadMore.setId(-1);
-	    	videos.add(loadMore);
-	    	VideoListAdapter adapter = new VideoListAdapter(this, R.layout.videorow, videos);
-	    	this.setListAdapter(adapter);
-    	} catch (Throwable t){
-    	}
+        final ListActivity list = this;
+        final ProgressDialog dialog = ProgressDialog.show(VideoList.this, "", 
+                "Loading. Please wait...", true);
+        dialog.show();
+        
+        final Handler handler = new Handler() {
+        	@Override
+        	public void handleMessage(Message message) {
+                dialog.dismiss();
+        		list.setListAdapter(((ArrayAdapter) message.obj));
+        		list.setSelection(offset - 25);
+        	}
+        };
+        
+        Thread thread = new Thread() {
+        	@Override
+        	public void run() {
+        		
+        		try{
+            		VideoFeedParser parser = new VideoFeedParser("http://api.giantbomb.com/videos/?api_key=" + API_KEY + "&sort=-publish_date&limit=25&field_list=name,deck,id,url,image&format=xml&offset=" + offset);
+        			offset = offset + 25;
+        			ArrayList<Video> add = new ArrayList<Video>(25);
+        			add = (ArrayList<Video>) parser.parse();
+        			for(Video i : add) {
+        				videos.add(i);
+        			}
+        			Video loadMore = new Video();
+        	    	loadMore.setTitle("Load 25 More...");
+        	    	loadMore.setId(-1);
+        	    	videos.add(loadMore);
+            		Message message;
+            		message = handler.obtainMessage(-1, new VideoListAdapter(list, R.layout.videorow, videos));
+            		handler.sendMessage(message);
+        		} catch (Throwable t){
+        		}
+        	}
+        };
+        thread.start();
     }
 }

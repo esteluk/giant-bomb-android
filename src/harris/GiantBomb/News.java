@@ -67,8 +67,4 @@ public class News implements Comparable<News>{
 	public String getPubdate() {
 		return pubdate;
 	}
-	
-	public String toString() {
-		return getPubdate() + " " + getTitle();
-	}
 }

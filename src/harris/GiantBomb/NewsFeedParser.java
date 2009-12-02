@@ -26,8 +26,7 @@ public class NewsFeedParser implements api{
 
 	private final URL feedUrl;
 	private SimpleDateFormat dateFromFormater = new SimpleDateFormat("EEE, d MMM yyyy HH:mm:ss Z");
-	private SimpleDateFormat dateToFormater = new SimpleDateFormat("yyyy-MM-dd");
-	
+	private SimpleDateFormat dateToFormater = new SimpleDateFormat("MMM. d, yyyy");
 	public NewsFeedParser(String feedUrl) {
 		try {
 			this.feedUrl = new URL(feedUrl);
@@ -64,12 +63,12 @@ public class NewsFeedParser implements api{
 				currentNews.setContent(body);
 			}
 		});
-		item.getChild("pubDate").setEndTextElementListener(new EndTextElementListener(){
-			public void end(String body) {
-				body = StringEscapeUtils.unescapeHtml(body);
-				currentNews.setPubdate(parseDate(body));
-			}
-		});
+        item.getChild("pubDate").setEndTextElementListener(new EndTextElementListener(){
+            public void end(String body) {
+                    body = StringEscapeUtils.unescapeHtml(body);
+                    currentNews.setPubdate(parseDate(body));
+            }
+    });
 		try {
 			Xml.parse(this.getInputStream(), Xml.Encoding.UTF_8, root.getContentHandler());
 		} catch (Exception e) {
@@ -86,16 +85,15 @@ public class NewsFeedParser implements api{
 		}
 	}
 	
-	private String parseDate(String dateStr) {
-		Date d = null;
-		try {
-			d = dateFromFormater.parse(dateStr);
-			return dateToFormater.format(d);
-		} catch (ParseException e) {
-			e.printStackTrace();
-		} 
-		return dateToFormater.format(new Date());
-	}
-	
+    private String parseDate(String dateStr) {
+        Date d = null;
+        try {
+                d = dateFromFormater.parse(dateStr);
+                return dateToFormater.format(d);
+        } catch (ParseException e) {
+                e.printStackTrace();
+        } 
+        return dateToFormater.format(new Date());
+}
 	
 }

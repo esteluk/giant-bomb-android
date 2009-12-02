@@ -3,9 +3,13 @@ package harris.GiantBomb;
 import java.util.ArrayList;
 
 import android.app.ListActivity;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 /**
@@ -15,7 +19,7 @@ import android.widget.ListView;
 public class ReviewList extends ListActivity implements api{
 	
 	private ArrayList<Review> reviews;
-	private int offset = 25;
+	private int offset = 0;
 	
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -30,15 +34,7 @@ public class ReviewList extends ListActivity implements api{
 		super.onListItemClick(l, v, position, id);
 		if (reviews.get(position).getScore() == -1) {
 			reviews.remove(position);
-			ReviewFeedParser parser = new ReviewFeedParser("http://api.giantbomb.com/reviews/?api_key=" + API_KEY + "&sort=-publish_date&limit=25&format=xml&offset=" + offset);
-			ArrayList<Review> add = new ArrayList<Review>(25);
-			add = (ArrayList<Review>) parser.parse();
-			for(Review i : add) {
-				reviews.add(i);
-			}
-			offset = offset + 25;
 			loadFeed();
-			this.setSelection(offset - 25);
 		} else {
 			Intent myIntent = new Intent(this, WebPlayer.class);
 			Bundle bundle = new Bundle();
@@ -49,19 +45,46 @@ public class ReviewList extends ListActivity implements api{
 		}
 	} 
 
+	@SuppressWarnings("unchecked")
 	private void loadFeed(){
-    	try{
-    		if(offset == 25) {
-    			ReviewFeedParser parser = new ReviewFeedParser("http://api.giantbomb.com/reviews/?api_key=" + API_KEY + "&sort=-publish_date&limit=25&format=xml");
-    			reviews = (ArrayList<Review>) parser.parse();
-	    	}
-	    	Review loadMore = new Review();
-	    	loadMore.setTitle("Load 25 More...");
-	    	loadMore.setScore(-1);
-	    	reviews.add(loadMore);
-	    	ReviewListAdapter adapter = new ReviewListAdapter(this, R.layout.videorow, reviews);
-	    	this.setListAdapter(adapter);
-    	} catch (Throwable t){
-    	}
+
+        final ListActivity list = this;
+        final ProgressDialog dialog = ProgressDialog.show(ReviewList.this, "", 
+                "Loading. Please wait...", true);
+        dialog.show();
+        
+        final Handler handler = new Handler() {
+        	@Override
+        	public void handleMessage(Message message) {
+                dialog.dismiss();
+        		list.setListAdapter(((ArrayAdapter) message.obj));
+        		list.setSelection(offset - 25);
+        	}
+        };
+        
+        Thread thread = new Thread() {
+        	@Override
+        	public void run() {
+        		
+        		try{
+            		ReviewFeedParser parser = new ReviewFeedParser("http://api.giantbomb.com/reviews/?api_key=" + API_KEY + "&sort=-publish_date&limit=25&field_list=game,site_detail_url,score,description&format=xml&offset=" + offset);
+        			offset = offset + 25;
+        			ArrayList<Review> add = new ArrayList<Review>(25);
+        			add = (ArrayList<Review>) parser.parse();
+        			for(Review i : add) {
+        				reviews.add(i);
+        			}
+        	    	Review loadMore = new Review();
+        	    	loadMore.setTitle("Load 25 More...");
+        	    	loadMore.setScore(-1);
+        	    	reviews.add(loadMore);
+            		Message message;
+            		message = handler.obtainMessage(-1, new ReviewListAdapter(list, R.layout.videorow, reviews));
+            		handler.sendMessage(message);
+            	} catch (Throwable t){
+            	}
+        	}
+        };
+        thread.start();
     }
 }
