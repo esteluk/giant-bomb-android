@@ -8,17 +8,6 @@ public abstract class WikiObject {
 	private String name;
 	private String id;
 	
-	public WikiObject() {
-		super();
-	}
-	
-	public WikiObject(ObjectType type, String name, String id) {
-		super();
-		this.type = type;
-		this.name = name;
-		this.id = id;
-	}
-	
 	public ObjectType getType() {
 		return type;
 	}

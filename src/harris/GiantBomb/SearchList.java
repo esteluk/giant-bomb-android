@@ -13,6 +13,8 @@ import android.app.ListActivity;
 import android.app.SearchManager;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.ListView;
 
 public class SearchList extends ListActivity implements api {
 
@@ -47,5 +49,15 @@ public class SearchList extends ListActivity implements api {
 		for(WikiObject i : add) {
 			results.add(i);
 		}
+	}
+	
+	@Override
+	protected void onListItemClick(ListView l, View v, int position, long id) {
+		super.onListItemClick(l, v, position, id);
+		Intent myIntent = new Intent(this, Game.class);
+		Bundle bundle = new Bundle();
+		bundle.putString("id", results.get(position).getId());
+		myIntent.putExtras(bundle);
+		SearchList.this.startActivity(myIntent);
 	}
 }

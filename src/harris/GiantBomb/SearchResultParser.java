@@ -46,7 +46,7 @@ public class SearchResultParser implements api{
 		for (int i = 0; i < results.getLength(); i++) {
 			Node node = results.item(i);
 			if (node.getNodeName().equals("game")) {
-				wikiObjects.add(parseGame((Element)node));
+				wikiObjects.add(WikiObjectParser.parseGame((Element)node));
 			}
 		}
 		
@@ -60,16 +60,6 @@ public class SearchResultParser implements api{
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}
-	}
-	
-	public WikiGame parseGame(Element el) {
-		WikiGame game = new WikiGame();
-		game.setName(el.getElementsByTagName("name").item(0).getFirstChild().getNodeValue());
-		game.setId(el.getElementsByTagName("id").item(0).getNodeValue());
-		game.setType(ObjectType.GAME);
-		
-		return game;
-		
 	}
 	
 	
