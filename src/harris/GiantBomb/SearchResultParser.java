@@ -65,6 +65,7 @@ public class SearchResultParser implements api{
 	public WikiGame parseGame(Element el) {
 		WikiGame game = new WikiGame();
 		game.setName(el.getElementsByTagName("name").item(0).getFirstChild().getNodeValue());
+		game.setId(el.getElementsByTagName("id").item(0).getNodeValue());
 		game.setType(ObjectType.GAME);
 		
 		return game;

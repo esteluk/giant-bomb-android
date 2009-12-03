@@ -36,7 +36,7 @@ public class SearchList extends ListActivity implements api {
 	}
 	
 	private void getSearchResults(String queryString) {
-		SearchResultParser parser = new SearchResultParser("http://api.giantbomb.com/search/?api_key=" + API_KEY + "&query=" + queryString.replace(' ', '+') + "&limit=25&resources=game&field_list=name&format=xml");
+		SearchResultParser parser = new SearchResultParser("http://api.giantbomb.com/search/?api_key=" + API_KEY + "&query=" + queryString.replace(' ', '+') + "&limit=25&resources=game&field_list=name,id&format=xml");
 		
 		ArrayList<WikiObject> add = new ArrayList<WikiObject>(25);
 		try {

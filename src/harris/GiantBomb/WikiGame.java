@@ -8,8 +8,8 @@ public class WikiGame extends WikiObject {
 		super();
 	}
 	
-	public WikiGame(ObjectType type, String name) {
-		super(type, name);
+	public WikiGame(ObjectType type, String name, String id) {
+		super(type, name, id);
 	}
 
 

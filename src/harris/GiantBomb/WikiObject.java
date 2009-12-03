@@ -6,15 +6,17 @@ public abstract class WikiObject {
 
 	private ObjectType type;
 	private String name;
+	private String id;
 	
 	public WikiObject() {
 		super();
 	}
 	
-	public WikiObject(ObjectType type, String name) {
+	public WikiObject(ObjectType type, String name, String id) {
 		super();
 		this.type = type;
 		this.name = name;
+		this.id = id;
 	}
 	
 	public ObjectType getType() {
@@ -28,6 +30,12 @@ public abstract class WikiObject {
 	}
 	public void setName(String name) {
 		this.name = name;
+	}
+	public String getId() {
+		return id;
+	}
+	public void setId(String id) {
+		this.id = id;
 	}
 	
 }
