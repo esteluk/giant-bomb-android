@@ -1,11 +1,10 @@
 package harris.GiantBomb;
 
-
 /**
  * Video object
- *
+ * 
  */
-public class Video implements Comparable<Video>{
+public class Video implements Comparable<Video> {
 	private String title;
 	private String link;
 	private String thumbLink;
@@ -13,10 +12,9 @@ public class Video implements Comparable<Video>{
 	private String siteDetailURL;
 	private int id;
 
-	
-
 	/**
-	 * @param id the id to set
+	 * @param id
+	 *            the id to set
 	 */
 	public void setId(int id) {
 		this.id = id;
@@ -28,7 +26,7 @@ public class Video implements Comparable<Video>{
 	public int getId() {
 		return id;
 	}
-	
+
 	public String getTitle() {
 		return title;
 	}
@@ -36,11 +34,11 @@ public class Video implements Comparable<Video>{
 	public void setTitle(String title) {
 		this.title = title.trim();
 	}
-	
+
 	public String getLink() {
 		return link;
 	}
-	
+
 	public void setLink(String link) {
 		this.link = link;
 	}
@@ -52,8 +50,8 @@ public class Video implements Comparable<Video>{
 	public void setThumbLink(String thumbLink) {
 		this.thumbLink = thumbLink;
 	}
-	
-	public Video copy(){
+
+	public Video copy() {
 		Video copy = new Video();
 		copy.title = title;
 		copy.desc = desc;
@@ -63,7 +61,7 @@ public class Video implements Comparable<Video>{
 		copy.siteDetailURL = siteDetailURL;
 		return copy;
 	}
-	
+
 	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
@@ -89,7 +87,7 @@ public class Video implements Comparable<Video>{
 		result = prime * result + ((title == null) ? 0 : title.hashCode());
 		return result;
 	}
-	
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -127,7 +125,8 @@ public class Video implements Comparable<Video>{
 	}
 
 	/**
-	 * @param desc the desc to set
+	 * @param desc
+	 *            the desc to set
 	 */
 	public void setDesc(String desc) {
 		this.desc = desc;
@@ -141,7 +140,8 @@ public class Video implements Comparable<Video>{
 	}
 
 	/**
-	 * @param siteDetailURL the siteDetailURL to set
+	 * @param siteDetailURL
+	 *            the siteDetailURL to set
 	 */
 	public void setSiteDetailURL(String siteDetailURL) {
 		this.siteDetailURL = siteDetailURL;

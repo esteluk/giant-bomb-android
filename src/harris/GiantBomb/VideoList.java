@@ -18,22 +18,22 @@ import android.widget.AdapterView.AdapterContextMenuInfo;
 
 /**
  * Lists videos, launches video player when one is clicked
- *
+ * 
  */
-public class VideoList extends ListActivity implements api{
-	
+public class VideoList extends ListActivity implements api {
+
 	private ArrayList<Video> videos;
 	private int offset = 0;
-	
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.videolist);
-        videos = new ArrayList<Video>();
 
-        loadFeed();
-    }
-    
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.videolist);
+		videos = new ArrayList<Video>();
+
+		loadFeed();
+	}
+
 	@Override
 	protected void onListItemClick(ListView l, View v, int position, long id) {
 		super.onListItemClick(l, v, position, id);
@@ -45,12 +45,13 @@ public class VideoList extends ListActivity implements api{
 			Bundle bundle = new Bundle();
 			bundle.putString("URL", videos.get(position).getLink());
 			bundle.putString("title", videos.get(position).getTitle());
-			bundle.putString("siteDetailURL", videos.get(position).getSiteDetailURL());
+			bundle.putString("siteDetailURL", videos.get(position)
+					.getSiteDetailURL());
 			myIntent.putExtras(bundle);
 			VideoList.this.startActivity(myIntent);
 		}
-	} 
-	
+	}
+
 	public void onCreateContextMenu(ContextMenu menu, View v,
 			ContextMenuInfo menuInfo) {
 		super.onCreateContextMenu(menu, v, menuInfo);
@@ -58,57 +59,65 @@ public class VideoList extends ListActivity implements api{
 	}
 
 	public boolean onContextItemSelected(MenuItem item) {
-		  AdapterContextMenuInfo info = (AdapterContextMenuInfo) item.getMenuInfo();
-		  if (item.getItemId() == 1) {
-			  System.out.println(info.id);
-			  Intent shareIntent = new Intent(android.content.Intent.ACTION_SEND);
-			  shareIntent.setType("text/plain");
-			  shareIntent.putExtra(Intent.EXTRA_TEXT, videos.get((int) info.id).getSiteDetailURL());				
-			  startActivity(Intent.createChooser(shareIntent, "Share link with..."));
-		  }
-		  return super.onContextItemSelected(item);
+		AdapterContextMenuInfo info = (AdapterContextMenuInfo) item
+				.getMenuInfo();
+		if (item.getItemId() == 1) {
+			System.out.println(info.id);
+			Intent shareIntent = new Intent(android.content.Intent.ACTION_SEND);
+			shareIntent.setType("text/plain");
+			shareIntent.putExtra(Intent.EXTRA_TEXT, videos.get((int) info.id)
+					.getSiteDetailURL());
+			startActivity(Intent.createChooser(shareIntent,
+					"Share link with..."));
+		}
+		return super.onContextItemSelected(item);
 	}
 
 	@SuppressWarnings("unchecked")
-	private void loadFeed(){
-        final ListActivity list = this;
-        final ProgressDialog dialog = ProgressDialog.show(VideoList.this, "", 
-                "Loading. Please wait...", true);
-        dialog.show();
-        
-        final Handler handler = new Handler() {
-        	@Override
-        	public void handleMessage(Message message) {
-                dialog.dismiss();
-        		list.setListAdapter(((ArrayAdapter) message.obj));
+	private void loadFeed() {
+		final ListActivity list = this;
+		final ProgressDialog dialog = ProgressDialog.show(VideoList.this, "",
+				"Loading. Please wait...", true);
+		dialog.show();
+
+		final Handler handler = new Handler() {
+			@Override
+			public void handleMessage(Message message) {
+				dialog.dismiss();
+				list.setListAdapter(((ArrayAdapter) message.obj));
 				registerForContextMenu(getListView());
-        		list.setSelection(offset - 25);
-        	}
-        };
-        
-        Thread thread = new Thread() {
-        	@Override
-        	public void run() {
-        		
-        		try{
-            		VideoFeedParser parser = new VideoFeedParser("http://api.giantbomb.com/videos/?api_key=" + API_KEY + "&sort=-publish_date&limit=25&field_list=name,deck,id,url,image,site_detail_url&format=xml&offset=" + offset);
-        			offset = offset + 25;
-        			ArrayList<Video> add = new ArrayList<Video>(25);
-        			add = (ArrayList<Video>) parser.parse();
-        			for(Video i : add) {
-        				videos.add(i);
-        			}
-        			Video loadMore = new Video();
-        	    	loadMore.setTitle("Load 25 More...");
-        	    	loadMore.setId(-1);
-        	    	videos.add(loadMore);
-            		Message message;
-            		message = handler.obtainMessage(-1, new VideoListAdapter(list, R.layout.videorow, videos));
-            		handler.sendMessage(message);
-        		} catch (Throwable t){
-        		}
-        	}
-        };
-        thread.start();
-    }
+				list.setSelection(offset - 25);
+			}
+		};
+
+		Thread thread = new Thread() {
+			@Override
+			public void run() {
+
+				try {
+					VideoFeedParser parser = new VideoFeedParser(
+							"http://api.giantbomb.com/videos/?api_key="
+									+ API_KEY
+									+ "&sort=-publish_date&limit=25&field_list=name,deck,id,url,image,site_detail_url&format=xml&offset="
+									+ offset);
+					offset = offset + 25;
+					ArrayList<Video> add = new ArrayList<Video>(25);
+					add = (ArrayList<Video>) parser.parse();
+					for (Video i : add) {
+						videos.add(i);
+					}
+					Video loadMore = new Video();
+					loadMore.setTitle("Load 25 More...");
+					loadMore.setId(-1);
+					videos.add(loadMore);
+					Message message;
+					message = handler.obtainMessage(-1, new VideoListAdapter(
+							list, R.layout.videorow, videos));
+					handler.sendMessage(message);
+				} catch (Throwable t) {
+				}
+			}
+		};
+		thread.start();
+	}
 }

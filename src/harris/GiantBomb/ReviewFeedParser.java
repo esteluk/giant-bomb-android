@@ -17,11 +17,12 @@ import android.util.Xml;
 
 /**
  * This class parses the feed given to it, and returns a list of video objects
- *
+ * 
  */
-public class ReviewFeedParser implements api{
+public class ReviewFeedParser implements api {
 
 	private final URL feedUrl;
+
 	public ReviewFeedParser(String feedUrl) {
 		try {
 			this.feedUrl = new URL(feedUrl);
@@ -36,34 +37,39 @@ public class ReviewFeedParser implements api{
 		final List<Review> reviews = new ArrayList<Review>();
 		Element channel = root.getChild("results");
 		Element item = channel.getChild("review");
-		item.setEndElementListener(new EndElementListener(){
+		item.setEndElementListener(new EndElementListener() {
 			public void end() {
 				reviews.add(currentReview.copy());
 			}
 		});
-		item.getChild("game").getChild("name").setEndTextElementListener(new EndTextElementListener(){
-			public void end(String body) {
-				currentReview.setTitle(body);
-			}
-		});
-		item.getChild("site_detail_url").setEndTextElementListener(new EndTextElementListener(){
-			public void end(String body) {
-				currentReview.setLink(body);
-			}
-		});
-		item.getChild("score").setEndTextElementListener(new EndTextElementListener(){
-			public void end(String body) {
-				currentReview.setScore(Integer.decode(body));
-			}
-		});
-		item.getChild("description").setEndTextElementListener(new EndTextElementListener(){
-			public void end(String body) {
-				body = StringEscapeUtils.unescapeHtml(body);
-				currentReview.setContent(body);
-			}
-		});
+		item.getChild("game").getChild("name").setEndTextElementListener(
+				new EndTextElementListener() {
+					public void end(String body) {
+						currentReview.setTitle(body);
+					}
+				});
+		item.getChild("site_detail_url").setEndTextElementListener(
+				new EndTextElementListener() {
+					public void end(String body) {
+						currentReview.setLink(body);
+					}
+				});
+		item.getChild("score").setEndTextElementListener(
+				new EndTextElementListener() {
+					public void end(String body) {
+						currentReview.setScore(Integer.decode(body));
+					}
+				});
+		item.getChild("description").setEndTextElementListener(
+				new EndTextElementListener() {
+					public void end(String body) {
+						body = StringEscapeUtils.unescapeHtml(body);
+						currentReview.setContent(body);
+					}
+				});
 		try {
-			Xml.parse(this.getInputStream(), Xml.Encoding.UTF_8, root.getContentHandler());
+			Xml.parse(this.getInputStream(), Xml.Encoding.UTF_8, root
+					.getContentHandler());
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
@@ -77,6 +83,5 @@ public class ReviewFeedParser implements api{
 			throw new RuntimeException(e);
 		}
 	}
-	
-	
+
 }

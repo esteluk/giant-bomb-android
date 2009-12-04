@@ -57,6 +57,13 @@
 				<category android:name="android.intent.category.ALTERNATIVE" />
 			</intent-filter>
 		</activity>
+
+		<activity android:excludeFromRecents="true" android:name=".BombcastList">
+			<intent-filter>
+				<action android:name="android.intent.action.VIEW" />
+				<category android:name="android.intent.category.ALTERNATIVE" />
+			</intent-filter>
+		</activity>
 		
 		<activity android:excludeFromRecents="true" android:name=".Game">
 			<intent-filter>

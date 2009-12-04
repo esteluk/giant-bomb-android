@@ -44,17 +44,20 @@ public class NewsList extends ListActivity {
 	}
 
 	public boolean onContextItemSelected(MenuItem item) {
-		  AdapterContextMenuInfo info = (AdapterContextMenuInfo) item.getMenuInfo();
-		  if (item.getItemId() == 1) {
-			  System.out.println(info.id);
-			  Intent shareIntent = new Intent(android.content.Intent.ACTION_SEND);
-			  shareIntent.setType("text/plain");
-			  shareIntent.putExtra(Intent.EXTRA_TEXT, news.get((int) info.id).getLink());				
-			  startActivity(Intent.createChooser(shareIntent, "Share link with..."));
-		  }
-		  return super.onContextItemSelected(item);
+		AdapterContextMenuInfo info = (AdapterContextMenuInfo) item
+				.getMenuInfo();
+		if (item.getItemId() == 1) {
+			System.out.println(info.id);
+			Intent shareIntent = new Intent(android.content.Intent.ACTION_SEND);
+			shareIntent.setType("text/plain");
+			shareIntent.putExtra(Intent.EXTRA_TEXT, news.get((int) info.id)
+					.getLink());
+			startActivity(Intent.createChooser(shareIntent,
+					"Share link with..."));
+		}
+		return super.onContextItemSelected(item);
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	private void loadFeed() {
 		final ListActivity list = this;

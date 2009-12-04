@@ -16,12 +16,12 @@ import android.widget.VideoView;
 
 /**
  * Video player class
- *
+ * 
  */
 public class VidPlayer extends Activity {
 	public static final int MENU_SHARE = Menu.FIRST;
 	private String siteDetailURL;
-	
+
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		this.setRequestedOrientation(0); // landscape
@@ -32,69 +32,70 @@ public class VidPlayer extends Activity {
 		Bundle bundle = getIntent().getExtras();
 		siteDetailURL = bundle.getString("siteDetailURL");
 		vid.setVideoURI(Uri.parse(bundle.getString("URL")));
-		
-		final ProgressDialog dialog = new ProgressDialog(VidPlayer.this, ProgressDialog.STYLE_SPINNER);
+
+		final ProgressDialog dialog = new ProgressDialog(VidPlayer.this,
+				ProgressDialog.STYLE_SPINNER);
 		dialog.setMessage("Buffering. Please wait...");
-		dialog.setButton(ProgressDialog.BUTTON_NEGATIVE,"Cancel", new DialogInterface.OnClickListener() {
-			
-			@Override
-			public void onClick(DialogInterface dialog, int which) {
-				VidPlayer.this.finish();
-			}
-		});
-        dialog.show();
-		
+		dialog.setButton(ProgressDialog.BUTTON_NEGATIVE, "Cancel",
+				new DialogInterface.OnClickListener() {
+
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						VidPlayer.this.finish();
+					}
+				});
+		dialog.show();
+
 		final Handler handler = new Handler() {
 			@Override
 			public void handleMessage(Message message) {
-					dialog.dismiss();
-					vid.start();
+				dialog.dismiss();
+				vid.start();
 			}
 		};
 
 		Thread thread = new Thread() {
 			@Override
 			public void run() {
-				try{
+				try {
 					Boolean buffering = true;
 					int buffer = 0;
-					while(buffering) {
-						if(buffer < vid.getBufferPercentage())
+					while (buffering) {
+						if (buffer < vid.getBufferPercentage())
 							buffer = vid.getBufferPercentage();
-						if(buffer >= 25)
+						if (buffer >= 25)
 							buffering = false;
-						if(vid.isPlaying())
+						if (vid.isPlaying())
 							buffering = false;
 					}
-					
-            		handler.sendEmptyMessage(0);
-				} catch (Throwable t){
+
+					handler.sendEmptyMessage(0);
+				} catch (Throwable t) {
 				}
 			}
 		};
 		thread.start();
-		}
-	
+	}
+
 	public boolean onCreateOptionsMenu(Menu menu) {
 		MenuItem share = menu.add(0, MENU_SHARE, MENU_SHARE, "Share");
-		
+
 		share.setOnMenuItemClickListener(new OnMenuItemClickListener() {
 
 			@Override
 			public boolean onMenuItemClick(MenuItem item) {
-				
-				Intent shareIntent = new Intent(android.content.Intent.ACTION_SEND);
+
+				Intent shareIntent = new Intent(
+						android.content.Intent.ACTION_SEND);
 				shareIntent.setType("text/plain");
-				shareIntent.putExtra(Intent.EXTRA_TEXT, siteDetailURL);				
-				startActivity(Intent.createChooser(shareIntent, "Share link with..."));
-				
+				shareIntent.putExtra(Intent.EXTRA_TEXT, siteDetailURL);
+				startActivity(Intent.createChooser(shareIntent,
+						"Share link with..."));
+
 				return true;
 			}
 		});
-		
+
 		return true;
 	}
 }
-
-
-

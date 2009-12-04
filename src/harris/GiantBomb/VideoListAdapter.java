@@ -74,10 +74,10 @@ public class VideoListAdapter extends ArrayAdapter<String> {
 				if (desc != null) {
 					desc.setText(videos.get(i).getDesc());
 					if (title.getText().length() > 37) { // check if the title
-															// is going to be 2
-															// lines or not
+						// is going to be 2
+						// lines or not
 						desc.setMaxLines(1); // set max lines for desc
-												// accordingly
+						// accordingly
 					} else {
 						desc.setMaxLines(2);
 					}
@@ -88,9 +88,9 @@ public class VideoListAdapter extends ArrayAdapter<String> {
 						public void handleMessage(Message message) {
 							if (message.what == -1) {
 								thumb.setImageResource(R.drawable.loading); // set
-																			// black
-																			// loading
-																			// image
+								// black
+								// loading
+								// image
 							} else {
 								thumb.setImageDrawable((Drawable) message.obj);
 							}
@@ -102,12 +102,12 @@ public class VideoListAdapter extends ArrayAdapter<String> {
 						public void run() {
 							Message message;
 							message = handler.obtainMessage(-1, null); // tell
-																		// handler
-																		// to
-																		// set
-																		// black
-																		// loading
-																		// image
+							// handler
+							// to
+							// set
+							// black
+							// loading
+							// image
 							handler.sendMessage(message);
 							Drawable drawable = null;
 							try {
@@ -116,11 +116,11 @@ public class VideoListAdapter extends ArrayAdapter<String> {
 							} catch (IOException e) {
 							}
 							message = handler.obtainMessage(id, drawable);// set
-																			// actual
-																			// image,
-																			// once
-																			// it's
-																			// loaded
+							// actual
+							// image,
+							// once
+							// it's
+							// loaded
 							handler.sendMessage(message);
 						}
 					};

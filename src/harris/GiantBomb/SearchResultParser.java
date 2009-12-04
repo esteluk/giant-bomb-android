@@ -1,7 +1,5 @@
 package harris.GiantBomb;
 
-import harris.GiantBomb.WikiObject.ObjectType;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
@@ -22,11 +20,12 @@ import org.xml.sax.SAXException;
 
 /**
  * This class parses the feed given to it, and returns a list of video objects
- *
+ * 
  */
-public class SearchResultParser implements api{
+public class SearchResultParser implements api {
 
 	private final URL feedUrl;
+
 	public SearchResultParser(String feedUrl) {
 		try {
 			this.feedUrl = new URL(feedUrl);
@@ -35,22 +34,24 @@ public class SearchResultParser implements api{
 		}
 	}
 
-	public List<WikiObject> parse() throws SAXException, IOException, ParserConfigurationException, FactoryConfigurationError {		
+	public List<WikiObject> parse() throws SAXException, IOException,
+			ParserConfigurationException, FactoryConfigurationError {
 		final List<WikiObject> wikiObjects = new ArrayList<WikiObject>();
-		
-		DocumentBuilder docBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
+
+		DocumentBuilder docBuilder = DocumentBuilderFactory.newInstance()
+				.newDocumentBuilder();
 		Document doc = docBuilder.parse(getInputStream());
-		
-		NodeList results = doc.getElementsByTagName("results").item(0).getChildNodes();
-		
+
+		NodeList results = doc.getElementsByTagName("results").item(0)
+				.getChildNodes();
+
 		for (int i = 0; i < results.getLength(); i++) {
 			Node node = results.item(i);
 			if (node.getNodeName().equals("game")) {
-				wikiObjects.add(WikiObjectParser.parseGame((Element)node));
+				wikiObjects.add(WikiObjectParser.parseGame((Element) node));
 			}
 		}
-		
-		
+
 		return wikiObjects;
 	}
 
@@ -61,6 +62,5 @@ public class SearchResultParser implements api{
 			throw new RuntimeException(e);
 		}
 	}
-	
-	
+
 }
