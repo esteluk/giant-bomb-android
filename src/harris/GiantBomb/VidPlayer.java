@@ -63,7 +63,7 @@ public class VidPlayer extends Activity {
 					while (buffering) {
 						if (buffer < vid.getBufferPercentage())
 							buffer = vid.getBufferPercentage();
-						if (buffer >= 25)
+						if (buffer >= 2)
 							buffering = false;
 						if (vid.isPlaying())
 							buffering = false;
