@@ -1,6 +1,9 @@
 package harris.GiantBomb;
 
+import android.app.AlertDialog;
 import android.app.TabActivity;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
@@ -9,8 +12,9 @@ import android.view.MenuItem.OnMenuItemClickListener;
 import android.widget.TabHost;
 
 public class Tabs extends TabActivity {
-	public static final int MENU_SEARCH = Menu.FIRST;	
-	
+	public static final int MENU_SEARCH = Menu.FIRST;
+	public static final int MENU_ABOUT = Menu.FIRST + 1;
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -36,9 +40,10 @@ public class Tabs extends TabActivity {
 				bombcast));
 		tabs.setCurrentTab(0);
 	}
-	
+
 	public boolean onCreateOptionsMenu(Menu menu) {
-		MenuItem share = menu.add(0, MENU_SEARCH, MENU_SEARCH, "Search GiantBomb");
+		MenuItem share = menu.add(0, MENU_SEARCH, MENU_SEARCH,
+				"Search GiantBomb");
 
 		share.setOnMenuItemClickListener(new OnMenuItemClickListener() {
 
@@ -48,6 +53,29 @@ public class Tabs extends TabActivity {
 
 				return true;
 			}
+		});
+
+		MenuItem about = menu.add(0, MENU_ABOUT, MENU_ABOUT, "About");
+		final Context context = this;
+
+		about.setOnMenuItemClickListener(new OnMenuItemClickListener() {
+
+			@Override
+			public boolean onMenuItemClick(MenuItem item) {
+				AlertDialog alert = new AlertDialog.Builder(context).create();
+				alert.setTitle("About");
+				alert.setMessage(context.getString(R.string.about));
+				alert.setButton("OK", new DialogInterface.OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						return;
+					}
+				});
+				alert.show();
+
+				return true;
+			}
+
 		});
 
 		return true;
