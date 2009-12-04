@@ -20,6 +20,7 @@
 			android:singleLine="true"
 			android:paddingTop="10sp"
 			android:paddingBottom="10sp"
-			android:textColor="#ffffff" />
+			android:textColor="#ffffff" 
+			android:ellipsize="marquee"/>
 	
 </LinearLayout>
