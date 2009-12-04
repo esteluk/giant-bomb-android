@@ -1,5 +1,7 @@
 package harris.GiantBomb;
 
+import harris.GiantBomb.GBObject.ObjectType;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
@@ -34,9 +36,9 @@ public class SearchResultParser implements api {
 		}
 	}
 
-	public List<WikiObject> parse() throws SAXException, IOException,
+	public List<GBObject> parse() throws SAXException, IOException,
 			ParserConfigurationException, FactoryConfigurationError {
-		final List<WikiObject> wikiObjects = new ArrayList<WikiObject>();
+		final List<GBObject> wikiObjects = new ArrayList<GBObject>();
 
 		DocumentBuilder docBuilder = DocumentBuilderFactory.newInstance()
 				.newDocumentBuilder();
@@ -48,7 +50,21 @@ public class SearchResultParser implements api {
 		for (int i = 0; i < results.getLength(); i++) {
 			Node node = results.item(i);
 			if (node.getNodeName().equals("game")) {
-				wikiObjects.add(WikiObjectParser.parseGame((Element) node));
+				wikiObjects.add(GBObject.parseGame((Element) node, ObjectType.GAME));
+			} else if (node.getNodeName().equals("franchise")) {
+				wikiObjects.add(GBObject.parseGame((Element) node, ObjectType.FRANCHISE));
+			} else if (node.getNodeName().equals("character")) {
+				wikiObjects.add(GBObject.parseGame((Element) node, ObjectType.CHARACTER));
+			} else if (node.getNodeName().equals("concept")) {
+				wikiObjects.add(GBObject.parseGame((Element) node, ObjectType.CONCEPT));
+			} else if (node.getNodeName().equals("object")) {
+				wikiObjects.add(GBObject.parseGame((Element) node, ObjectType.OBJECT));
+			} else if (node.getNodeName().equals("location")) {
+				wikiObjects.add(GBObject.parseGame((Element) node, ObjectType.LOCATION));
+			} else if (node.getNodeName().equals("person")) {
+				wikiObjects.add(GBObject.parseGame((Element) node, ObjectType.PERSON));
+			} else if (node.getNodeName().equals("company")) {
+				wikiObjects.add(GBObject.parseGame((Element) node, ObjectType.COMPANY));
 			}
 		}
 

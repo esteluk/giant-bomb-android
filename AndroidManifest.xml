@@ -65,7 +65,7 @@
 			</intent-filter>
 		</activity>
 		
-		<activity android:excludeFromRecents="true" android:name=".Game">
+		<activity android:excludeFromRecents="true" android:name=".GBObjectViewer">
 			<intent-filter>
 				<action android:name="android.intent.action.VIEW" />
 				<category android:name="android.intent.category.ALTERNATIVE" />

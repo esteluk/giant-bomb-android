@@ -12,11 +12,11 @@ import android.widget.TextView;
 
 public class SearchListAdapter extends ArrayAdapter<String> {
 
-	ArrayList<WikiObject> results = new ArrayList<WikiObject>();
+	ArrayList<GBObject> results = new ArrayList<GBObject>();
 
 	@SuppressWarnings("unchecked")
 	public SearchListAdapter(Context context, int textViewResourceId,
-			ArrayList<WikiObject> results) {
+			ArrayList<GBObject> results) {
 		super(context, textViewResourceId, (List) results);
 		this.results = results;
 	}

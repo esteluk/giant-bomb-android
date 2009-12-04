@@ -11,7 +11,7 @@ import android.widget.ListView;
 
 public class SearchList extends ListActivity implements api {
 
-	ArrayList<WikiObject> results = new ArrayList<WikiObject>();
+	ArrayList<GBObject> results = new ArrayList<GBObject>();
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -38,15 +38,15 @@ public class SearchList extends ListActivity implements api {
 						+ API_KEY
 						+ "&query="
 						+ queryString.replace(' ', '+')
-						+ "&limit=25&resources=game&field_list=name,id&format=xml");
+						+ "&limit=25&resources=game,franchise,character,concept,object,location,person,company&field_list=name,id,site_detail_url&format=xml");
 
-		ArrayList<WikiObject> add = new ArrayList<WikiObject>(25);
+		ArrayList<GBObject> add = new ArrayList<GBObject>(25);
 		try {
-			add = (ArrayList<WikiObject>) parser.parse();
+			add = (ArrayList<GBObject>) parser.parse();
 		} catch (Exception e) {
 			System.err.println("Parsing failed" + e);
 		}
-		for (WikiObject i : add) {
+		for (GBObject i : add) {
 			results.add(i);
 		}
 	}
@@ -54,9 +54,10 @@ public class SearchList extends ListActivity implements api {
 	@Override
 	protected void onListItemClick(ListView l, View v, int position, long id) {
 		super.onListItemClick(l, v, position, id);
-		Intent myIntent = new Intent(this, Game.class);
+		Intent myIntent = new Intent(this, GBObjectViewer.class);
 		Bundle bundle = new Bundle();
 		bundle.putString("id", results.get(position).getId());
+		bundle.putString("type", results.get(position).getType().toString());
 		myIntent.putExtras(bundle);
 		SearchList.this.startActivity(myIntent);
 	}

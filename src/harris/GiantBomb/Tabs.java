@@ -3,9 +3,14 @@ package harris.GiantBomb;
 import android.app.TabActivity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.MenuItem.OnMenuItemClickListener;
 import android.widget.TabHost;
 
 public class Tabs extends TabActivity {
+	public static final int MENU_SEARCH = Menu.FIRST;	
+	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -30,6 +35,22 @@ public class Tabs extends TabActivity {
 				getResources().getDrawable(R.drawable.bombcast)).setContent(
 				bombcast));
 		tabs.setCurrentTab(0);
+	}
+	
+	public boolean onCreateOptionsMenu(Menu menu) {
+		MenuItem share = menu.add(0, MENU_SEARCH, MENU_SEARCH, "Search GiantBomb");
+
+		share.setOnMenuItemClickListener(new OnMenuItemClickListener() {
+
+			@Override
+			public boolean onMenuItemClick(MenuItem menuItem) {
+				onSearchRequested();
+
+				return true;
+			}
+		});
+
+		return true;
 	}
 
 }
