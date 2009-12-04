@@ -74,10 +74,10 @@ public class GBObject implements api {
 				+ API_KEY + "&field_list=id,name,description,site_detail_url&format=xml");
 		Document doc = docBuilder.parse(url.openConnection().getInputStream());
 
-		return parseGame((Element) doc.getElementsByTagName("results").item(0), type);
+		return parseObject((Element) doc.getElementsByTagName("results").item(0), type);
 	}
 
-	public static GBObject parseGame(Element el, ObjectType type) {
+	public static GBObject parseObject(Element el, ObjectType type) {
 		GBObject item = new GBObject();
 		item.setName(el.getElementsByTagName("name").item(0).getFirstChild()
 				.getNodeValue());

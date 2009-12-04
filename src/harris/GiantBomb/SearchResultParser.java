@@ -50,21 +50,21 @@ public class SearchResultParser implements api {
 		for (int i = 0; i < results.getLength(); i++) {
 			Node node = results.item(i);
 			if (node.getNodeName().equals("game")) {
-				wikiObjects.add(GBObject.parseGame((Element) node, ObjectType.GAME));
+				wikiObjects.add(GBObject.parseObject((Element) node, ObjectType.GAME));
 			} else if (node.getNodeName().equals("franchise")) {
-				wikiObjects.add(GBObject.parseGame((Element) node, ObjectType.FRANCHISE));
+				wikiObjects.add(GBObject.parseObject((Element) node, ObjectType.FRANCHISE));
 			} else if (node.getNodeName().equals("character")) {
-				wikiObjects.add(GBObject.parseGame((Element) node, ObjectType.CHARACTER));
+				wikiObjects.add(GBObject.parseObject((Element) node, ObjectType.CHARACTER));
 			} else if (node.getNodeName().equals("concept")) {
-				wikiObjects.add(GBObject.parseGame((Element) node, ObjectType.CONCEPT));
+				wikiObjects.add(GBObject.parseObject((Element) node, ObjectType.CONCEPT));
 			} else if (node.getNodeName().equals("object")) {
-				wikiObjects.add(GBObject.parseGame((Element) node, ObjectType.OBJECT));
+				wikiObjects.add(GBObject.parseObject((Element) node, ObjectType.OBJECT));
 			} else if (node.getNodeName().equals("location")) {
-				wikiObjects.add(GBObject.parseGame((Element) node, ObjectType.LOCATION));
+				wikiObjects.add(GBObject.parseObject((Element) node, ObjectType.LOCATION));
 			} else if (node.getNodeName().equals("person")) {
-				wikiObjects.add(GBObject.parseGame((Element) node, ObjectType.PERSON));
+				wikiObjects.add(GBObject.parseObject((Element) node, ObjectType.PERSON));
 			} else if (node.getNodeName().equals("company")) {
-				wikiObjects.add(GBObject.parseGame((Element) node, ObjectType.COMPANY));
+				wikiObjects.add(GBObject.parseObject((Element) node, ObjectType.COMPANY));
 			}
 		}
 
