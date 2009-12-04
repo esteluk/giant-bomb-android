@@ -43,7 +43,7 @@ public class Tabs extends TabActivity {
 
 	public boolean onCreateOptionsMenu(Menu menu) {
 		MenuItem share = menu.add(0, MENU_SEARCH, MENU_SEARCH,
-				"Search GiantBomb");
+				"Search GiantBomb").setIcon(android.R.drawable.ic_menu_search);
 
 		share.setOnMenuItemClickListener(new OnMenuItemClickListener() {
 
@@ -55,7 +55,7 @@ public class Tabs extends TabActivity {
 			}
 		});
 
-		MenuItem about = menu.add(0, MENU_ABOUT, MENU_ABOUT, "About");
+		MenuItem about = menu.add(0, MENU_ABOUT, MENU_ABOUT, "About").setIcon(android.R.drawable.ic_menu_info_details);
 		final Context context = this;
 
 		about.setOnMenuItemClickListener(new OnMenuItemClickListener() {

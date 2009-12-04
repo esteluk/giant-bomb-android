@@ -41,7 +41,7 @@ public final class R {
     }
     public static final class layout {
         public static final int bombcastrow=0x7f030000;
-        public static final int game=0x7f030001;
+        public static final int gbobjectviewer=0x7f030001;
         public static final int main=0x7f030002;
         public static final int newslist=0x7f030003;
         public static final int newsrow=0x7f030004;
@@ -53,6 +53,7 @@ public final class R {
         public static final int videorow=0x7f03000a;
     }
     public static final class string {
+        public static final int about=0x7f050007;
         public static final int android_sax=0x7f050001;
         public static final int app_name=0x7f050000;
         public static final int dom=0x7f050003;
