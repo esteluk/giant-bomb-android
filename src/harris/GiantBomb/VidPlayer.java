@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.DialogInterface.OnCancelListener;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -33,17 +34,7 @@ public class VidPlayer extends Activity {
 		siteDetailURL = bundle.getString("siteDetailURL");
 		vid.setVideoURI(Uri.parse(bundle.getString("URL")));
 
-		final ProgressDialog dialog = new ProgressDialog(VidPlayer.this,
-				ProgressDialog.STYLE_SPINNER);
-		dialog.setMessage("Buffering. Please wait...");
-		dialog.setButton(ProgressDialog.BUTTON_NEGATIVE, "Cancel",
-				new DialogInterface.OnClickListener() {
-
-					@Override
-					public void onClick(DialogInterface dialog, int which) {
-						VidPlayer.this.finish();
-					}
-				});
+		final ProgressDialog dialog = createBufferDialog();
 		dialog.show();
 
 		final Handler handler = new Handler() {
@@ -97,5 +88,29 @@ public class VidPlayer extends Activity {
 		});
 
 		return true;
+	}
+	
+	private ProgressDialog createBufferDialog() {
+		final ProgressDialog dialog = new ProgressDialog(VidPlayer.this,
+				ProgressDialog.STYLE_SPINNER);
+		dialog.setMessage("Buffering. Please wait...");
+		dialog.setButton(ProgressDialog.BUTTON_NEGATIVE, "Cancel",
+				new DialogInterface.OnClickListener() {
+
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						VidPlayer.this.finish();
+					}
+				});
+		
+		dialog.setOnCancelListener(new OnCancelListener() {
+			
+			@Override
+			public void onCancel(DialogInterface arg0) {
+				dialog.dismiss();
+				VidPlayer.this.finish();
+			}
+		});
+		return dialog;
 	}
 }
