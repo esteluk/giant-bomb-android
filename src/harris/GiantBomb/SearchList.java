@@ -2,8 +2,11 @@ package harris.GiantBomb;
 
 import java.util.ArrayList;
 
+import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.ListActivity;
 import android.app.SearchManager;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -16,7 +19,8 @@ public class SearchList extends ListActivity implements api {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-
+		
+		final Activity activity = this;
 		final Intent queryIntent = getIntent();
 		final String queryAction = queryIntent.getAction();
 		if (Intent.ACTION_SEARCH.equals(queryAction)) {
@@ -26,9 +30,22 @@ public class SearchList extends ListActivity implements api {
 
 			getSearchResults(searchKeywords);
 
-			ListActivity list = this;
-			list.setListAdapter(new SearchListAdapter(list, R.layout.searchrow,
-					results));
+			if (results.size() > 0) {
+				ListActivity list = this;
+				list.setListAdapter(new SearchListAdapter(list,
+						R.layout.searchrow, results));
+			} else {
+				AlertDialog alert = new AlertDialog.Builder(this).create();
+				alert.setTitle("Search");
+				alert.setMessage("No results found!");
+				alert.setButton("OK", new DialogInterface.OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						activity.finish();
+					}
+				});
+				alert.show();
+			}
 		}
 	}
 
