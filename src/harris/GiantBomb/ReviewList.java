@@ -96,7 +96,7 @@ public class ReviewList extends ListActivity implements api {
 					ReviewFeedParser parser = new ReviewFeedParser(
 							"http://api.giantbomb.com/reviews/?api_key="
 									+ API_KEY
-									+ "&sort=-publish_date&limit=25&field_list=game,site_detail_url,score,description&format=xml&offset="
+									+ "&sort=-publish_date&limit=25&field_list=game,site_detail_url,score,description,reviewer&format=xml&offset="
 									+ offset);
 					offset = offset + 25;
 					ArrayList<Review> add = new ArrayList<Review>(25);
@@ -107,6 +107,7 @@ public class ReviewList extends ListActivity implements api {
 					Review loadMore = new Review();
 					loadMore.setTitle("Load 25 More...");
 					loadMore.setScore(-1);
+					loadMore.setReviewer(" ");
 					reviews.add(loadMore);
 					Message message;
 					message = handler.obtainMessage(-1, new ReviewListAdapter(

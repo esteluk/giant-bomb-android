@@ -42,6 +42,7 @@ public class ReviewListAdapter extends ArrayAdapter<String> {
 
 		final ImageView stars = (ImageView) v.findViewById(R.id.stars);
 		final TextView title = (TextView) v.findViewById(R.id.reviewtitle);
+		final TextView reviewername = (TextView) v.findViewById(R.id.reviewername);
 
 		if (reviews.get(i) != null) {
 			if (reviews.get(i).getScore() == -1) {
@@ -50,6 +51,9 @@ public class ReviewListAdapter extends ArrayAdapter<String> {
 			} else {
 				if (title != null) {
 					title.setText(reviews.get(i).getTitle());
+				}
+				if (reviewername != null) {
+					reviewername.setText("By " + reviews.get(i).getReviewer());
 				}
 				if (stars != null) {
 					if (score == 0)

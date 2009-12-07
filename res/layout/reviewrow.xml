@@ -1,26 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<LinearLayout
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="?android:attr/listPreferredItemHeight"
     android:orientation="horizontal">
     
-	<ImageView
-	    android:id="@+id/stars"
-	    android:layout_width="wrap_content"
-	    android:layout_height="wrap_content"
-	    android:layout_marginRight="11sp" 
-	    android:layout_gravity="center_vertical"/>
-	    
-		<TextView xmlns:android="http://schemas.android.com/apk/res/android" 
-			android:id="@+id/reviewtitle" android:layout_width="wrap_content" 
-			android:layout_height="wrap_content"
+	  
+		<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+			android:id="@+id/reviewtitle" 
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content" 
 			android:textSize="16sp"
-			android:singleLine="true"
-			android:paddingTop="10sp"
-			android:paddingBottom="10sp"
-			android:textColor="#ffffff" 
-			android:ellipsize="marquee"/>
+			android:singleLine="true" 
+			android:textColor="#ffffff"
+			android:ellipsize="marquee" />
+			
+		<ImageView 
+		android:id="@+id/stars" 
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_below="@+id/reviewtitle" />
+		
+		<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+			android:id="@+id/reviewername" 
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content" 
+			android:layout_below="@+id/stars"
+			android:textSize="15sp"/>
 	
-</LinearLayout>
+</RelativeLayout>

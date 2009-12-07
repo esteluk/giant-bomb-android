@@ -54,6 +54,12 @@ public class ReviewFeedParser implements api {
 						currentReview.setLink(body);
 					}
 				});
+		item.getChild("reviewer").setEndTextElementListener(
+				new EndTextElementListener() {
+					public void end(String body) {
+						currentReview.setReviewer(body);
+					}
+				});
 		item.getChild("score").setEndTextElementListener(
 				new EndTextElementListener() {
 					public void end(String body) {

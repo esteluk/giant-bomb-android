@@ -4,6 +4,7 @@ public class Review implements Comparable<Review> {
 	private String title;
 	private String link;
 	private String content;
+	private String reviewer;
 	private int score;
 
 	/**
@@ -49,6 +50,7 @@ public class Review implements Comparable<Review> {
 		copy.link = link;
 		copy.content = content;
 		copy.score = score;
+		copy.reviewer = reviewer;
 		return copy;
 	}
 
@@ -80,5 +82,19 @@ public class Review implements Comparable<Review> {
 	 */
 	public int getScore() {
 		return score;
+	}
+
+	/**
+	 * @param reviewer the reviewer to set
+	 */
+	public void setReviewer(String reviewer) {
+		this.reviewer = reviewer;
+	}
+
+	/**
+	 * @return the reviewer
+	 */
+	public String getReviewer() {
+		return reviewer;
 	}
 }
