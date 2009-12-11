@@ -3,9 +3,6 @@
 	android:layout_width="fill_parent" android:layout_height="wrap_content"
 	android:orientation="vertical">
 
-	<TextView android:id="@+id/name" android:layout_width="fill_parent"
-		android:layout_height="wrap_content" android:textSize = "30sp"/>
-
-	<WebView android:id="@+id/description" android:layout_width="fill_parent"
+	<WebView android:id="@+id/content" android:layout_width="fill_parent"
 		android:layout_height="wrap_content" />
 </LinearLayout>

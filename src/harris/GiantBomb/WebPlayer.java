@@ -32,6 +32,8 @@ public class WebPlayer extends Activity {
 
 	public boolean onCreateOptionsMenu(Menu menu) {
 		MenuItem share = menu.add(0, MENU_SHARE, MENU_SHARE, "Share");
+		
+		share.setIcon(android.R.drawable.ic_menu_share);
 
 		share.setOnMenuItemClickListener(new OnMenuItemClickListener() {
 
