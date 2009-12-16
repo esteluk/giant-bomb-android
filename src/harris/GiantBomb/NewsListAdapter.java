@@ -35,7 +35,8 @@ public class NewsListAdapter extends ArrayAdapter<String> {
 		final TextView date = (TextView) v.findViewById(R.id.newsdate);
 		final TextView title = (TextView) v.findViewById(R.id.newstitle);
 
-		date.setText(news.get(i).getPubdate());
+		date.setText("By " + news.get(i).getAuthor() + " on "
+				+ news.get(i).getPubdate());
 		title.setText(news.get(i).getTitle());
 
 		return v;

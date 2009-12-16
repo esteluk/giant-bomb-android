@@ -69,6 +69,12 @@ public class NewsFeedParser implements api {
 						currentNews.setContent(body);
 					}
 				});
+		item.getChild("http://purl.org/dc/elements/1.1/", "creator").setEndTextElementListener(
+				new EndTextElementListener() {
+					public void end(String body) {
+						currentNews.setAuthor(body);
+					}
+				});
 		item.getChild("pubDate").setEndTextElementListener(
 				new EndTextElementListener() {
 					public void end(String body) {

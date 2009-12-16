@@ -29,10 +29,14 @@ public class NewsList extends ListActivity {
 	@Override
 	protected void onListItemClick(ListView l, View v, int position, long id) {
 		super.onListItemClick(l, v, position, id);
+		News newsItem = news.get(position);
 		Intent myIntent = new Intent(this, WebPlayer.class);
 		Bundle bundle = new Bundle();
-		bundle.putString("URL", news.get(position).getLink());
-		bundle.putString("data", news.get(position).getContent());
+		bundle.putString("URL", newsItem.getLink());
+		String data = "<h1>" + newsItem.getTitle() + "</h1>By "
+				+ newsItem.getAuthor() + "<br><br>"
+				+ StringUtils.removeEmbeds(newsItem.getContent());
+		bundle.putString("data", data);
 		myIntent.putExtras(bundle);
 		NewsList.this.startActivity(myIntent);
 	}

@@ -1,5 +1,7 @@
 package harris.GiantBomb;
 
+import harris.GiantBomb.GBObject.ObjectType;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
@@ -33,6 +35,7 @@ public class ReviewFeedParser implements api {
 
 	public List<Review> parse() {
 		final Review currentReview = new Review();
+		currentReview.getGame().setType(ObjectType.GAME);
 		RootElement root = new RootElement("response");
 		final List<Review> reviews = new ArrayList<Review>();
 		Element channel = root.getChild("results");
@@ -45,7 +48,13 @@ public class ReviewFeedParser implements api {
 		item.getChild("game").getChild("name").setEndTextElementListener(
 				new EndTextElementListener() {
 					public void end(String body) {
-						currentReview.setTitle(body);
+						currentReview.getGame().setName(body);
+					}
+				});
+		item.getChild("game").getChild("id").setEndTextElementListener(
+				new EndTextElementListener() {
+					public void end(String body) {
+						currentReview.getGame().setId(body);
 					}
 				});
 		item.getChild("site_detail_url").setEndTextElementListener(

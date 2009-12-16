@@ -46,11 +46,12 @@ public class ReviewListAdapter extends ArrayAdapter<String> {
 
 		if (reviews.get(i) != null) {
 			if (reviews.get(i).getScore() == -1) {
-				title.setText(reviews.get(i).getTitle());
+				title.setText(reviews.get(i).getGame().getName());
+				reviewername.setText("");
 				stars.setImageDrawable(null);
 			} else {
 				if (title != null) {
-					title.setText(reviews.get(i).getTitle());
+					title.setText(reviews.get(i).getGame().getName());
 				}
 				if (reviewername != null) {
 					reviewername.setText("By " + reviews.get(i).getReviewer());

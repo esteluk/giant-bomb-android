@@ -1,25 +1,29 @@
 package harris.GiantBomb;
 
 public class Review implements Comparable<Review> {
-	private String title;
+	private GBObject game;
 	private String link;
 	private String content;
 	private String reviewer;
 	private int score;
+	
+	public Review() {
+		game = new GBObject();
+	}
 
 	/**
 	 * @param title
 	 *            the title to set
 	 */
-	public void setTitle(String title) {
-		this.title = title;
+	public void setGame(GBObject game) {
+		this.game = game;
 	}
 
 	/**
 	 * @return the title
 	 */
-	public String getTitle() {
-		return title;
+	public GBObject getGame() {
+		return game;
 	}
 
 	/**
@@ -39,14 +43,14 @@ public class Review implements Comparable<Review> {
 
 	@Override
 	public int compareTo(Review another) {
-		if (title == another.getTitle())
+		if (game.getName() == another.getGame().getName())
 			return 1;
 		return 0;
 	}
 
 	public Review copy() {
 		Review copy = new Review();
-		copy.title = title;
+		copy.game = game.clone();
 		copy.link = link;
 		copy.content = content;
 		copy.score = score;

@@ -102,5 +102,16 @@ public class GBObject implements api {
 
 		return item;
 	}
+	
+	public GBObject clone() {
+		GBObject obj = new GBObject();
+		obj.setId(this.id);
+		obj.setName(this.name);
+		obj.setType(this.type);
+		obj.setUrl(this.url);
+		obj.setDescription(this.description);
+		
+		return obj;
+	}
 
 }
