@@ -18,13 +18,13 @@ public class StringUtils {
 		}
 		
 		Pattern gbPattern = Pattern.compile("<div[^>]+?rel=\"video\".*?>.+?paramsURI=(http%3A//www.giantbomb.com.+?)\".+?div>", Pattern.DOTALL);
-		Matcher gbMatcher = gbPattern.matcher(youtubeMatcher.replaceAll("</i>Video removed, long press to view</i>"));
+		Matcher gbMatcher = gbPattern.matcher(youtubeMatcher.replaceAll("<i>Video removed, open Menu to view</i>"));
 		
 		while (gbMatcher.find()) {
 			results.add(gbMatcher.group(1).replace("%3A", ":"));
 		}
 		
-		results.add(0, gbMatcher.replaceAll("</i>Video removed, long press to view</i>"));		
+		results.add(0, gbMatcher.replaceAll("<i>Video removed, open Menu to view</i>"));		
 		
 		return results;
 		
