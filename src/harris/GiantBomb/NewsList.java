@@ -1,6 +1,7 @@
 package harris.GiantBomb;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import android.app.ListActivity;
 import android.app.ProgressDialog;
@@ -33,10 +34,24 @@ public class NewsList extends ListActivity {
 		Intent myIntent = new Intent(this, WebPlayer.class);
 		Bundle bundle = new Bundle();
 		bundle.putString("URL", newsItem.getLink());
+		
+		List<String> processedContent = StringUtils.removeEmbeds(newsItem.getContent());
 		String data = "<h1>" + newsItem.getTitle() + "</h1>By "
 				+ newsItem.getAuthor() + "<br><br>"
-				+ StringUtils.removeEmbeds(newsItem.getContent());
+				+ processedContent.get(0);
 		bundle.putString("data", data);
+		
+		// bundle extra videos
+		String videos ="";
+		int size = processedContent.size();
+		for (int i = 1; i < size; i++) {
+			videos += processedContent.get(i);
+			if (i < (size - 1)) {
+				videos += ",";
+			}
+		}
+		bundle.putString("videos", videos);
+		
 		myIntent.putExtras(bundle);
 		NewsList.this.startActivity(myIntent);
 	}
