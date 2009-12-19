@@ -20,10 +20,21 @@ import android.util.Xml;
 public class VideoFeedParser implements api {
 
 	private final URL feedUrl;
+	private boolean singleItem;
 
 	public VideoFeedParser(String feedUrl) {
 		try {
 			this.feedUrl = new URL(feedUrl);
+			this.singleItem = false;
+		} catch (MalformedURLException e) {
+			throw new RuntimeException(e);
+		}
+	}
+	
+	public VideoFeedParser(String feedUrl, boolean singleItem) {
+		try {
+			this.feedUrl = new URL(feedUrl);
+			this.singleItem = true;
 		} catch (MalformedURLException e) {
 			throw new RuntimeException(e);
 		}
@@ -34,7 +45,12 @@ public class VideoFeedParser implements api {
 		RootElement root = new RootElement("response");
 		final List<Video> videos = new ArrayList<Video>();
 		Element channel = root.getChild("results");
-		Element item = channel.getChild("video");
+		Element item;
+		if (singleItem) {
+			item = channel;
+		} else {
+			item = channel.getChild("video");
+		}
 		item.setEndElementListener(new EndElementListener() {
 			public void end() {
 				videos.add(currentVideo.copy());

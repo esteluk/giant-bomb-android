@@ -45,17 +45,17 @@ public class ReviewList extends ListActivity implements api {
 			Bundle bundle = new Bundle();
 
 			// add the star image to the content (not working...)
-			// String imageLink = "file:///android_asset/star" +
-			// review.getScore()
-			// + ".png";
-			// String data = "<h1>Review: " + review.getTitle() + "</h1>By "
-			// + review.getReviewer()
-			// + "<br><img height=\"18\" width=\"86\" src=\"" + imageLink
-			// + "\"/><br>" + review.getContent();
+			 String imageLink = "file:///android_asset/star" +
+			 review.getScore()
+			 + ".png";
+			 String data = "<h1>Review: " + review.getGame().getName() + "</h1>By "
+			 + review.getReviewer()
+			 + "<br><img " + /*height=\"18\" width=\"86\"*/ "src=\"" + imageLink
+			 + "\"/><br>" + review.getContent();
 
-			String data = "<h1>Review: " + review.getGame().getName() + "</h1>By "
-					+ review.getReviewer() + "<br>" + review.getScore()
-					+ " / 5<br>" + review.getContent();
+//			String data = "<h1>Review: " + review.getGame().getName() + "</h1>By "
+//					+ review.getReviewer() + "<br>" + review.getScore()
+//					+ " / 5<br>" + review.getContent();
 			bundle.putString("URL", review.getLink());
 			bundle.putString("data", data);
 			bundle.putString("gameId", review.getGame().getId());
