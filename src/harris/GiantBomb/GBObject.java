@@ -116,21 +116,19 @@ public class GBObject implements api {
 		GBObject item = new GBObject();
 		
 		NodeList nodes = el.getChildNodes();
-		try {
-			for (int i = 0; i <= nodes.getLength(); i++) {
-				String nodeName = nodes.item(i).getNodeName();
-				
-				if (nodeName.equals("name")) {
-					item.setName(nodes.item(i).getFirstChild().getNodeValue());
-				} else if (nodeName.equals("id")) {
-					item.setId(nodes.item(i).getFirstChild().getNodeValue());
-				} else if (nodeName.equals("description")) {
-					item.setDescription(nodes.item(i).getFirstChild().getNodeValue());
-				} else if (nodeName.equals("site_detail_url")) {
-					item.setUrl(nodes.item(i).getFirstChild().getNodeValue());
-				}
+		for (int i = 0; i < nodes.getLength(); i++) {
+			String nodeName = nodes.item(i).getNodeName();
+			
+			if (nodeName.equals("name")) {
+				item.setName(nodes.item(i).getFirstChild().getNodeValue());
+			} else if (nodeName.equals("id")) {
+				item.setId(nodes.item(i).getFirstChild().getNodeValue());
+			} else if (nodeName.equals("description")) {
+				item.setDescription(nodes.item(i).getFirstChild().getNodeValue());
+			} else if (nodeName.equals("site_detail_url")) {
+				item.setUrl(nodes.item(i).getFirstChild().getNodeValue());
 			}
-		} catch (Exception e) {}
+		}
 		
 //		item.setName(el.getElementsByTagName("name").item(0).getFirstChild()
 //				.getNodeValue());
