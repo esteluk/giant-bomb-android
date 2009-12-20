@@ -34,15 +34,16 @@ public class NewsList extends ListActivity {
 		Intent myIntent = new Intent(this, WebPlayer.class);
 		Bundle bundle = new Bundle();
 		bundle.putString("URL", newsItem.getLink());
-		
-		List<String> processedContent = StringUtils.removeEmbeds(newsItem.getContent());
+
+		List<String> processedContent = StringUtils.removeEmbeds(newsItem
+				.getContent());
 		String data = "<h1>" + newsItem.getTitle() + "</h1>By "
-				+ newsItem.getAuthor() + "<br><br>"
-				+ processedContent.get(0);
+				+ newsItem.getAuthor() + " on " + newsItem.getPubdate()
+				+ "<br><br>" + processedContent.get(0);
 		bundle.putString("data", data);
-		
+
 		// bundle extra videos
-		String videos ="";
+		String videos = "";
 		int size = processedContent.size();
 		for (int i = 1; i < size; i++) {
 			videos += processedContent.get(i);
@@ -51,7 +52,7 @@ public class NewsList extends ListActivity {
 			}
 		}
 		bundle.putString("videos", videos);
-		
+
 		myIntent.putExtras(bundle);
 		NewsList.this.startActivity(myIntent);
 	}

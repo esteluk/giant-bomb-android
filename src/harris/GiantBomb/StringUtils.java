@@ -17,11 +17,11 @@ public class StringUtils {
 			results.add(youtubeMatcher.group(1));
 		}
 		
-		Pattern gbPattern = Pattern.compile("<div[^>]+?rel=\"video\".*?>.+?paramsURI=(http%3A//www.giantbomb.com.+?)\".+?div>", Pattern.DOTALL);
+		Pattern gbPattern = Pattern.compile("<div[^>]+?rel=\"(video|embed)\".*?>.+?paramsURI=(http%3A//www.giantbomb.com.+?)\".+?div>", Pattern.DOTALL);
 		Matcher gbMatcher = gbPattern.matcher(youtubeMatcher.replaceAll("<i>Video removed, open Menu to view</i>"));
 		
 		while (gbMatcher.find()) {
-			results.add(gbMatcher.group(1).replace("%3A", ":"));
+			results.add(gbMatcher.group(2).replace("%3A", ":"));
 		}
 		
 		results.add(0, gbMatcher.replaceAll("<i>Video removed, open Menu to view</i>"));		
