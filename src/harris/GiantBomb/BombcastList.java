@@ -39,6 +39,7 @@ public class BombcastList extends ListActivity {
 			ContextMenuInfo menuInfo) {
 		super.onCreateContextMenu(menu, v, menuInfo);
 		menu.add(0, 1, 0, "Share");
+		menu.add(0, 2, 0, "Download");
 	}
 
 	public boolean onContextItemSelected(MenuItem item) {
@@ -52,6 +53,13 @@ public class BombcastList extends ListActivity {
 					.getLink());
 			startActivity(Intent.createChooser(shareIntent,
 					"Share link with..."));
+		} else if (item.getItemId() == 2) {
+			Intent myIntent = new Intent(this, DownloadView.class);
+			Bundle bundle = new Bundle();
+			bundle.putString("URL", news.get((int) info.id).getLink());
+			bundle.putString("title", news.get((int) info.id).getTitle());
+			myIntent.putExtras(bundle);
+			this.startActivity(myIntent);
 		}
 		return super.onContextItemSelected(item);
 	}

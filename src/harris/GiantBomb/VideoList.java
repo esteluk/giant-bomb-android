@@ -56,6 +56,7 @@ public class VideoList extends ListActivity implements api {
 			ContextMenuInfo menuInfo) {
 		super.onCreateContextMenu(menu, v, menuInfo);
 		menu.add(0, 1, 0, "Share");
+		menu.add(0, 2, 0, "Download");
 	}
 
 	public boolean onContextItemSelected(MenuItem item) {
@@ -69,6 +70,13 @@ public class VideoList extends ListActivity implements api {
 					.getSiteDetailURL());
 			startActivity(Intent.createChooser(shareIntent,
 					"Share link with..."));
+		} else if (item.getItemId() == 2) {
+			Intent myIntent = new Intent(this, DownloadView.class);
+			Bundle bundle = new Bundle();
+			bundle.putString("URL", videos.get((int) info.id).getLink());
+			bundle.putString("title", videos.get((int) info.id).getTitle());
+			myIntent.putExtras(bundle);
+			VideoList.this.startActivity(myIntent);
 		}
 		return super.onContextItemSelected(item);
 	}
