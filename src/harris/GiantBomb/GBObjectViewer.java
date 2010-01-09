@@ -33,12 +33,13 @@ public class GBObjectViewer extends Activity {
 		}
 
 		String predata = "<html><head><style type='text/css'>"
-				+ this.getString(R.string.css) + "</style></head><body>";		
+				+ this.getString(R.string.css) + "</style></head><body>";
 		String postdata = "</body></html>";
-		String content = predata + "<h1>" + item.getName() + "</h1>"
+		String content = predata + "<h1>" + item.getName() + "</h1>" + "<i>"
+				+ item.getDeck() + "</i><br>"
 				+ StringEscapeUtils.unescapeHtml(item.getDescription())
 				+ postdata;
-		
+
 		WebView web = (WebView) this.findViewById(R.id.content);
 		web.getSettings().setJavaScriptEnabled(true);
 		web.loadDataWithBaseURL(item.getUrl(), content, null, "utf-8", null);
@@ -64,18 +65,20 @@ public class GBObjectViewer extends Activity {
 				return true;
 			}
 		});
-		
+
 		SubMenu related = menu.addSubMenu("Related");
 		for (ObjectType ot : ObjectType.values()) {
 			for (GBObject obj : item.getRelated(ot)) {
 				final GBObject o = obj;
 				final Activity activity = this;
-				MenuItem mi = related.add(ot.toString() + " - " + obj.getName());
+				MenuItem mi = related
+						.add(ot.toString() + " - " + obj.getName());
 				mi.setOnMenuItemClickListener(new OnMenuItemClickListener() {
-	
+
 					@Override
 					public boolean onMenuItemClick(MenuItem item) {
-						Intent myIntent = new Intent(activity, GBObjectViewer.class);
+						Intent myIntent = new Intent(activity,
+								GBObjectViewer.class);
 						Bundle bundle = new Bundle();
 						bundle.putString("id", o.getId());
 						bundle.putString("type", o.getType().toString());
@@ -83,7 +86,7 @@ public class GBObjectViewer extends Activity {
 						activity.startActivity(myIntent);
 						return true;
 					}
-					
+
 				});
 			}
 		}

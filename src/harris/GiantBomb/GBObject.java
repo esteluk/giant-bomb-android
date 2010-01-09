@@ -25,6 +25,7 @@ public class GBObject implements api {
 	private ObjectType type;
 	private String name;
 	private String id;
+	private String deck;
 	private String description;
 	private String url;
 	private List<GBObject> related;
@@ -55,6 +56,14 @@ public class GBObject implements api {
 
 	public void setId(String id) {
 		this.id = id;
+	}
+	
+	public String getDeck() {
+		return deck;
+	}
+
+	public void setDeck(String deck) {
+		this.deck = deck;
 	}
 
 	public String getDescription() {
@@ -105,7 +114,7 @@ public class GBObject implements api {
 						+ id
 						+ "/?api_key="
 						+ API_KEY
-						+ "&field_list=id,name,description,site_detail_url,games,franchises,characters,concepts,objects,locations,people,companies&format=xml");
+						+ "&field_list=id,name,deck,description,site_detail_url,games,franchises,characters,concepts,objects,locations,people,companies&format=xml");
 		Document doc = docBuilder.parse(url.openConnection().getInputStream());
 
 		return parseObject((Element) doc.getElementsByTagName("results")
@@ -123,7 +132,9 @@ public class GBObject implements api {
 				item.setName(nodes.item(i).getFirstChild().getNodeValue());
 			} else if (nodeName.equals("id")) {
 				item.setId(nodes.item(i).getFirstChild().getNodeValue());
-			} else if (nodeName.equals("description")) {
+			} else if (nodeName.equals("deck")) {
+				item.setDeck(nodes.item(i).getFirstChild().getNodeValue());
+			}else if (nodeName.equals("description")) {
 				item.setDescription(nodes.item(i).getFirstChild().getNodeValue());
 			} else if (nodeName.equals("site_detail_url")) {
 				item.setUrl(nodes.item(i).getFirstChild().getNodeValue());
@@ -180,6 +191,7 @@ public class GBObject implements api {
 		obj.setType(this.type);
 		obj.setUrl(this.url);
 		obj.setDescription(this.description);
+		obj.setDeck(this.deck);
 		obj.setRelated(this.related);
 
 		return obj;
