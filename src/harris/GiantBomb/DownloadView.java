@@ -11,19 +11,26 @@ import java.net.URL;
 import java.net.URLConnection;
 
 import android.app.Activity;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
 public class DownloadView extends Activity {
 
 	String url;
+	String fileLocation;
 
 	ProgressBar progressView;
 	int progress = 0;
 	private Handler mHandler = new Handler();
+	Button button;
 
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -39,8 +46,16 @@ public class DownloadView extends Activity {
 
 		descriptionView.setText("Downloading " + title + "...");
 
+		if (!url.endsWith("mp3")) {
+			this.findViewById(R.id.disclaimer).setVisibility(View.GONE);
+			this.findViewById(R.id.urlBox).setVisibility(View.GONE);
+		}
+
+		button = (Button) this.findViewById(R.id.button);
+		button.setText("Cancel");
+
 		// Start lengthy operation in a background thread
-		new Thread(new Runnable() {
+		final EndableThread downloadThread = new EndableThread() {			
 			public void run() {
 
 				URL item = null;
@@ -68,8 +83,15 @@ public class DownloadView extends Activity {
 					e.printStackTrace();
 				}
 				File root = Environment.getExternalStorageDirectory();
-				File file = new File(root, /*"giantbomb/"
-						+*/ item.getPath().substring(
+				
+				// create giantbomb directory if it doesn't exist
+				File gbDir = new File(root, "giantbomb");
+				if (!gbDir.exists()) {
+					gbDir.mkdir();
+				}
+				
+				File file = new File(root, "giantbomb/"
+						+ item.getPath().substring(
 								item.getPath().lastIndexOf('/') + 1));
 				FileOutputStream fos = null;
 				try {
@@ -83,7 +105,7 @@ public class DownloadView extends Activity {
 
 				int count;
 				try {
-					while ((count = bis.read(data, 0, 1024)) != -1) {
+					while (isDone == false && (count = bis.read(data, 0, 1024)) != -1) {
 						bos.write(data, 0, count);
 						progress += count;
 
@@ -94,10 +116,53 @@ public class DownloadView extends Activity {
 							}
 						});
 					}
+					
+					// delete the file if it was cancelled
+					if (isDone) {
+						file.delete();
+					} else {					
+						fileLocation = "file://" + file.getAbsolutePath();
+						
+						mHandler.post(new Runnable() {
+							public void run() {
+								
+								if (fileLocation.endsWith("mp3")) {
+									button.setText("Listen");
+								} else {
+									button.setText("View");
+								}
+								
+								button.setOnClickListener(new OnClickListener() {
+									@Override
+									public void onClick(View arg0) {
+										String type;
+										if (fileLocation.endsWith("mp3")) {
+											type = "audio/mp3";
+										} else {
+											type = "video";
+										}
+										
+										Intent intent = new Intent(android.content.Intent.ACTION_VIEW);
+										intent.setDataAndType(Uri.parse(fileLocation), type);
+										startActivity(intent); 
+									}
+								});
+							}
+						});
+					}
 				} catch (IOException ioe) {
 					ioe.printStackTrace();
 				}
 			}
-		}).start();
+		};
+		downloadThread.start();
+
+		button.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View arg0) {
+				downloadThread.end();
+				button.setEnabled(false);
+			}
+		});
 	}
 }
