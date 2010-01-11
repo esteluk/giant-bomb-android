@@ -11,6 +11,9 @@ import java.net.URL;
 import java.net.URLConnection;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -31,6 +34,7 @@ public class DownloadView extends Activity {
 	int progress = 0;
 	private Handler mHandler = new Handler();
 	Button button;
+	Context context = this;
 
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -55,7 +59,7 @@ public class DownloadView extends Activity {
 		button.setText("Cancel");
 
 		// Start lengthy operation in a background thread
-		final EndableThread downloadThread = new EndableThread() {			
+		final EndableThread downloadThread = new EndableThread() {
 			public void run() {
 
 				URL item = null;
@@ -83,13 +87,13 @@ public class DownloadView extends Activity {
 					e.printStackTrace();
 				}
 				File root = Environment.getExternalStorageDirectory();
-				
+
 				// create giantbomb directory if it doesn't exist
 				File gbDir = new File(root, "giantbomb");
 				if (!gbDir.exists()) {
 					gbDir.mkdir();
 				}
-				
+
 				File file = new File(root, "giantbomb/"
 						+ item.getPath().substring(
 								item.getPath().lastIndexOf('/') + 1));
@@ -105,7 +109,8 @@ public class DownloadView extends Activity {
 
 				int count;
 				try {
-					while (isDone == false && (count = bis.read(data, 0, 1024)) != -1) {
+					while (isDone == false
+							&& (count = bis.read(data, 0, 1024)) != -1) {
 						bos.write(data, 0, count);
 						progress += count;
 
@@ -116,42 +121,67 @@ public class DownloadView extends Activity {
 							}
 						});
 					}
-					
+
 					// delete the file if it was cancelled
 					if (isDone) {
 						file.delete();
-					} else {					
+					} else {
 						fileLocation = "file://" + file.getAbsolutePath();
-						
+
 						mHandler.post(new Runnable() {
 							public void run() {
-								
+
 								if (fileLocation.endsWith("mp3")) {
 									button.setText("Listen");
 								} else {
 									button.setText("View");
 								}
-								
-								button.setOnClickListener(new OnClickListener() {
-									@Override
-									public void onClick(View arg0) {
-										String type;
-										if (fileLocation.endsWith("mp3")) {
-											type = "audio/mp3";
-										} else {
-											type = "video";
-										}
-										
-										Intent intent = new Intent(android.content.Intent.ACTION_VIEW);
-										intent.setDataAndType(Uri.parse(fileLocation), type);
-										startActivity(intent); 
-									}
-								});
+
+								button
+										.setOnClickListener(new OnClickListener() {
+											@Override
+											public void onClick(View arg0) {
+												String type;
+												if (fileLocation
+														.endsWith("mp3")) {
+													type = "audio/mp3";
+												} else {
+													type = "video";
+												}
+
+												Intent intent = new Intent(
+														android.content.Intent.ACTION_VIEW);
+												intent.setDataAndType(Uri
+														.parse(fileLocation),
+														type);
+												startActivity(intent);
+											}
+										});
 							}
 						});
 					}
 				} catch (IOException ioe) {
-					ioe.printStackTrace();
+					mHandler.post(new Runnable() {
+						public void run() {
+							button.setEnabled(false);
+							
+							AlertDialog alert = new AlertDialog.Builder(context)
+									.create();
+							alert.setTitle("Error");
+							alert.setMessage("Error downloading item from "
+									+ url);
+							alert.setButton("OK",
+									new DialogInterface.OnClickListener() {
+										@Override
+										public void onClick(
+												DialogInterface dialog,
+												int which) {
+											return;
+										}
+									});
+							alert.show();
+						}
+					});
 				}
 			}
 		};
