@@ -24,13 +24,23 @@ public class VideoList extends ListActivity implements api {
 
 	private ArrayList<Video> videos;
 	private int offset = 0;
+	private int searchPasses = 1;
+	private int lastItemIndex = 0;
+	
+	private String searchString;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.videolist);
 		videos = new ArrayList<Video>();
-
+		
+		Bundle bundle = getIntent().getExtras();
+		if (bundle != null) {
+			searchString = bundle.getString("searchString");
+			searchPasses = 10;
+		}
+	
 		loadFeed();
 	}
 
@@ -94,7 +104,7 @@ public class VideoList extends ListActivity implements api {
 				dialog.dismiss();
 				list.setListAdapter(((ArrayAdapter) message.obj));
 				registerForContextMenu(getListView());
-				list.setSelection(offset - 25);
+				list.setSelection(lastItemIndex);
 			}
 		};
 
@@ -103,19 +113,25 @@ public class VideoList extends ListActivity implements api {
 			public void run() {
 
 				try {
-					VideoFeedParser parser = new VideoFeedParser(
-							"http://api.giantbomb.com/videos/?api_key="
-									+ API_KEY
-									+ "&sort=-publish_date&limit=25&field_list=name,deck,id,url,image,site_detail_url&format=xml&offset="
-									+ offset);
-					offset = offset + 25;
-					ArrayList<Video> add = new ArrayList<Video>(25);
-					add = (ArrayList<Video>) parser.parse();
-					for (Video i : add) {
-						videos.add(i);
+					lastItemIndex = videos.size() - 1;
+					for (int i = 0; i < searchPasses; i++) {
+						VideoFeedParser parser = new VideoFeedParser(
+								"http://api.giantbomb.com/videos/?api_key="
+										+ API_KEY
+										+ "&sort=-publish_date&limit=25&field_list=name,deck,id,url,image,site_detail_url&format=xml&offset="
+										+ offset, searchString);
+						offset = offset + 25;
+						ArrayList<Video> add = new ArrayList<Video>(25);
+						add = (ArrayList<Video>) parser.parse();
+						for (Video v : add) {
+							videos.add(v);
+						}
+						if (videos.size() >= 25) {
+							break;
+						}
 					}
 					Video loadMore = new Video();
-					loadMore.setTitle("Load 25 More...");
+					loadMore.setTitle("Load More...");
 					loadMore.setId(-1);
 					videos.add(loadMore);
 					Message message;

@@ -5,6 +5,7 @@ import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import android.sax.Element;
@@ -21,8 +22,12 @@ public class VideoFeedParser implements api {
 
 	private final URL feedUrl;
 	private boolean singleItem;
+	
+	private String searchString;
 
-	public VideoFeedParser(String feedUrl) {
+	public VideoFeedParser(String feedUrl, String searchString) {
+		this.searchString = searchString;
+		
 		try {
 			this.feedUrl = new URL(feedUrl);
 			this.singleItem = false;
@@ -113,6 +118,18 @@ public class VideoFeedParser implements api {
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
+		
+		// filter out videos we didn't want
+		if (searchString != null && singleItem == false) {
+			Iterator<Video> it = videos.iterator();
+			while (it.hasNext()) {
+				Video v = it.next();
+				if (!v.getTitle().toLowerCase().contains(searchString.toLowerCase())) {
+					it.remove();
+				}
+			}			
+		}
+		
 		return videos;
 	}
 

@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.SubMenu;
 import android.view.MenuItem.OnMenuItemClickListener;
 import android.widget.TabHost;
 
@@ -41,11 +42,14 @@ public class Tabs extends TabActivity {
 		tabs.setCurrentTab(0);
 	}
 
-	public boolean onCreateOptionsMenu(Menu menu) {
-		MenuItem share = menu.add(0, MENU_SEARCH, MENU_SEARCH,
-				"Search GiantBomb").setIcon(android.R.drawable.ic_menu_search);
+	public boolean onPrepareOptionsMenu(Menu menu) {
+		final Context context = this;
+		
+		menu.clear();
+		
+		MenuItem search = menu.add("Search GiantBomb").setIcon(android.R.drawable.ic_menu_search);
 
-		share.setOnMenuItemClickListener(new OnMenuItemClickListener() {
+		search.setOnMenuItemClickListener(new OnMenuItemClickListener() {
 
 			@Override
 			public boolean onMenuItemClick(MenuItem menuItem) {
@@ -54,9 +58,65 @@ public class Tabs extends TabActivity {
 				return true;
 			}
 		});
+		
+		TabHost tabs = getTabHost();
+		if (tabs.getCurrentTab() == 2) {
+			SubMenu searchVideos = menu.addSubMenu("Search Videos").setIcon(android.R.drawable.ic_media_play);
+			
+			MenuItem rv = searchVideos.add("Review");
+			rv.setOnMenuItemClickListener(new OnMenuItemClickListener() {
+				@Override
+				public boolean onMenuItemClick(MenuItem arg0) {
+					Intent myIntent = new Intent(context, VideoList.class);
+					Bundle bundle = new Bundle();
+					bundle.putString("searchString", "review");
+					myIntent.putExtras(bundle);
+					context.startActivity(myIntent);
+					return true;
+				}
+			});
+			
+			MenuItem tr = searchVideos.add("Trailer");
+			tr.setOnMenuItemClickListener(new OnMenuItemClickListener() {
+				@Override
+				public boolean onMenuItemClick(MenuItem arg0) {
+					Intent myIntent = new Intent(context, VideoList.class);
+					Bundle bundle = new Bundle();
+					bundle.putString("searchString", "trailer");
+					myIntent.putExtras(bundle);
+					context.startActivity(myIntent);
+					return true;
+				}
+			});
+			
+			MenuItem ql = searchVideos.add("Quick Look");
+			ql.setOnMenuItemClickListener(new OnMenuItemClickListener() {
+				@Override
+				public boolean onMenuItemClick(MenuItem arg0) {
+					Intent myIntent = new Intent(context, VideoList.class);
+					Bundle bundle = new Bundle();
+					bundle.putString("searchString", "quick look");
+					myIntent.putExtras(bundle);
+					context.startActivity(myIntent);
+					return true;
+				}
+			});
+			
+			MenuItem er = searchVideos.add("Endurance Run");
+			er.setOnMenuItemClickListener(new OnMenuItemClickListener() {
+				@Override
+				public boolean onMenuItemClick(MenuItem arg0) {
+					Intent myIntent = new Intent(context, VideoList.class);
+					Bundle bundle = new Bundle();
+					bundle.putString("searchString", "endurance run");
+					myIntent.putExtras(bundle);
+					context.startActivity(myIntent);
+					return true;
+				}
+			});
+		}
 
-		MenuItem about = menu.add(0, MENU_ABOUT, MENU_ABOUT, "About").setIcon(android.R.drawable.ic_menu_info_details);
-		final Context context = this;
+		MenuItem about = menu.add("About").setIcon(android.R.drawable.ic_menu_info_details);
 
 		about.setOnMenuItemClickListener(new OnMenuItemClickListener() {
 
