@@ -5,12 +5,15 @@ import android.app.TabActivity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.DialogInterface.OnClickListener;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.SubMenu;
 import android.view.MenuItem.OnMenuItemClickListener;
+import android.widget.EditText;
 import android.widget.TabHost;
+import android.widget.Toast;
 
 public class Tabs extends TabActivity {
 	public static final int MENU_SEARCH = Menu.FIRST;
@@ -111,6 +114,39 @@ public class Tabs extends TabActivity {
 					bundle.putString("searchString", "endurance run");
 					myIntent.putExtras(bundle);
 					context.startActivity(myIntent);
+					return true;
+				}
+			});
+			
+			MenuItem cm = searchVideos.add("Custom...");
+			cm.setOnMenuItemClickListener(new OnMenuItemClickListener() {
+				@Override
+				public boolean onMenuItemClick(MenuItem arg0) {
+					final EditText et = new EditText(context);					
+					
+					AlertDialog.Builder builder = new AlertDialog.Builder(context);
+					builder.setView(et);
+					builder.setTitle("Search Videos");
+					builder.setMessage("Enter search term");
+					
+					AlertDialog dialog = builder.create();
+					dialog.setButton("Search", new OnClickListener() {
+						@Override
+						public void onClick(DialogInterface arg0, int arg1) {
+							Intent myIntent = new Intent(context, VideoList.class);
+							Bundle bundle = new Bundle();
+							bundle.putString("searchString", et.getText().toString());
+							myIntent.putExtras(bundle);
+							context.startActivity(myIntent);
+						}						
+					});
+					dialog.setButton2("Cancel", new OnClickListener() {
+						@Override
+						public void onClick(DialogInterface arg0, int arg1) {
+						}						
+					});
+					dialog.show();
+					
 					return true;
 				}
 			});

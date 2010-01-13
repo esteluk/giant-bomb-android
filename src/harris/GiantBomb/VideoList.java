@@ -131,7 +131,12 @@ public class VideoList extends ListActivity implements api {
 						}
 					}
 					Video loadMore = new Video();
-					loadMore.setTitle("Load More...");
+					
+					if (searchString == null) {
+						loadMore.setTitle("Load 25 More...");
+					} else {
+						loadMore.setTitle("Search items " + (offset + 1) + " to " + (offset + searchPasses * 25) + "...");
+					}
 					loadMore.setId(-1);
 					videos.add(loadMore);
 					Message message;
