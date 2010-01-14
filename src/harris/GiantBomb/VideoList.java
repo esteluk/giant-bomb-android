@@ -126,9 +126,6 @@ public class VideoList extends ListActivity implements api {
 						for (Video v : add) {
 							videos.add(v);
 						}
-						if (videos.size() >= 25) {
-							break;
-						}
 					}
 					Video loadMore = new Video();
 					
