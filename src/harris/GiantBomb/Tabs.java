@@ -7,13 +7,16 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.DialogInterface.OnClickListener;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.SubMenu;
 import android.view.MenuItem.OnMenuItemClickListener;
+import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.TabHost;
-import android.widget.Toast;
+import android.widget.TextView;
+import android.widget.TextView.OnEditorActionListener;
 
 public class Tabs extends TabActivity {
 	public static final int MENU_SEARCH = Menu.FIRST;
@@ -128,6 +131,22 @@ public class Tabs extends TabActivity {
 					builder.setView(et);
 					builder.setTitle("Search Videos");
 					builder.setMessage("Enter search term");
+					
+					et.setOnEditorActionListener(new OnEditorActionListener() {
+						@Override
+						public boolean onEditorAction(TextView arg0, int arg1,
+								KeyEvent arg2) {
+							if (arg1 == EditorInfo.IME_NULL) {
+								Intent myIntent = new Intent(context, VideoList.class);
+								Bundle bundle = new Bundle();
+								bundle.putString("searchString", et.getText().toString());
+								myIntent.putExtras(bundle);
+								context.startActivity(myIntent);
+								return true;
+							}
+							return false;
+						}
+					});
 					
 					AlertDialog dialog = builder.create();
 					dialog.setButton("Search", new OnClickListener() {
