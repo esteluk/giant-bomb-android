@@ -8,6 +8,9 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -16,12 +19,14 @@ import android.view.MenuItem;
 import android.view.SubMenu;
 import android.view.MenuItem.OnMenuItemClickListener;
 import android.webkit.WebView;
+import android.content.DialogInterface;
 
 public class WebPlayer extends Activity implements api {
 	public static final int MENU_SHARE = Menu.FIRST;
 	public static final int MENU_GAME = Menu.FIRST + 1;
 	public static final int MENU_VIDEO = Menu.FIRST + 2;
-
+	private Context myContext;
+	
 	String url;
 	GBObject game = new GBObject();
 	List<String> videos = new ArrayList<String>();
@@ -29,6 +34,7 @@ public class WebPlayer extends Activity implements api {
 
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		myContext = this;
 		Bundle bundle = getIntent().getExtras();
 		WebView web = new WebView(this);
 		setContentView(web);
@@ -55,6 +61,42 @@ public class WebPlayer extends Activity implements api {
 		url = bundle.getString("URL");
 	}
 
+	public Dialog onCreateDialog(int i) {
+		
+		AlertDialog.Builder builder = new AlertDialog.Builder(myContext);
+		builder.setMessage("Shorten URL?")
+		       .setCancelable(false)
+		       .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+		           public void onClick(DialogInterface dialog, int id) {
+		        	    share(true);
+		                dialog.cancel();
+		           }
+		       })
+		       .setNegativeButton("No", new DialogInterface.OnClickListener() {
+		           public void onClick(DialogInterface dialog, int id) {
+		        	    share(false);
+		                dialog.cancel();
+		           }
+		       });
+		AlertDialog alert = builder.create();
+		
+		return alert;
+	}
+	
+	public void share(boolean shorten) {
+		Intent shareIntent = new Intent(
+				android.content.Intent.ACTION_SEND);
+		shareIntent.setType("text/plain");
+		if(!shorten) {
+			shareIntent.putExtra(Intent.EXTRA_TEXT, url);
+		} else {
+			shareIntent.putExtra(Intent.EXTRA_TEXT, Bitly.getShortUrl(url));
+			
+		}
+		startActivity(Intent.createChooser(shareIntent,
+				"Share link with..."));
+	}
+	
 	public boolean onCreateOptionsMenu(Menu menu) {
 		MenuItem share = menu.add("Share");
 		share.setIcon(android.R.drawable.ic_menu_share);
@@ -63,14 +105,7 @@ public class WebPlayer extends Activity implements api {
 
 			@Override
 			public boolean onMenuItemClick(MenuItem item) {
-
-				Intent shareIntent = new Intent(
-						android.content.Intent.ACTION_SEND);
-				shareIntent.setType("text/plain");
-				shareIntent.putExtra(Intent.EXTRA_TEXT, url);
-				startActivity(Intent.createChooser(shareIntent,
-						"Share link with..."));
-
+				showDialog(1);
 				return true;
 			}
 		});
@@ -120,8 +155,6 @@ public class WebPlayer extends Activity implements api {
 				});
 
 			} else {
-				final Activity activity = this;
-
 				SubMenu vids = menu.addSubMenu("Watch Videos");
 				vids.setIcon(android.R.drawable.ic_media_play);
 				for (String v : videos) {

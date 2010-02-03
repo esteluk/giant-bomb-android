@@ -61,20 +61,24 @@ public class NewsList extends ListActivity {
 			ContextMenuInfo menuInfo) {
 		super.onCreateContextMenu(menu, v, menuInfo);
 		menu.add(0, 1, 0, "Share");
+		menu.add(0, 2, 0, "Share (Shortend)");
 	}
 
 	public boolean onContextItemSelected(MenuItem item) {
 		AdapterContextMenuInfo info = (AdapterContextMenuInfo) item
 				.getMenuInfo();
-		if (item.getItemId() == 1) {
 			System.out.println(info.id);
 			Intent shareIntent = new Intent(android.content.Intent.ACTION_SEND);
 			shareIntent.setType("text/plain");
+			if (item.getItemId() == 1) {
 			shareIntent.putExtra(Intent.EXTRA_TEXT, news.get((int) info.id)
 					.getLink());
+			} else {
+				shareIntent.putExtra(Intent.EXTRA_TEXT, Bitly.getShortUrl(news.get((int) info.id)
+					.getLink()));
+			}
 			startActivity(Intent.createChooser(shareIntent,
 					"Share link with..."));
-		}
 		return super.onContextItemSelected(item);
 	}
 

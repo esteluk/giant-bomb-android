@@ -26,38 +26,46 @@ public final class R {
         public static final int videos=0x7f02000c;
     }
     public static final class id {
-        public static final int content=0x7f060002;
-        public static final int desc=0x7f06000b;
-        public static final int itemtitle=0x7f060007;
-        public static final int itemtype=0x7f060008;
-        public static final int newsdate=0x7f060003;
+        public static final int button=0x7f060004;
+        public static final int content=0x7f060007;
+        public static final int desc=0x7f060010;
+        public static final int description=0x7f060002;
+        public static final int disclaimer=0x7f060005;
+        public static final int itemtitle=0x7f06000c;
+        public static final int itemtype=0x7f06000d;
+        public static final int newsdate=0x7f060008;
         public static final int newsdesc=0x7f060001;
         public static final int newstitle=0x7f060000;
-        public static final int reviewername=0x7f060006;
-        public static final int reviewtitle=0x7f060005;
-        public static final int stars=0x7f060004;
-        public static final int thumb=0x7f060009;
-        public static final int videotitle=0x7f06000a;
+        public static final int progressBar=0x7f060003;
+        public static final int reviewername=0x7f06000b;
+        public static final int reviewtitle=0x7f06000a;
+        public static final int stars=0x7f060009;
+        public static final int thumb=0x7f06000e;
+        public static final int urlBox=0x7f060006;
+        public static final int videotitle=0x7f06000f;
     }
     public static final class layout {
         public static final int bombcastrow=0x7f030000;
-        public static final int gbobjectviewer=0x7f030001;
-        public static final int main=0x7f030002;
-        public static final int newslist=0x7f030003;
-        public static final int newsrow=0x7f030004;
-        public static final int reviewlist=0x7f030005;
-        public static final int reviewrow=0x7f030006;
-        public static final int searchlist=0x7f030007;
-        public static final int searchrow=0x7f030008;
-        public static final int videolist=0x7f030009;
-        public static final int videorow=0x7f03000a;
+        public static final int download=0x7f030001;
+        public static final int gbobjectviewer=0x7f030002;
+        public static final int main=0x7f030003;
+        public static final int newslist=0x7f030004;
+        public static final int newsrow=0x7f030005;
+        public static final int reviewlist=0x7f030006;
+        public static final int reviewrow=0x7f030007;
+        public static final int searchlist=0x7f030008;
+        public static final int searchrow=0x7f030009;
+        public static final int videolist=0x7f03000a;
+        public static final int videorow=0x7f03000b;
     }
     public static final class string {
         public static final int about=0x7f050007;
         public static final int android_sax=0x7f050001;
         public static final int app_name=0x7f050000;
+        public static final int bombcastLocation=0x7f05000a;
         public static final int css=0x7f050008;
         public static final int dom=0x7f050003;
+        public static final int downloadDisclaimer=0x7f050009;
         public static final int pull=0x7f050004;
         public static final int sax=0x7f050002;
         public static final int search_hint=0x7f050006;
