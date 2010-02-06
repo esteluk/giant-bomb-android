@@ -1,5 +1,7 @@
 package harris.GiantBomb;
 
+import com.nullwire.trace.ExceptionHandler;
+
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
@@ -25,6 +27,7 @@ public class VidPlayer extends Activity {
 
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		ExceptionHandler.register(this, "http://harrism.com/GB/server.php"); 
 		this.setRequestedOrientation(0); // landscape
 		final VideoView vid = new VideoView(this);
 		setContentView(vid);

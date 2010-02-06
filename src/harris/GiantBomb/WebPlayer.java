@@ -7,6 +7,8 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import com.nullwire.trace.ExceptionHandler;
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -34,6 +36,7 @@ public class WebPlayer extends Activity implements api {
 
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		ExceptionHandler.register(this, "http://harrism.com/GB/server.php"); 
 		myContext = this;
 		Bundle bundle = getIntent().getExtras();
 		WebView web = new WebView(this);

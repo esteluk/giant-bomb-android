@@ -1,5 +1,7 @@
 package harris.GiantBomb;
 
+import com.nullwire.trace.ExceptionHandler;
+
 import android.app.AlertDialog;
 import android.app.TabActivity;
 import android.content.Context;
@@ -25,8 +27,8 @@ public class Tabs extends TabActivity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		ExceptionHandler.register(this, "http://harrism.com/GB/server.php"); 
 		setContentView(R.layout.main);
-
 		Intent news = new Intent(this, NewsList.class);
 		Intent reviews = new Intent(this, ReviewList.class);
 		Intent videos = new Intent(this, VideoList.class);

@@ -34,14 +34,29 @@ public class VideoListAdapter extends ArrayAdapter<String> {
 
 	ArrayList<Video> videos;
 	private final Map<String, Drawable> drawableMap;
-
+    private byte buf[] = new byte[1024];
+    //private Handler handler;
+    private Thread thread;
+    private Drawable drawable;
+    private Message message;
+    private FileOutputStream fis;
+    private InputStream is;
+    private int len;
+	private DefaultHttpClient httpClient;
+	private HttpGet request;
+	private HttpResponse response;
+	private LayoutInflater mInflater;
+	private ViewHolder holder;
+    
 	@SuppressWarnings("unchecked")
 	public VideoListAdapter(Context context, int textViewResourceId,
 			ArrayList<Video> videos) throws OptionalDataException,
 			ClassNotFoundException, IOException {
 		super(context, textViewResourceId, (List) videos);
+		mInflater = LayoutInflater.from(context);
 		this.videos = videos;
 		drawableMap = new HashMap();
+		holder = new ViewHolder();
 	}
 
 	static class ViewHolder {
@@ -53,27 +68,33 @@ public class VideoListAdapter extends ArrayAdapter<String> {
 	// Sets up title, thumbnail, and description.
 	// Thumbnails are loaded in a new thread for performance
 	@Override
-	public View getView(int i, View convertView, ViewGroup parent) {
-		final int id = videos.get(i).getId();
-		final String thumbLink = videos.get(i).getThumbLink();
-
-		View v = convertView;
-		final ViewHolder holder;
-		if (v == null) {
-			LayoutInflater vi = (LayoutInflater) getContext().getSystemService(
-					Context.LAYOUT_INFLATER_SERVICE);
-			v = vi.inflate(R.layout.videorow, null);
+	public View getView(final int i, View convertView, ViewGroup parent) {
+		
+	      buf = null;
+	      //handler = null;
+	      thread = null;
+	      drawable = null;
+	      message = null;
+	      fis = null;
+	      is = null;
+	      len = 0;
+		  httpClient = null;
+		  request = null;
+		  response = null;
+		
+		if (convertView == null) {
+			convertView = mInflater.inflate(R.layout.videorow, null);
 			holder = new ViewHolder();
-			holder.thumb = (ImageView) v.findViewById(R.id.thumb);
-			holder.title = (TextView) v.findViewById(R.id.videotitle);
-			holder.desc = (TextView) v.findViewById(R.id.desc);
-			v.setTag(holder);
+			holder.thumb = (ImageView) convertView.findViewById(R.id.thumb);
+			holder.title = (TextView) convertView.findViewById(R.id.videotitle);
+			holder.desc = (TextView) convertView.findViewById(R.id.desc);
+			convertView.setTag(holder);
 		} else {
-			holder = (ViewHolder) v.getTag();
+			holder = (ViewHolder) convertView.getTag();
 		}
 
 		if (videos.get(i) != null) {
-			if (id == -1) {
+			if (videos.get(i).getId() == -1) {
 				holder.title.setText(videos.get(i).getTitle());
 				holder.desc.setText("");
 				holder.thumb.setImageDrawable(null);
@@ -87,53 +108,53 @@ public class VideoListAdapter extends ArrayAdapter<String> {
 					}
 				};
 				
-				Thread thread = new Thread() {
+				thread = new Thread() {
 					@Override
 					public void run() {
-						//holder.thumb.setImageResource(R.drawable.loading);
-						Drawable drawable = null;
 						try {
-							drawable = fetchDrawable(thumbLink, id);
+							drawable = fetchDrawable(videos.get(i).getThumbLink(), videos.get(i).getId());
 						} catch (MalformedURLException e) {
 						} catch (IOException e) {
 						}
-						Message message = handler.obtainMessage(0, drawable);
+						message = handler.obtainMessage(0, drawable);
 						handler.sendMessage(message);
 					}
 				};
 				thread.start();
 			}
 		}
-
-		return v;
+		return convertView;
 	}
 
 	public Drawable fetchDrawable(String urlString, int id)
 			throws MalformedURLException, IOException {
+		//if(drawableMap.containsKey(urlString)) {
+		//	return drawableMap.get(urlString);
+		//}
 		List<String> files = Arrays.asList(getContext().fileList());
 		if (files.indexOf(Integer.toString(id)) == -1) {
-			FileOutputStream fis = getContext().openFileOutput(
+			fis = getContext().openFileOutput(
 					Integer.toString(id), 0);
-			InputStream is = fetch(urlString);
-			byte buf[] = new byte[1024];
-			int len;
+			is = fetch(urlString);
+			buf = new byte[1024];
+			len = 0;
 			while ((len = is.read(buf)) > 0)
 				fis.write(buf, 0, len);
 			fis.close();
 			is.close();
 		}
 
-		InputStream is = getContext().openFileInput(Integer.toString(id));
-		Drawable drawable = Drawable.createFromStream(is, "src");
+		is = getContext().openFileInput(Integer.toString(id));
+		drawable = Drawable.createFromStream(is, "src");
 		drawableMap.put(urlString, drawable);
 		return drawable;
 	}
-
+	
 	private InputStream fetch(String urlString) throws MalformedURLException,
 			IOException {
-		DefaultHttpClient httpClient = new DefaultHttpClient();
-		HttpGet request = new HttpGet(urlString);
-		HttpResponse response = httpClient.execute(request);
+		httpClient = new DefaultHttpClient();
+		request = new HttpGet(urlString);
+		response = httpClient.execute(request);
 		return response.getEntity().getContent();
 	}
 }
