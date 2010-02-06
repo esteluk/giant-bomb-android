@@ -44,6 +44,12 @@ public class VideoListAdapter extends ArrayAdapter<String> {
 		drawableMap = new HashMap();
 	}
 
+	static class ViewHolder {
+		ImageView thumb;
+		TextView title;
+		TextView desc;
+	}
+
 	// Sets up title, thumbnail, and description.
 	// Thumbnails are loaded in a new thread for performance
 	@Override
@@ -52,82 +58,53 @@ public class VideoListAdapter extends ArrayAdapter<String> {
 		final String thumbLink = videos.get(i).getThumbLink();
 
 		View v = convertView;
+		final ViewHolder holder;
 		if (v == null) {
 			LayoutInflater vi = (LayoutInflater) getContext().getSystemService(
 					Context.LAYOUT_INFLATER_SERVICE);
 			v = vi.inflate(R.layout.videorow, null);
+			holder = new ViewHolder();
+			holder.thumb = (ImageView) v.findViewById(R.id.thumb);
+			holder.title = (TextView) v.findViewById(R.id.videotitle);
+			holder.desc = (TextView) v.findViewById(R.id.desc);
+			v.setTag(holder);
+		} else {
+			holder = (ViewHolder) v.getTag();
 		}
-
-		final ImageView thumb = (ImageView) v.findViewById(R.id.thumb);
-		final TextView title = (TextView) v.findViewById(R.id.videotitle);
-		final TextView desc = (TextView) v.findViewById(R.id.desc);
 
 		if (videos.get(i) != null) {
-			if (videos.get(i).getId() == -1) {
-				title.setText(videos.get(i).getTitle());
-				desc.setText("");
-				thumb.setImageDrawable(null);
+			if (id == -1) {
+				holder.title.setText(videos.get(i).getTitle());
+				holder.desc.setText("");
+				holder.thumb.setImageDrawable(null);
 			} else {
-				if (title != null) {
-					title.setText(videos.get(i).getTitle());
-				}
-				if (desc != null) {
-					desc.setText(videos.get(i).getDesc());
-					if (title.getText().length() > 37) { // check if the title
-						// is going to be 2
-						// lines or not
-						desc.setMaxLines(1); // set max lines for desc
-						// accordingly
-					} else {
-						desc.setMaxLines(2);
-					}
-				}
-				if (thumb != null) {
-					final Handler handler = new Handler() {
-						@Override
-						public void handleMessage(Message message) {
-							if (message.what == -1) {
-								thumb.setImageResource(R.drawable.loading); // set
-								// black
-								// loading
-								// image
-							} else {
-								thumb.setImageDrawable((Drawable) message.obj);
-							}
-						}
-					};
+				holder.title.setText(videos.get(i).getTitle());
+				holder.desc.setText(videos.get(i).getDesc());
 
-					Thread thread = new Thread() {
-						@Override
-						public void run() {
-							Message message;
-							message = handler.obtainMessage(-1, null); // tell
-							// handler
-							// to
-							// set
-							// black
-							// loading
-							// image
-							handler.sendMessage(message);
-							Drawable drawable = null;
-							try {
-								drawable = fetchDrawable(thumbLink, id);
-							} catch (MalformedURLException e) {
-							} catch (IOException e) {
-							}
-							message = handler.obtainMessage(id, drawable);// set
-							// actual
-							// image,
-							// once
-							// it's
-							// loaded
-							handler.sendMessage(message);
+				final Handler handler = new Handler() {
+					public void handleMessage(Message message) {
+						holder.thumb.setImageDrawable((Drawable) message.obj);
+					}
+				};
+				
+				Thread thread = new Thread() {
+					@Override
+					public void run() {
+						//holder.thumb.setImageResource(R.drawable.loading);
+						Drawable drawable = null;
+						try {
+							drawable = fetchDrawable(thumbLink, id);
+						} catch (MalformedURLException e) {
+						} catch (IOException e) {
 						}
-					};
-					thread.start();
-				}
+						Message message = handler.obtainMessage(0, drawable);
+						handler.sendMessage(message);
+					}
+				};
+				thread.start();
 			}
 		}
+
 		return v;
 	}
 
