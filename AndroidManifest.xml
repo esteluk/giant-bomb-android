@@ -35,6 +35,13 @@
 				<category android:name="android.intent.category.ALTERNATIVE" />
 			</intent-filter>
 		</activity>
+		
+				<activity android:excludeFromRecents="true" android:name=".ForumList">
+			<intent-filter>
+				<action android:name="android.intent.action.VIEW" />
+				<category android:name="android.intent.category.ALTERNATIVE" />
+			</intent-filter>
+		</activity>
 
 		<activity android:excludeFromRecents="true" android:name=".NewsList">
 			<intent-filter>
@@ -44,6 +51,13 @@
 		</activity>
 
 		<activity android:excludeFromRecents="true" android:name=".WebPlayer">
+			<intent-filter>
+				<action android:name="android.intent.action.VIEW" />
+				<category android:name="android.intent.category.ALTERNATIVE" />
+			</intent-filter>
+		</activity>
+
+		<activity android:excludeFromRecents="true" android:name=".ThreadPlayer">
 			<intent-filter>
 				<action android:name="android.intent.action.VIEW" />
 				<category android:name="android.intent.category.ALTERNATIVE" />

@@ -194,6 +194,19 @@ public class Tabs extends TabActivity {
 			}
 
 		});
+		
+		MenuItem forum = menu.add("Forum").setIcon(android.R.drawable.ic_menu_send);
+
+		forum.setOnMenuItemClickListener(new OnMenuItemClickListener() {
+
+			@Override
+			public boolean onMenuItemClick(MenuItem item) {
+				Intent myIntent = new Intent(context, ForumList.class);
+				context.startActivity(myIntent);
+				return true;
+			}
+
+		});
 
 		return true;
 	}
