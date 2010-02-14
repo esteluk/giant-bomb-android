@@ -48,6 +48,7 @@ public final class R {
         public static final int reviewername=0x7f060015;
         public static final int reviewtitle=0x7f060014;
         public static final int stars=0x7f060013;
+        public static final int surface_view=0x7f06001a;
         public static final int threadtitle=0x7f060018;
         public static final int thumb=0x7f060008;
         public static final int urlBox=0x7f060006;
@@ -70,6 +71,7 @@ public final class R {
         public static final int threadplayer=0x7f03000d;
         public static final int videolist=0x7f03000e;
         public static final int videorow=0x7f03000f;
+        public static final int videoview=0x7f030010;
     }
     public static final class string {
         public static final int about=0x7f050007;

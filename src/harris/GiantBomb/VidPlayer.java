@@ -1,21 +1,18 @@
 package harris.GiantBomb;
 
-import com.nullwire.trace.ExceptionHandler;
-
 import android.app.Activity;
-import android.app.ProgressDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.DialogInterface.OnCancelListener;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MenuItem.OnMenuItemClickListener;
 import android.widget.MediaController;
+import android.widget.Toast;
 import android.widget.VideoView;
+
+import com.nullwire.trace.ExceptionHandler;
 
 /**
  * Video player class
@@ -24,51 +21,43 @@ import android.widget.VideoView;
 public class VidPlayer extends Activity {
 	public static final int MENU_SHARE = Menu.FIRST;
 	private String siteDetailURL;
+	private VideoView vid;
 
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		setContentView(R.layout.videoview);
+		vid = (VideoView) findViewById(R.id.surface_view);
 		ExceptionHandler.register(this, "http://harrism.com/GB/server.php"); 
-		this.setRequestedOrientation(0); // landscape
-		final VideoView vid = new VideoView(this);
-		setContentView(vid);
-		MediaController controller = new MediaController(this);
-		vid.setMediaController(controller);
 		Bundle bundle = getIntent().getExtras();
-		siteDetailURL = bundle.getString("siteDetailURL");
 		vid.setVideoURI(Uri.parse(bundle.getString("URL")));
+		vid.setMediaController(new MediaController(this));
+		vid.requestFocus();
+		siteDetailURL = bundle.getString("siteDetailURL");
+	}
+	
+	public void onResume() {
 
-		final ProgressDialog dialog = createBufferDialog();
-		dialog.show();
+		Toast.makeText(VidPlayer.this, "Buffering..." , Toast.LENGTH_SHORT).show();
+		SharedPreferences resume = VidPlayer.this.getSharedPreferences("VideoResume", MODE_WORLD_READABLE);
+		if(resume.contains(siteDetailURL)) {
+			vid.seekTo(resume.getInt(siteDetailURL, 0));
+			Toast.makeText(VidPlayer.this, "Resuming Video" , Toast.LENGTH_SHORT).show();
+		}
+		vid.start();
 
-		final Handler handler = new Handler() {
-			@Override
-			public void handleMessage(Message message) {
-				dialog.dismiss();
-				vid.start();
-			}
-		};
-
-		Thread thread = new Thread() {
-			@Override
-			public void run() {
-				try {
-					Boolean buffering = true;
-					int buffer = 0;
-					while (buffering) {
-						if (buffer < vid.getBufferPercentage())
-							buffer = vid.getBufferPercentage();
-						if (buffer >= 2)
-							buffering = false;
-						if (vid.isPlaying())
-							buffering = false;
-					}
-
-					handler.sendEmptyMessage(0);
-				} catch (Throwable t) {
-				}
-			}
-		};
-		thread.start();
+		super.onResume();
+	}
+	
+	public void onPause() {
+		SharedPreferences.Editor editor = VidPlayer.this.getSharedPreferences("VideoResume", MODE_WORLD_WRITEABLE).edit();
+		editor.putInt(siteDetailURL, vid.getCurrentPosition());
+		editor.commit();
+		super.onPause();
+	}
+	
+	public void onStop() {
+		Toast.makeText(VidPlayer.this, "Video Position Saved", Toast.LENGTH_SHORT).show();
+		super.onStop();
 	}
 
 	public boolean onCreateOptionsMenu(Menu menu) {
@@ -95,27 +84,4 @@ public class VidPlayer extends Activity {
 		return true;
 	}
 	
-	private ProgressDialog createBufferDialog() {
-		final ProgressDialog dialog = new ProgressDialog(VidPlayer.this,
-				ProgressDialog.STYLE_SPINNER);
-		dialog.setMessage("Buffering. Please wait...");
-		dialog.setButton(ProgressDialog.BUTTON_NEGATIVE, "Cancel",
-				new DialogInterface.OnClickListener() {
-
-					@Override
-					public void onClick(DialogInterface dialog, int which) {
-						VidPlayer.this.finish();
-					}
-				});
-		
-		dialog.setOnCancelListener(new OnCancelListener() {
-			
-			@Override
-			public void onCancel(DialogInterface arg0) {
-				dialog.dismiss();
-				VidPlayer.this.finish();
-			}
-		});
-		return dialog;
-	}
 }

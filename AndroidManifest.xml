@@ -22,7 +22,7 @@
 				android:resource="@xml/searchable" />
 		</activity>
 
-		<activity android:excludeFromRecents="true" android:name=".VidPlayer">
+		<activity android:screenOrientation="landscape" android:excludeFromRecents="true" android:name=".VidPlayer">
 			<intent-filter>
 				<action android:name="android.intent.action.VIEW" />
 				<category android:name="android.intent.category.ALTERNATIVE" />
