@@ -3,7 +3,6 @@ package harris.GiantBomb;
 import java.util.ArrayList;
 
 import android.app.ListActivity;
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -14,6 +13,7 @@ import android.view.View;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 import android.widget.AdapterView.AdapterContextMenuInfo;
 
 /**
@@ -100,14 +100,11 @@ public class VideoList extends ListActivity implements api {
 	@SuppressWarnings("unchecked")
 	private void loadFeed() {
 		final ListActivity list = this;
-		final ProgressDialog dialog = ProgressDialog.show(VideoList.this, "",
-				"Loading. Please wait...", true);
-		dialog.show();
+		Toast.makeText(VideoList.this, "Loading..." , Toast.LENGTH_SHORT).show();
 
 		final Handler handler = new Handler() {
 			@Override
 			public void handleMessage(Message message) {
-				dialog.dismiss();
 				list.setListAdapter(((ArrayAdapter) message.obj));
 				registerForContextMenu(getListView());
 				list.setSelection(lastItemIndex);

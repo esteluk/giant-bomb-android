@@ -195,7 +195,7 @@ public class Tabs extends TabActivity {
 
 		});
 		
-		MenuItem forum = menu.add("Forum").setIcon(android.R.drawable.ic_menu_send);
+		/*MenuItem forum = menu.add("Forum").setIcon(android.R.drawable.ic_menu_send);
 
 		forum.setOnMenuItemClickListener(new OnMenuItemClickListener() {
 
@@ -206,7 +206,7 @@ public class Tabs extends TabActivity {
 				return true;
 			}
 
-		});
+		});*/
 
 		return true;
 	}

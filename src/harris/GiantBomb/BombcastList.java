@@ -3,7 +3,6 @@ package harris.GiantBomb;
 import java.util.ArrayList;
 
 import android.app.ListActivity;
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -15,6 +14,7 @@ import android.view.View;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 import android.widget.AdapterView.AdapterContextMenuInfo;
 
 public class BombcastList extends ListActivity {
@@ -73,14 +73,12 @@ public class BombcastList extends ListActivity {
 	@SuppressWarnings("unchecked")
 	private void loadFeed() {
 		final ListActivity list = this;
-		final ProgressDialog dialog = ProgressDialog.show(BombcastList.this,
-				"", "Loading. Please wait...", true);
-		dialog.show();
+		
+		Toast.makeText(BombcastList.this, "Loading..." , Toast.LENGTH_SHORT).show();
 
 		final Handler handler = new Handler() {
 			@Override
 			public void handleMessage(Message message) {
-				dialog.dismiss();
 				list.setListAdapter(((ArrayAdapter) message.obj));
 				registerForContextMenu(getListView());
 			}
