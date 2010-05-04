@@ -13,11 +13,8 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
 
 import android.content.Context;
-import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
-import android.os.Handler;
-import android.os.Message;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -73,13 +70,12 @@ public class VideoListAdapter extends ArrayAdapter<String> {
 				holder.title.setText(videos.get(i).getTitle());
 				holder.desc.setText("");
 				holder.thumb.setImageDrawable(null);
-				
-				holder.thumb.setTag(videos.get(i).getThumbLink());
 			} else {
 				holder.title.setText(videos.get(i).getTitle());
 				holder.desc.setText(videos.get(i).getDesc());
 				
-				holder.thumb.setTag(videos.get(i).getThumbLink());
+				//url + id is combined so we get both of them passed as parameters to the async task
+				holder.thumb.setTag(videos.get(i).getThumbLink() + ";" + videos.get(i).getId());
 /*
 				final Handler handler = new Handler() {
 					public void handleMessage(Message message) {
@@ -101,7 +97,6 @@ public class VideoListAdapter extends ArrayAdapter<String> {
 				}.start();
 	*/			
 				new DownloadImageTask().execute(holder);
-				// Test
 			}
 		}
 		return convertView;
@@ -126,15 +121,16 @@ public class VideoListAdapter extends ArrayAdapter<String> {
 	
 	private class DownloadImageTask extends AsyncTask<ViewHolder, Void, ViewHolder> {
 		Drawable drawable;
-		String tag;
+		String tagid;
 
 		@Override
 		protected ViewHolder doInBackground(ViewHolder... params) {
-			tag = (String)params[0].thumb.getTag();
+			tagid = (String)params[0].thumb.getTag();
+			//Split the string on our delimiter ";" so we can pass the url and id to fetchDrawable
+			String[] test = tagid.split(";");
 			try {
-				drawable = fetchDrawable(tag, 1);
+				drawable = fetchDrawable(test[0], Integer.parseInt(test[1]));
 			} catch (MalformedURLException e) {
-				System.out.println(e.getStackTrace());
 				e.printStackTrace();
 			} catch (IOException e) {
 				System.out.println(e.getStackTrace());
