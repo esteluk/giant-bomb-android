@@ -13,7 +13,9 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
+import android.os.AsyncTask;
 import android.os.Handler;
 import android.os.Message;
 import android.view.LayoutInflater;
@@ -71,10 +73,14 @@ public class VideoListAdapter extends ArrayAdapter<String> {
 				holder.title.setText(videos.get(i).getTitle());
 				holder.desc.setText("");
 				holder.thumb.setImageDrawable(null);
+				
+				holder.thumb.setTag(videos.get(i).getThumbLink());
 			} else {
 				holder.title.setText(videos.get(i).getTitle());
 				holder.desc.setText(videos.get(i).getDesc());
-
+				
+				holder.thumb.setTag(videos.get(i).getThumbLink());
+/*
 				final Handler handler = new Handler() {
 					public void handleMessage(Message message) {
 						holder.thumb.setImageDrawable((Drawable) message.obj);
@@ -93,6 +99,9 @@ public class VideoListAdapter extends ArrayAdapter<String> {
 						handler.sendMessage(handler.obtainMessage(0, drawable));
 					}
 				}.start();
+	*/			
+				new DownloadImageTask().execute(holder);
+				// Test
 			}
 		}
 		return convertView;
@@ -113,5 +122,29 @@ public class VideoListAdapter extends ArrayAdapter<String> {
 			execute(new HttpGet(urlString)).
 			getEntity().
 			getContent();
+	}
+	
+	private class DownloadImageTask extends AsyncTask<ViewHolder, Void, ViewHolder> {
+		Drawable drawable;
+		String tag;
+
+		@Override
+		protected ViewHolder doInBackground(ViewHolder... params) {
+			tag = (String)params[0].thumb.getTag();
+			try {
+				drawable = fetchDrawable(tag, 1);
+			} catch (MalformedURLException e) {
+				System.out.println(e.getStackTrace());
+				e.printStackTrace();
+			} catch (IOException e) {
+				System.out.println(e.getStackTrace());
+				e.printStackTrace();
+			}
+			return params[0];
+		}
+
+		protected void onPostExecute(ViewHolder holder) {
+			holder.thumb.setImageDrawable(drawable);
+		}
 	}
 }
