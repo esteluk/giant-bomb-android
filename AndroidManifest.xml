@@ -91,6 +91,13 @@
 				<category android:name="android.intent.category.ALTERNATIVE" />
 			</intent-filter>
 		</activity>
+		
+		<activity android:excludeFromRecents="true" android:name=".Dashboard">
+			<intent-filter>
+				<action android:name="android.intent.action.VIEW" />
+				<category android:name="android.intent.category.ALTERNATIVE" />
+			</intent-filter>
+		</activity>
 
 	</application>
 	<uses-sdk android:minSdkVersion="3" />
