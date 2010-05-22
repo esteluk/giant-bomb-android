@@ -31,6 +31,12 @@ public class NewsListAdapter extends ArrayAdapter<String> {
 					Context.LAYOUT_INFLATER_SERVICE);
 			v = vi.inflate(R.layout.newsrow, null);
 		}
+		
+		if (i % 2 == 0) {
+			v.setBackgroundResource(R.color.rowColor1);
+		} else {
+			v.setBackgroundResource(R.color.rowColor2);
+		}
 
 		final TextView date = (TextView) v.findViewById(R.id.newsdate);
 		final TextView title = (TextView) v.findViewById(R.id.newstitle);
