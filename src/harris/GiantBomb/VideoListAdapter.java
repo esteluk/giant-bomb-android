@@ -29,7 +29,7 @@ import android.widget.TextView;
 public class VideoListAdapter extends ArrayAdapter<String> {
 
 	ArrayList<Video> videos;
-	private final Map<String, Drawable> drawableMap;
+	private Map<String, Drawable> drawableMap;
 	private LayoutInflater mInflater;
     
 	@SuppressWarnings("unchecked")
@@ -54,16 +54,16 @@ public class VideoListAdapter extends ArrayAdapter<String> {
 	public View getView(final int i, View convertView, ViewGroup parent) {
 		final ViewHolder holder;
 		
-		if (convertView == null) {
+		//if (convertView == null) {
 			convertView = mInflater.inflate(R.layout.videorow, null);
 			holder = new ViewHolder();
 			holder.thumb = (ImageView) convertView.findViewById(R.id.thumb);
 			holder.title = (TextView) convertView.findViewById(R.id.videotitle);
 			holder.desc = (TextView) convertView.findViewById(R.id.desc);
 			convertView.setTag(holder);
-		} else {
-			holder = (ViewHolder) convertView.getTag();
-		}
+		//} else {
+		//	holder = (ViewHolder) convertView.getTag();
+		//}
 		holder.thumb.setImageResource(R.drawable.loading);
 		if (videos.get(i) != null) {
 			if (videos.get(i).getId() == -1) {
