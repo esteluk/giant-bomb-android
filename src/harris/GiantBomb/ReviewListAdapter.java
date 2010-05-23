@@ -39,6 +39,12 @@ public class ReviewListAdapter extends ArrayAdapter<String> {
 					Context.LAYOUT_INFLATER_SERVICE);
 			v = vi.inflate(R.layout.reviewrow, null);
 		}
+		
+		if (i % 2 == 0) {
+			v.setBackgroundResource(R.color.rowColor1);
+		} else {
+			v.setBackgroundResource(R.color.rowColor2);
+		}
 
 		final ImageView stars = (ImageView) v.findViewById(R.id.stars);
 		final TextView title = (TextView) v.findViewById(R.id.reviewtitle);

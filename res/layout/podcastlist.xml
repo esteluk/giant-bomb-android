@@ -4,7 +4,7 @@
 	android:orientation="vertical">
 
 	<TextView android:layout_width="fill_parent"
-		android:layout_height="wrap_content" android:text="News"
+		android:layout_height="wrap_content" android:text="Bombcast"
 		android:textSize="20sp" android:textStyle="bold" />
 
 	<ListView android:id="@+id/android:list" android:layout_width="fill_parent"

@@ -29,10 +29,10 @@ public class Dashboard extends Activity {
 		this.setContentView(R.layout.dashboard);		
 		GridView iconGrid = (GridView) this.findViewById(R.id.iconGrid);
 		
-		DashboardIcon news = new DashboardIcon(R.drawable.news, "News", NewsList.class);
-		DashboardIcon reviews = new DashboardIcon(R.drawable.reviews, "Reviews", ReviewList.class);
-		DashboardIcon videos = new DashboardIcon(R.drawable.videos, "Videos", VideoList.class);
-		DashboardIcon bombcast = new DashboardIcon(R.drawable.bombcast, "Bombcast", BombcastList.class);
+		DashboardIcon news = new DashboardIcon(R.drawable.iconnews, "News", NewsList.class);
+		DashboardIcon reviews = new DashboardIcon(R.drawable.iconreview, "Reviews", ReviewList.class);
+		DashboardIcon videos = new DashboardIcon(R.drawable.iconvideo, "Videos", VideoList.class);
+		DashboardIcon bombcast = new DashboardIcon(R.drawable.iconpodcast, "Bombcast", BombcastList.class);
 		List<DashboardIcon> icons = new ArrayList<DashboardIcon>();
 		icons.add(news);
 		icons.add(reviews);

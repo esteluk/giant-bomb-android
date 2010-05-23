@@ -23,7 +23,7 @@ public class BombcastList extends ListActivity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.newslist);
+		setContentView(R.layout.podcastlist);
 		loadFeed();
 	}
 
