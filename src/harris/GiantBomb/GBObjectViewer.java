@@ -2,6 +2,9 @@ package harris.GiantBomb;
 
 import harris.GiantBomb.GBObject.ObjectType;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import org.apache.commons.lang.StringEscapeUtils;
 
 import android.app.Activity;
@@ -12,6 +15,7 @@ import android.view.MenuItem;
 import android.view.SubMenu;
 import android.view.MenuItem.OnMenuItemClickListener;
 import android.webkit.WebView;
+import android.widget.Toast;
 
 public class GBObjectViewer extends Activity {
 	private GBObject item;
@@ -20,10 +24,43 @@ public class GBObjectViewer extends Activity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.gbobjectviewer);
-
-		Bundle bundle = getIntent().getExtras();
-		String id = bundle.getString("id");
-		ObjectType type = ObjectType.valueOf(bundle.getString("type"));
+		
+		String id = null;
+		ObjectType type = null;
+		
+		// see if this was launched via an intent filter
+		String url = getIntent().getDataString();
+		if (url != null) {
+			Pattern pattern = Pattern.compile("/(\\d+)-(\\d+)/");
+			Matcher matcher = pattern.matcher(url);
+			if (matcher.find()) {
+				id = matcher.group(2);
+				switch (Integer.parseInt(matcher.group(1))) {
+					case 61: type = ObjectType.GAME;
+					break;
+					case 62: type = ObjectType.FRANCHISE;
+					break;
+					case 94: type = ObjectType.CHARACTER;
+					break;
+					case 92: type = ObjectType.CONCEPT;
+					break;
+					case 93: type = ObjectType.OBJECT;
+					break;
+					case 95: type = ObjectType.LOCATION;
+					break;
+					case 72: type = ObjectType.PERSON;
+					break;
+					case 65: type = ObjectType.COMPANY;
+					break;
+					default: Toast.makeText(this, "Content type not supported", Toast.LENGTH_LONG).show();
+				}
+				
+			}
+		} else {
+			Bundle bundle = getIntent().getExtras();
+			id = bundle.getString("id");
+			type = ObjectType.valueOf(bundle.getString("type"));
+		}
 
 		try {
 			item = GBObject.getGBObject(id, type);
