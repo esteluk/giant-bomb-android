@@ -78,7 +78,7 @@
 			<intent-filter>
 				<action android:name="android.intent.action.VIEW" />
 				<category android:name="android.intent.category.ALTERNATIVE" />
-			</intent-filter>			
+			</intent-filter>
 		</activity>
 
 		<activity android:excludeFromRecents="true" android:name=".GBObjectViewer">
@@ -106,6 +106,8 @@
 				<action android:name="android.intent.action.VIEW" />
 				<category android:name="android.intent.category.ALTERNATIVE" />
 			</intent-filter>
+		</activity>
+		<activity android:name=".Preferences" android:label="Settings">
 		</activity>
 
 	</application>

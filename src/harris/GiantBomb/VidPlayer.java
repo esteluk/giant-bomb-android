@@ -5,8 +5,12 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
+import android.preference.CheckBoxPreference;
+import android.preference.PreferenceManager;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.Window;
+import android.view.WindowManager;
 import android.view.MenuItem.OnMenuItemClickListener;
 import android.widget.MediaController;
 import android.widget.Toast;
@@ -25,7 +29,15 @@ public class VidPlayer extends Activity {
 
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.videoview);
+		
+		// see if the menu bar should be hidden
+		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
+		boolean fullScreenVideo = prefs.getBoolean("fullScreenVideo", false);
+		if (fullScreenVideo) {
+			getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+		}
+		
+		setContentView(R.layout.videoview);		
 		vid = (VideoView) findViewById(R.id.surface_view);
 		ExceptionHandler.register(this, "http://harrism.com/GB/server.php"); 
 		Bundle bundle = getIntent().getExtras();

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+	<PreferenceCategory android:title="Video Playback">
+		<CheckBoxPreference android:title="Full screen video"
+			android:defaultValue="false" android:summaryOn="Hide the menu bar during video playback"
+			android:summaryOff="Show the menu bar during video playback"
+			android:key="fullScreenVideo" />
+	</PreferenceCategory>
+</PreferenceScreen>
