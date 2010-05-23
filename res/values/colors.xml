@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 <color name="rowColor1">#FF000000</color>
-<color name="rowColor2">#FF111111</color>
+<color name="rowColor2">#FF333333</color>
 </resources>

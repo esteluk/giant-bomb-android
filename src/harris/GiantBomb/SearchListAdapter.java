@@ -28,6 +28,12 @@ public class SearchListAdapter extends ArrayAdapter<String> {
 					Context.LAYOUT_INFLATER_SERVICE);
 			v = vi.inflate(R.layout.searchrow, null);
 		}
+		
+		if (i % 2 == 0) {
+			v.setBackgroundResource(R.color.rowColor1);
+		} else {
+			v.setBackgroundResource(R.color.rowColor2);
+		}
 
 		final TextView title = (TextView) v.findViewById(R.id.itemtitle);
 		final TextView type = (TextView) v.findViewById(R.id.itemtype);

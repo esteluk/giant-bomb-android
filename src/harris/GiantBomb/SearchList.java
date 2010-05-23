@@ -11,6 +11,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ListView;
+import android.widget.TextView;
 
 public class SearchList extends ListActivity implements api {
 
@@ -31,6 +32,8 @@ public class SearchList extends ListActivity implements api {
 			getSearchResults(searchKeywords);
 
 			if (results.size() > 0) {
+				TextView title = (TextView) findViewById(R.id.title);
+				title.setText("Results for \"" + searchKeywords + "\"");
 				ListActivity list = this;
 				list.setListAdapter(new SearchListAdapter(list,
 						R.layout.searchrow, results));

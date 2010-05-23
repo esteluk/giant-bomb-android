@@ -10,8 +10,8 @@
 		<activity android:name=".Tabs" android:label="@string/app_name"
 			android:icon="@drawable/icon">
 			<intent-filter>
-				<action android:name="android.intent.action.MAIN" />
-				<category android:name="android.intent.category.LAUNCHER" />
+				<action android:name="android.intent.action.VIEW" />
+				<category android:name="android.intent.category.ALTERNATIVE" />
 			</intent-filter>
 		</activity>
 
@@ -103,8 +103,8 @@
 
 		<activity android:excludeFromRecents="true" android:name=".Dashboard">
 			<intent-filter>
-				<action android:name="android.intent.action.VIEW" />
-				<category android:name="android.intent.category.ALTERNATIVE" />
+				<action android:name="android.intent.action.MAIN" />
+				<category android:name="android.intent.category.LAUNCHER" />
 			</intent-filter>
 		</activity>
 		<activity android:name=".Preferences" android:label="Settings">
