@@ -7,8 +7,13 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
+import android.view.MenuItem.OnMenuItemClickListener;
 import android.view.View.OnClickListener;
 import android.widget.BaseAdapter;
 import android.widget.GridView;
@@ -45,6 +50,25 @@ public class Dashboard extends Activity {
 		});
 		
 		iconGrid.setAdapter(new IconAdapter(icons));		
+	}
+	
+	@Override
+	public boolean onPrepareOptionsMenu(Menu menu) {
+		final Context context = this;
+		
+		MenuItem settings = menu.add("Settings");
+		settings.setIcon(android.R.drawable.ic_menu_preferences);
+		settings.setOnMenuItemClickListener(new OnMenuItemClickListener() {
+
+			@Override
+			public boolean onMenuItemClick(MenuItem arg0) {
+				Intent preferences = new Intent(context, Preferences.class);
+				context.startActivity(preferences);
+				return true;
+			}
+			
+		});
+		return true;
 	}
 	
 	private class IconAdapter extends BaseAdapter {
