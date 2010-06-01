@@ -8,14 +8,9 @@
 	<GridView android:id="@+id/iconGrid" android:layout_width="fill_parent"
 		android:layout_height="wrap_content" android:layout_weight="1"
 		android:numColumns="2" />
-	<LinearLayout android:id="@+id/searchBar"
-		android:orientation="horizontal" android:layout_height="wrap_content"
-		android:layout_width="fill_parent">
-		<ImageView android:layout_width="wrap_content"
-			android:layout_height="fill_parent" android:src="@drawable/search" android:paddingRight="3sp"/>
-		<TextView android:layout_width="wrap_content"
-			android:layout_height="fill_parent" android:layout_weight="1"
-			android:text="Search the wiki" android:textSize="20sp"
-			android:textStyle="italic" />
-	</LinearLayout>
+	<View android:layout_width="fill_parent" android:layout_height="2dip"
+		android:background="#FFFFFFFF" />
+	<Button android:id="@+id/searchBar" android:layout_height="wrap_content"
+		android:layout_width="wrap_content" android:drawableLeft="@drawable/search"
+		android:text="Touch to Search the Wiki" android:background="#00000000" android:textColor="#FFFFFFFF" />
 </LinearLayout>

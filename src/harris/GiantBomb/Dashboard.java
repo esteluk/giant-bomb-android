@@ -13,14 +13,12 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
-import android.view.WindowManager;
 import android.view.MenuItem.OnMenuItemClickListener;
 import android.view.View.OnClickListener;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.GridView;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 public class Dashboard extends Activity {
@@ -41,7 +39,7 @@ public class Dashboard extends Activity {
 		icons.add(videos);
 		icons.add(bombcast);
 		
-		LinearLayout searchbar = (LinearLayout) this.findViewById(R.id.searchBar);
+		Button searchbar = (Button) this.findViewById(R.id.searchBar);
 		searchbar.setOnClickListener(new OnClickListener() {
 
 			@Override
