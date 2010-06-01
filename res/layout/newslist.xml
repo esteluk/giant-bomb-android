@@ -6,6 +6,8 @@
 	<TextView android:layout_width="fill_parent"
 		android:layout_height="wrap_content" android:text="News"
 		android:textSize="20sp" android:textStyle="bold" />
+	<View android:layout_width="fill_parent" android:layout_height="2dip"
+		android:background="#FFFFFFFF" />
 
 	<ListView android:id="@+id/android:list" android:layout_width="fill_parent"
 		android:layout_height="wrap_content" />

@@ -3,6 +3,7 @@ package harris.GiantBomb;
 import java.util.ArrayList;
 
 import android.app.ListActivity;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -23,6 +24,7 @@ import android.widget.AdapterView.AdapterContextMenuInfo;
 public class ReviewList extends ListActivity implements api {
 
 	private ArrayList<Review> reviews;
+	ProgressDialog pd;
 	private int offset = 0;
 
 	@Override
@@ -105,14 +107,16 @@ public class ReviewList extends ListActivity implements api {
 
 		final ListActivity list = this;
 
-		Toast.makeText(ReviewList.this, "Loading..." , Toast.LENGTH_SHORT).show();
-
+		//Toast.makeText(ReviewList.this, "Loading..." , Toast.LENGTH_SHORT).show();
+		pd = ProgressDialog.show(this, "Loading...", "Please wait");
+		
 		final Handler handler = new Handler() {
 			@Override
 			public void handleMessage(Message message) {
 				list.setListAdapter(((ArrayAdapter) message.obj));
 				registerForContextMenu(getListView());
 				list.setSelection(offset - 25);
+				pd.dismiss();
 			}
 		};
 
@@ -146,5 +150,13 @@ public class ReviewList extends ListActivity implements api {
 			}
 		};
 		thread.start();
+	}
+	
+	@Override
+	public void onPause() {
+		super.onPause();
+		if (pd.isShowing()) {
+			pd.dismiss();
+		}
 	}
 }
