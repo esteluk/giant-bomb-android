@@ -11,6 +11,8 @@
 	<View android:layout_width="fill_parent" android:layout_height="2dip"
 		android:background="#FFFFFFFF" />
 	<Button android:id="@+id/searchBar" android:layout_height="wrap_content"
-		android:layout_width="wrap_content" android:drawableLeft="@drawable/search"
-		android:text="Touch to Search the Wiki" android:background="#00000000" android:textColor="#FFFFFFFF" />
+		android:layout_width="fill_parent" android:drawableLeft="@drawable/search"
+		android:text="Touch to Search the Wiki" android:background="#00000000"
+		android:textColor="#FFFFFFFF" android:textSize="20sp" android:gravity="left"
+		android:textStyle="italic" />
 </LinearLayout>

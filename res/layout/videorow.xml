@@ -1,52 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="?android:attr/listPreferredItemHeight"
-    >
-    
-	<ImageView
-	    android:id="@+id/thumb"
-	    
-	    android:layout_width="wrap_content"
-	    android:layout_height="fill_parent"
-	    
-        android:layout_alignParentTop="true"
-        android:layout_alignParentBottom="true"
-	    android:layout_marginRight="11sp"
-	    
-	    android:minHeight="50sp"
-	    android:minWidth="50sp"
-	    android:scaleType="fitXY" />
-		    
-	    
-		<TextView xmlns:android="http://schemas.android.com/apk/res/android" 
-			android:id="@+id/videotitle" 
-			
-			android:layout_width="fill_parent" 
-			android:layout_height="wrap_content"
-			
-      		android:layout_toRightOf="@id/thumb"
-        	android:layout_alignParentRight="true"
-        	android:layout_alignParentTop="true"
-        	android:gravity="center_vertical"
-			android:textSize="13sp"
-			android:maxLines="1"
-			android:textColor="#ffffff" />
-			
-		<TextView
-		    android:id="@+id/desc" 
-		    
-		    android:layout_width="fill_parent"
-		    android:layout_height="wrap_content"
-		    
-       		android:layout_toRightOf="@id/thumb"
-        	android:layout_alignParentBottom="true"
-       		android:layout_alignParentRight="true"
-        	android:layout_below="@id/videotitle"
-       		
-		    android:textSize="11sp" 
-		    android:paddingBottom="1sp" />
-	
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="fill_parent" android:layout_height="?android:attr/listPreferredItemHeight">
+
+	<ImageView android:id="@+id/thumb" android:layout_width="wrap_content"
+		android:layout_height="fill_parent" android:layout_alignParentTop="true"
+		android:layout_alignParentBottom="true" android:layout_marginRight="11sp"
+		android:minHeight="50sp" android:minWidth="50sp" android:scaleType="fitXY"
+		android:paddingTop="4sp" />
+
+	<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+		android:id="@+id/videotitle" android:layout_width="fill_parent"
+		android:layout_height="wrap_content" android:layout_toRightOf="@id/thumb"
+		android:layout_alignParentRight="true" android:layout_alignParentTop="true"
+		android:gravity="center_vertical" android:textSize="16sp"
+		android:lines="1" android:textColor="#ffffff" android:paddingBottom="0.5sp" />
+
+	<TextView android:id="@+id/desc" android:layout_width="fill_parent"
+		android:layout_height="wrap_content" android:layout_toRightOf="@id/thumb"
+		android:layout_alignParentBottom="true"
+		android:layout_alignParentRight="true" android:layout_below="@id/videotitle"
+
+		android:textSize="14sp" android:paddingBottom="0.51sp" android:lines="2" />
+
 </RelativeLayout>

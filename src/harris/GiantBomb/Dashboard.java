@@ -56,6 +56,8 @@ public class Dashboard extends Activity {
 	public boolean onPrepareOptionsMenu(Menu menu) {
 		final Context context = this;
 		
+		menu.clear();
+		
 		MenuItem settings = menu.add("Settings");
 		settings.setIcon(android.R.drawable.ic_menu_preferences);
 		settings.setOnMenuItemClickListener(new OnMenuItemClickListener() {

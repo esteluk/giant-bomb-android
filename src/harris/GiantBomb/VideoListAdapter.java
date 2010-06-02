@@ -64,6 +64,13 @@ public class VideoListAdapter extends ArrayAdapter<String> {
 		//} else {
 		//	holder = (ViewHolder) convertView.getTag();
 		//}
+			
+		if (i % 2 == 0) {
+			convertView.setBackgroundResource(R.color.rowColor1);
+		} else {
+			convertView.setBackgroundResource(R.color.rowColor2);
+		}
+		
 		holder.thumb.setImageResource(R.drawable.loading);
 		if (videos.get(i) != null) {
 			if (videos.get(i).getId() == -1) {
