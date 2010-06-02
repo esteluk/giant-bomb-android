@@ -23,13 +23,19 @@ public class VideoFeedParser implements api {
 	private final URL feedUrl;
 	private boolean singleItem;
 	
-	private String searchString;
-
-	public VideoFeedParser(String feedUrl, String searchString) {
-		this.searchString = searchString;
+	public VideoFeedParser(String feedUrl, String searchString, int offset) {
+		String search = searchString;
+		String feed = feedUrl;
+		
+		if (search != null) {
+			search = search.replace(" ", "%20");
+			feed = "http://api.giantbomb.com/search/?api_key="
+										+ API_KEY
+										+ "&query="+search+"&resources=video&limit=25&field_list=name,deck,id,url,image,site_detail_url&format=xml&offset=" + offset;
+		}
 		
 		try {
-			this.feedUrl = new URL(feedUrl);
+			this.feedUrl = new URL(feed);
 			this.singleItem = false;
 		} catch (MalformedURLException e) {
 			throw new RuntimeException(e);
@@ -120,7 +126,7 @@ public class VideoFeedParser implements api {
 		}
 		
 		// filter out videos we didn't want
-		if (searchString != null && singleItem == false) {
+		/*if (searchString != null && singleItem == false) {
 			Iterator<Video> it = videos.iterator();
 			while (it.hasNext()) {
 				Video v = it.next();
@@ -128,7 +134,7 @@ public class VideoFeedParser implements api {
 					it.remove();
 				}
 			}			
-		}
+		}*/
 		
 		return videos;
 	}

@@ -2,20 +2,32 @@ package harris.GiantBomb;
 
 import java.util.ArrayList;
 
+import android.app.AlertDialog;
 import android.app.ListActivity;
 import android.app.ProgressDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.DialogInterface.OnClickListener;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.view.ContextMenu;
+import android.view.KeyEvent;
+import android.view.Menu;
 import android.view.MenuItem;
+import android.view.SubMenu;
 import android.view.View;
 import android.view.ContextMenu.ContextMenuInfo;
+import android.view.MenuItem.OnMenuItemClickListener;
+import android.view.inputmethod.EditorInfo;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.AdapterView.AdapterContextMenuInfo;
+import android.widget.TextView.OnEditorActionListener;
 
 /**
  * Lists videos, launches video player when one is clicked
@@ -26,7 +38,6 @@ public class VideoList extends ListActivity implements api {
 	private ArrayList<Video> videos;
 	ProgressDialog pd;
 	private int offset = 0;
-	private int searchPasses = 1;
 	private int lastItemIndex = 0;
 	
 	private String searchString;
@@ -40,7 +51,6 @@ public class VideoList extends ListActivity implements api {
 		Bundle bundle = getIntent().getExtras();
 		if (bundle != null) {
 			searchString = bundle.getString("searchString");
-			searchPasses = 10;
 		}
 	
 		loadFeed();
@@ -121,26 +131,22 @@ public class VideoList extends ListActivity implements api {
 
 				try {
 					lastItemIndex = videos.size() - 1;
-					for (int i = 0; i < searchPasses; i++) {
-						VideoFeedParser parser = new VideoFeedParser(
-								"http://api.giantbomb.com/videos/?api_key="
-										+ API_KEY
-										+ "&sort=-publish_date&limit=25&field_list=name,deck,id,url,image,site_detail_url&format=xml&offset="
-										+ offset, searchString);
-						offset = offset + 25;
-						ArrayList<Video> add = new ArrayList<Video>(25);
-						add = (ArrayList<Video>) parser.parse();
-						for (Video v : add) {
-							videos.add(v);
-						}
+					VideoFeedParser parser = new VideoFeedParser(
+							"http://api.giantbomb.com/videos/?api_key="
+									+ API_KEY
+									+ "&sort=-publish_date&limit=25&field_list=name,deck,id,url,image,site_detail_url&format=xml&offset="
+									+ offset, searchString, offset);
+					offset = offset + 25;
+					ArrayList<Video> add = new ArrayList<Video>(25);
+					add = (ArrayList<Video>) parser.parse();
+					for (Video v : add) {
+						videos.add(v);
 					}
 					Video loadMore = new Video();
 					
-					if (searchString == null) {
-						loadMore.setTitle("Load 25 More...");
-					} else {
-						loadMore.setTitle("Search items " + (offset + 1) + " to " + (offset + searchPasses * 25) + "...");
-					}
+
+					loadMore.setTitle("Load 25 More...");
+
 					loadMore.setId(-1);
 					videos.add(loadMore);
 					Message message;
@@ -152,6 +158,117 @@ public class VideoList extends ListActivity implements api {
 			}
 		};
 		thread.start();
+	}
+	
+	@Override
+	public boolean onPrepareOptionsMenu(Menu menu) {
+		final Context context = this;
+		menu.clear();
+		
+		SubMenu searchVideos = menu.addSubMenu("Search Videos").setIcon(android.R.drawable.ic_menu_search);
+		
+		MenuItem rv = searchVideos.add("Review");
+		rv.setOnMenuItemClickListener(new OnMenuItemClickListener() {
+			@Override
+			public boolean onMenuItemClick(MenuItem arg0) {
+				Intent myIntent = new Intent(context, VideoList.class);
+				Bundle bundle = new Bundle();
+				bundle.putString("searchString", "review");
+				myIntent.putExtras(bundle);
+				context.startActivity(myIntent);
+				return true;
+			}
+		});
+		
+		MenuItem tr = searchVideos.add("Trailer");
+		tr.setOnMenuItemClickListener(new OnMenuItemClickListener() {
+			@Override
+			public boolean onMenuItemClick(MenuItem arg0) {
+				Intent myIntent = new Intent(context, VideoList.class);
+				Bundle bundle = new Bundle();
+				bundle.putString("searchString", "trailer");
+				myIntent.putExtras(bundle);
+				context.startActivity(myIntent);
+				return true;
+			}
+		});
+		
+		MenuItem ql = searchVideos.add("Quick Look");
+		ql.setOnMenuItemClickListener(new OnMenuItemClickListener() {
+			@Override
+			public boolean onMenuItemClick(MenuItem arg0) {
+				Intent myIntent = new Intent(context, VideoList.class);
+				Bundle bundle = new Bundle();
+				bundle.putString("searchString", "quick look");
+				myIntent.putExtras(bundle);
+				context.startActivity(myIntent);
+				return true;
+			}
+		});
+		
+		MenuItem er = searchVideos.add("Endurance Run");
+		er.setOnMenuItemClickListener(new OnMenuItemClickListener() {
+			@Override
+			public boolean onMenuItemClick(MenuItem arg0) {
+				Intent myIntent = new Intent(context, VideoList.class);
+				Bundle bundle = new Bundle();
+				bundle.putString("searchString", "endurance run");
+				myIntent.putExtras(bundle);
+				context.startActivity(myIntent);
+				return true;
+			}
+		});
+		
+		MenuItem cm = searchVideos.add("Custom...");
+		cm.setOnMenuItemClickListener(new OnMenuItemClickListener() {
+			@Override
+			public boolean onMenuItemClick(MenuItem arg0) {
+				final EditText et = new EditText(context);					
+				
+				AlertDialog.Builder builder = new AlertDialog.Builder(context);
+				builder.setView(et);
+				builder.setTitle("Search Videos");
+				builder.setMessage("Enter search term");
+				
+				et.setOnEditorActionListener(new OnEditorActionListener() {
+					@Override
+					public boolean onEditorAction(TextView arg0, int arg1,
+							KeyEvent arg2) {
+						if (arg1 == EditorInfo.IME_NULL) {
+							Intent myIntent = new Intent(context, VideoList.class);
+							Bundle bundle = new Bundle();
+							bundle.putString("searchString", et.getText().toString());
+							myIntent.putExtras(bundle);
+							context.startActivity(myIntent);
+							return true;
+						}
+						return false;
+					}
+				});
+				
+				AlertDialog dialog = builder.create();
+				dialog.setButton("Search", new OnClickListener() {
+					@Override
+					public void onClick(DialogInterface arg0, int arg1) {
+						Intent myIntent = new Intent(context, VideoList.class);
+						Bundle bundle = new Bundle();
+						bundle.putString("searchString", et.getText().toString());
+						myIntent.putExtras(bundle);
+						context.startActivity(myIntent);
+					}						
+				});
+				dialog.setButton2("Cancel", new OnClickListener() {
+					@Override
+					public void onClick(DialogInterface arg0, int arg1) {
+					}						
+				});
+				dialog.show();
+				
+				return true;
+			}
+		});
+		
+		return true;
 	}
 	
 	@Override
