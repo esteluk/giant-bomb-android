@@ -8,16 +8,19 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.DialogInterface.OnClickListener;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.preference.PreferenceManager;
 import android.view.ContextMenu;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.SubMenu;
 import android.view.View;
+import android.view.WindowManager;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.MenuItem.OnMenuItemClickListener;
 import android.view.inputmethod.EditorInfo;
@@ -167,57 +170,26 @@ public class VideoList extends ListActivity implements api {
 		
 		SubMenu searchVideos = menu.addSubMenu("Search Videos").setIcon(android.R.drawable.ic_menu_search);
 		
-		MenuItem rv = searchVideos.add("Review");
-		rv.setOnMenuItemClickListener(new OnMenuItemClickListener() {
-			@Override
-			public boolean onMenuItemClick(MenuItem arg0) {
-				Intent myIntent = new Intent(context, VideoList.class);
-				Bundle bundle = new Bundle();
-				bundle.putString("searchString", "review");
-				myIntent.putExtras(bundle);
-				context.startActivity(myIntent);
-				return true;
+		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
+		String searchStrings = prefs.getString("searchStrings", "Trailer, Review, Quick Look, Endurance Run");
+		String[] tokens = searchStrings.split(",");
+		for (final String search : tokens) {
+			if (search == null || "".equals(search.trim())) {
+				continue;
 			}
-		});
-		
-		MenuItem tr = searchVideos.add("Trailer");
-		tr.setOnMenuItemClickListener(new OnMenuItemClickListener() {
-			@Override
-			public boolean onMenuItemClick(MenuItem arg0) {
-				Intent myIntent = new Intent(context, VideoList.class);
-				Bundle bundle = new Bundle();
-				bundle.putString("searchString", "trailer");
-				myIntent.putExtras(bundle);
-				context.startActivity(myIntent);
-				return true;
-			}
-		});
-		
-		MenuItem ql = searchVideos.add("Quick Look");
-		ql.setOnMenuItemClickListener(new OnMenuItemClickListener() {
-			@Override
-			public boolean onMenuItemClick(MenuItem arg0) {
-				Intent myIntent = new Intent(context, VideoList.class);
-				Bundle bundle = new Bundle();
-				bundle.putString("searchString", "quick look");
-				myIntent.putExtras(bundle);
-				context.startActivity(myIntent);
-				return true;
-			}
-		});
-		
-		MenuItem er = searchVideos.add("Endurance Run");
-		er.setOnMenuItemClickListener(new OnMenuItemClickListener() {
-			@Override
-			public boolean onMenuItemClick(MenuItem arg0) {
-				Intent myIntent = new Intent(context, VideoList.class);
-				Bundle bundle = new Bundle();
-				bundle.putString("searchString", "endurance run");
-				myIntent.putExtras(bundle);
-				context.startActivity(myIntent);
-				return true;
-			}
-		});
+			MenuItem mi = searchVideos.add(search.trim());
+			mi.setOnMenuItemClickListener(new OnMenuItemClickListener() {
+				@Override
+				public boolean onMenuItemClick(MenuItem arg0) {
+					Intent myIntent = new Intent(context, VideoList.class);
+					Bundle bundle = new Bundle();
+					bundle.putString("searchString", search.trim());
+					myIntent.putExtras(bundle);
+					context.startActivity(myIntent);
+					return true;
+				}
+			});
+		}
 		
 		MenuItem cm = searchVideos.add("Custom...");
 		cm.setOnMenuItemClickListener(new OnMenuItemClickListener() {
