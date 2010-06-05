@@ -9,6 +9,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.DialogInterface.OnCancelListener;
 import android.content.DialogInterface.OnClickListener;
 import android.os.Bundle;
 import android.os.Handler;
@@ -117,6 +118,15 @@ public class VideoList extends ListActivity implements api {
 		final ListActivity list = this;
 		//Toast.makeText(VideoList.this, "Loading..." , Toast.LENGTH_SHORT).show();
 		pd = ProgressDialog.show(this, "Loading...", "Please wait");
+		pd.setCancelable(true);
+		pd.setOnCancelListener(new OnCancelListener() {
+
+			@Override
+			public void onCancel(DialogInterface arg0) {
+				list.finish();
+			}
+			
+		});
 		
 		final Handler handler = new Handler() {
 			@Override

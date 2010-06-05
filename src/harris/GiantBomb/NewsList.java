@@ -5,7 +5,9 @@ import java.util.List;
 
 import android.app.ListActivity;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.DialogInterface.OnCancelListener;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -90,6 +92,15 @@ public class NewsList extends ListActivity {
 		
 		//Toast.makeText(NewsList.this, "Loading..." , Toast.LENGTH_SHORT).show();
 		pd = ProgressDialog.show(this, "Loading...", "Please wait");
+		pd.setCancelable(true);
+		pd.setOnCancelListener(new OnCancelListener() {
+
+			@Override
+			public void onCancel(DialogInterface arg0) {
+				list.finish();
+			}
+			
+		});
 
 		final Handler handler = new Handler() {
 			@Override
