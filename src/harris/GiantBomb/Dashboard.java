@@ -8,6 +8,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -19,6 +20,7 @@ import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.GridView;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 public class Dashboard extends Activity {
@@ -77,9 +79,31 @@ public class Dashboard extends Activity {
 
 			@Override
 			public boolean onMenuItemClick(MenuItem item) {
-				AlertDialog alert = new AlertDialog.Builder(context).create();
+				LinearLayout aboutView = (LinearLayout) LinearLayout.inflate(context, R.layout.about, null);
+				
+				final String[] devs = {"Harris Munir", "Programming", "http://www.twitter.com/h4rris", "Drew Schrauf", "Programming", "http://www.twitter.com/drewschrauf", "poserdonut", "Programming", "http://www.twitter.com/poserdonut" };
+				for (int i = 0; i < devs.length; i = i+3) {
+					final int index = i;
+					LinearLayout aboutRow = (LinearLayout) LinearLayout.inflate(context, R.layout.aboutrow, null);
+					ImageView twitterIcon = (ImageView) aboutRow.findViewById(R.id.twitterIcon);
+					twitterIcon.setOnClickListener(new OnClickListener() {
+	
+						@Override
+						public void onClick(View arg0) {
+							Intent viewIntent = new Intent("android.intent.action.VIEW", Uri.parse(devs[index + 2]));
+							context.startActivity(viewIntent);
+						}
+						
+					});
+					TextView name = (TextView) aboutRow.findViewById(R.id.name);
+					name.setText(devs[i]);
+					TextView role = (TextView) aboutRow.findViewById(R.id.role);
+					role.setText(devs[i+1]);
+					aboutView.addView(aboutRow);
+				}
+				AlertDialog alert = new AlertDialog.Builder(context).setView(aboutView).create();
 				alert.setTitle("About");
-				alert.setMessage(context.getString(R.string.about));
+				//alert.setMessage(context.getString(R.string.about));
 				alert.setButton("OK", new DialogInterface.OnClickListener() {
 					@Override
 					public void onClick(DialogInterface dialog, int which) {
