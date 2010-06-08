@@ -32,11 +32,11 @@ public class BombcastListAdapter extends ArrayAdapter<String> {
 			v = vi.inflate(R.layout.bombcastrow, null);
 		}
 		
-		if (i % 2 == 0) {
+		/*if (i % 2 == 0) {
 			v.setBackgroundResource(R.color.rowColor1);
 		} else {
 			v.setBackgroundResource(R.color.rowColor2);
-		}
+		}*/
 
 		final TextView title = (TextView) v.findViewById(R.id.newstitle);
 		final TextView desc = (TextView) v.findViewById(R.id.newsdesc);
