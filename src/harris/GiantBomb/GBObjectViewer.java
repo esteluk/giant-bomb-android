@@ -8,7 +8,11 @@ import java.util.regex.Pattern;
 import org.apache.commons.lang.StringEscapeUtils;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -53,8 +57,13 @@ public class GBObjectViewer extends Activity {
 					case 65: type = ObjectType.COMPANY;
 					break;
 					default: Toast.makeText(this, "Content type not supported", Toast.LENGTH_LONG).show();
+					showErrorMessage(url);
+					return;
 				}
 				
+			} else {
+				showErrorMessage(url);
+				return;
 			}
 		} else {
 			Bundle bundle = getIntent().getExtras();
@@ -78,6 +87,29 @@ public class GBObjectViewer extends Activity {
 		WebView web = (WebView) this.findViewById(R.id.content);
 		web.getSettings().setJavaScriptEnabled(true);
 		web.loadDataWithBaseURL(item.getUrl(), content, null, "utf-8", null);
+	}
+	
+	public void showErrorMessage(final String url) {
+		final Activity activity = this;
+		AlertDialog alert = new AlertDialog.Builder(activity).create();
+		alert.setTitle(activity.getString(R.string.linkErrorTitle));
+		alert.setMessage(activity.getString(R.string.linkErrorText));
+		alert.setButton("OK", new DialogInterface.OnClickListener() {
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				PackageManager pm = getPackageManager();
+				pm.clearPackagePreferredActivities("harris.GiantBomb");
+				Intent browserIntent = new Intent("android.intent.action.VIEW", Uri.parse(url));
+				startActivity(browserIntent);
+			}
+		});
+		alert.setButton2("Cancel", new DialogInterface.OnClickListener() {
+			@Override
+			public void onClick(DialogInterface arg0, int arg1) {
+				activity.finish();
+			}
+		});
+		alert.show();
 	}
 
 	public boolean onCreateOptionsMenu(Menu menu) {
