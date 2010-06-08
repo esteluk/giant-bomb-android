@@ -191,13 +191,13 @@ public class WebPlayer extends Activity implements api {
 
 	private void playGiantbombVideo(String url) {
 
-		Pattern idPattern = Pattern.compile("([0-9]+)");
+		Pattern idPattern = Pattern.compile("[0-9]+-([0-9]+)");
 		Matcher idMatcher = idPattern.matcher(url);
 
 		if (idMatcher.find()) {
 			VideoFeedParser parser = new VideoFeedParser(
 					"http://api.giantbomb.com/video/"
-							+ idMatcher.group()
+							+ idMatcher.group(1)
 							+ "/?api_key="
 							+ API_KEY
 							+ "&sort=-publish_date&limit=25&field_list=name,deck,id,url,image,site_detail_url&format=xml",
