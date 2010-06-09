@@ -193,28 +193,40 @@ public class WebPlayer extends Activity implements api {
 
 		Pattern idPattern = Pattern.compile("[0-9]+-([0-9]+)");
 		Matcher idMatcher = idPattern.matcher(url);
-
+		
+		String match;
 		if (idMatcher.find()) {
-			VideoFeedParser parser = new VideoFeedParser(
-					"http://api.giantbomb.com/video/"
-							+ idMatcher.group(1)
-							+ "/?api_key="
-							+ API_KEY
-							+ "&sort=-publish_date&limit=25&field_list=name,deck,id,url,image,site_detail_url&format=xml",
-					true);
-
-			List<Video> vids = parser.parse();
-			if (vids.size() > 0) {
-				Video vid = vids.get(0);
-
-				Intent myIntent = new Intent(this, VidPlayer.class);
-				Bundle bundle = new Bundle();
-				bundle.putString("URL", vid.getLink());
-				bundle.putString("title", vid.getTitle());
-				bundle.putString("siteDetailURL", vid.getSiteDetailURL());
-				myIntent.putExtras(bundle);
-				startActivity(myIntent);
+			match = idMatcher.group(1);
+		} else {
+			Pattern idPattern2 = Pattern.compile("([0-9]+)");
+			Matcher idMatcher2 = idPattern2.matcher(url);
+			
+			if (idMatcher2.find()) {
+				match = idMatcher2.group(1);
+			} else {
+				return;
 			}
+		}
+		
+		VideoFeedParser parser = new VideoFeedParser(
+				"http://api.giantbomb.com/video/"
+						+ match
+						+ "/?api_key="
+						+ API_KEY
+						+ "&sort=-publish_date&limit=25&field_list=name,deck,id,url,image,site_detail_url&format=xml",
+				true);
+
+		List<Video> vids = parser.parse();
+		if (vids.size() > 0) {
+			Video vid = vids.get(0);
+
+			Intent myIntent = new Intent(this, VidPlayer.class);
+			Bundle bundle = new Bundle();
+			bundle.putString("URL", vid.getLink());
+			bundle.putString("title", vid.getTitle());
+			bundle.putString("siteDetailURL", vid.getSiteDetailURL());
+			myIntent.putExtras(bundle);
+			startActivity(myIntent);
 		}
 	}
 }
