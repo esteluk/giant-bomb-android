@@ -32,44 +32,10 @@ public class GBObjectViewer extends Activity {
 		String id = null;
 		ObjectType type = null;
 		
-		// see if this was launched via an intent filter
-		String url = getIntent().getDataString();
-		if (url != null) {
-			Pattern pattern = Pattern.compile("/(\\d+)-(\\d+)/");
-			Matcher matcher = pattern.matcher(url);
-			if (matcher.find()) {
-				id = matcher.group(2);
-				switch (Integer.parseInt(matcher.group(1))) {
-					case 61: type = ObjectType.GAME;
-					break;
-					case 62: type = ObjectType.FRANCHISE;
-					break;
-					case 94: type = ObjectType.CHARACTER;
-					break;
-					case 92: type = ObjectType.CONCEPT;
-					break;
-					case 93: type = ObjectType.OBJECT;
-					break;
-					case 95: type = ObjectType.LOCATION;
-					break;
-					case 72: type = ObjectType.PERSON;
-					break;
-					case 65: type = ObjectType.COMPANY;
-					break;
-					default: Toast.makeText(this, "Content type not supported", Toast.LENGTH_LONG).show();
-					showErrorMessage(url);
-					return;
-				}
-				
-			} else {
-				showErrorMessage(url);
-				return;
-			}
-		} else {
-			Bundle bundle = getIntent().getExtras();
-			id = bundle.getString("id");
-			type = ObjectType.valueOf(bundle.getString("type"));
-		}
+		
+		Bundle bundle = getIntent().getExtras();
+		id = bundle.getString("id");
+		type = ObjectType.valueOf(bundle.getString("type"));
 
 		try {
 			item = GBObject.getGBObject(id, type);
@@ -87,29 +53,6 @@ public class GBObjectViewer extends Activity {
 		WebView web = (WebView) this.findViewById(R.id.content);
 		web.getSettings().setJavaScriptEnabled(true);
 		web.loadDataWithBaseURL(item.getUrl(), content, null, "utf-8", null);
-	}
-	
-	public void showErrorMessage(final String url) {
-		final Activity activity = this;
-		AlertDialog alert = new AlertDialog.Builder(activity).create();
-		alert.setTitle(activity.getString(R.string.linkErrorTitle));
-		alert.setMessage(activity.getString(R.string.linkErrorText));
-		alert.setButton("OK", new DialogInterface.OnClickListener() {
-			@Override
-			public void onClick(DialogInterface dialog, int which) {
-				PackageManager pm = getPackageManager();
-				pm.clearPackagePreferredActivities("harris.GiantBomb");
-				Intent browserIntent = new Intent("android.intent.action.VIEW", Uri.parse(url));
-				startActivity(browserIntent);
-			}
-		});
-		alert.setButton2("Cancel", new DialogInterface.OnClickListener() {
-			@Override
-			public void onClick(DialogInterface arg0, int arg1) {
-				activity.finish();
-			}
-		});
-		alert.show();
 	}
 
 	public boolean onCreateOptionsMenu(Menu menu) {

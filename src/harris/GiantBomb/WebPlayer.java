@@ -39,7 +39,7 @@ public class WebPlayer extends Activity implements api {
 		ExceptionHandler.register(this, "http://harrism.com/GB/server.php"); 
 		myContext = this;
 		Bundle bundle = getIntent().getExtras();
-		WebView web = new WebView(this);
+		WebView web = new WhiskeyWebView(this);
 		setContentView(web);
 		web.getSettings().setJavaScriptEnabled(true);
 		String predata = "<html><head><style type='text/css'>" + css
