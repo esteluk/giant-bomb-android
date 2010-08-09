@@ -5,9 +5,16 @@
 	<ImageView android:layout_width="fill_parent"
 		android:layout_height="wrap_content" android:src="@drawable/logo"
 		android:layout_gravity="center_horizontal" />
-	<GridView android:id="@+id/iconGrid" android:layout_width="fill_parent"
+	<LinearLayout android:id="@+id/iconGrid"
+		android:layout_width="fill_parent" android:layout_height="wrap_content"
+		android:layout_weight="1" android:orientation="vertical"
+		android:gravity="center_vertical" />
+	<!--
+		<GridView android:id="@+id/iconGrid"
+		android:layout_width="fill_parent"
 		android:layout_height="wrap_content" android:layout_weight="1"
 		android:numColumns="2" />
+	-->
 	<View android:layout_width="fill_parent" android:layout_height="2dip"
 		android:background="#FFFFFFFF" />
 	<Button android:id="@+id/searchBar" android:layout_height="wrap_content"

@@ -1,6 +1,7 @@
 package harris.GiantBomb;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import android.app.Activity;
@@ -10,12 +11,14 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.MenuItem.OnMenuItemClickListener;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup.LayoutParams;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.GridView;
@@ -29,7 +32,7 @@ public class Dashboard extends Activity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		this.setContentView(R.layout.dashboard);		
-		GridView iconGrid = (GridView) this.findViewById(R.id.iconGrid);
+		LinearLayout iconGrid = (LinearLayout) this.findViewById(R.id.iconGrid);
 		
 		DashboardIcon news = new DashboardIcon(R.drawable.iconnews, "News", NewsList.class);
 		DashboardIcon reviews = new DashboardIcon(R.drawable.iconreview, "Reviews", ReviewList.class);
@@ -41,6 +44,21 @@ public class Dashboard extends Activity {
 		icons.add(videos);
 		icons.add(bombcast);
 		
+		Iterator<DashboardIcon> it = icons.iterator();
+		while (it.hasNext()) {
+			LinearLayout row = new LinearLayout(this);
+			row.setOrientation(LinearLayout.HORIZONTAL);
+			row.setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
+			row.setGravity(Gravity.CENTER_HORIZONTAL);
+			
+			row.addView(getIconView(it.next(), this));
+			if (it.hasNext()) {
+				row.addView(getIconView(it.next(), this));
+			}
+			
+			iconGrid.addView(row);
+		}
+		
 		Button searchbar = (Button) this.findViewById(R.id.searchBar);
 		searchbar.setOnClickListener(new OnClickListener() {
 
@@ -51,7 +69,7 @@ public class Dashboard extends Activity {
 			
 		});
 		
-		iconGrid.setAdapter(new IconAdapter(icons));		
+		//iconGrid.setAdapter(new IconAdapter(icons));		
 	}
 	
 	@Override
@@ -117,6 +135,25 @@ public class Dashboard extends Activity {
 
 		});
 		return true;
+	}
+	
+	public View getIconView(final DashboardIcon icon, final Context activity) {
+		View ret = View.inflate(activity, R.layout.dashboardicon, null);
+		ImageView pic = (ImageView) ret.findViewById(R.id.iconpic);
+		pic.setImageResource(icon.getResId());
+		TextView text = (TextView) ret.findViewById(R.id.icontext);
+		text.setText(icon.getTitle());
+		
+		ret.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View arg0) {
+				Intent myIntent = new Intent(activity, icon.getClazz());
+				activity.startActivity(myIntent);
+			}
+			
+		});
+		return ret;
 	}
 	
 	private class IconAdapter extends BaseAdapter {

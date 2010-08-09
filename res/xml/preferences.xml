@@ -2,11 +2,11 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 	<PreferenceCategory android:title="Videos">
 		<CheckBoxPreference android:title="Full screen video"
-			android:defaultValue="false" android:summaryOn="Hide the menu bar during video playback"
+			android:defaultValue="true" android:summaryOn="Hide the menu bar during video playback"
 			android:summaryOff="Show the menu bar during video playback"
 			android:key="fullScreenVideo" />
 		<EditTextPreference android:title="Quick Searches"
-			android:defaultValue="Trailer,Review,Quick Look,Endurance Run" android:summary="Comma separated list of search strings"
+			android:defaultValue="Trailer,Review,Quick Look,Endurance Run" android:summary="Comma separated list of keywords for video searches"
 			android:key="searchStrings" />
 	</PreferenceCategory>
 </PreferenceScreen>
