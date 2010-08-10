@@ -42,6 +42,8 @@ public class WhiskeyWebView extends WebView {
 				if (matcher.find()) {
 					id = matcher.group(2);
 					switch (Integer.parseInt(matcher.group(1))) {
+						case 60: type = ObjectType.PLATFORM;
+						break;
 						case 61: type = ObjectType.GAME;
 						break;
 						case 62: type = ObjectType.FRANCHISE;

@@ -65,6 +65,8 @@ public class SearchResultParser implements api {
 				wikiObjects.add(GBObject.parseObject((Element) node, ObjectType.PERSON));
 			} else if (node.getNodeName().equals("company")) {
 				wikiObjects.add(GBObject.parseObject((Element) node, ObjectType.COMPANY));
+			} else if (node.getNodeName().equals("platform")) {
+				wikiObjects.add(GBObject.parseObject((Element) node, ObjectType.PLATFORM));
 			}
 		}
 

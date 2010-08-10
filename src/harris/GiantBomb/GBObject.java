@@ -18,7 +18,7 @@ import org.xml.sax.SAXException;
 public class GBObject implements api {
 
 	public enum ObjectType {
-		GAME, FRANCHISE, CHARACTER, CONCEPT, OBJECT, LOCATION, PERSON, COMPANY
+		PLATFORM, GAME, FRANCHISE, CHARACTER, CONCEPT, OBJECT, LOCATION, PERSON, COMPANY
 	};
 
 	private ObjectType type;
@@ -113,7 +113,7 @@ public class GBObject implements api {
 						+ id
 						+ "/?api_key="
 						+ API_KEY
-						+ "&field_list=id,name,deck,description,site_detail_url,games,franchises,characters,concepts,objects,locations,people,companies&format=xml");
+						+ "&field_list=id,name,deck,description,site_detail_url,games,platforms,franchises,characters,concepts,objects,locations,people,companies&format=xml");
 		Document doc = docBuilder.parse(url.openConnection().getInputStream());
 
 		return parseObject((Element) doc.getElementsByTagName("results")
