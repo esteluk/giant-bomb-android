@@ -37,7 +37,6 @@ public class News implements Comparable<News> {
 		return link;
 	}
 
-	@Override
 	public int compareTo(News another) {
 		if (title == another.getTitle())
 			return 1;

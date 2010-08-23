@@ -2,24 +2,16 @@ package harris.GiantBomb;
 
 import harris.GiantBomb.GBObject.ObjectType;
 
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 import org.apache.commons.lang.StringEscapeUtils;
 
 import android.app.Activity;
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.net.Uri;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.SubMenu;
 import android.view.MenuItem.OnMenuItemClickListener;
 import android.webkit.WebView;
-import android.widget.Toast;
 
 public class GBObjectViewer extends Activity {
 	private GBObject item;

@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-	package="harris.GiantBomb" android:versionName="1.8"
-	android:versionCode="180">
+	package="harris.GiantBomb" android:versionName="1.9"
+	android:versionCode="190">
 	<application android:icon="@drawable/icon" android:label="@string/app_name"
 		android:enabled="true" android:theme="@android:style/Theme.NoTitleBar">
 		<meta-data android:name="android.app.default_searchable"
 			android:value=".SearchList" />
 
 		<activity android:name=".Tabs" android:label="@string/app_name"
-			android:icon="@drawable/icon">
+			android:icon="@drawable/icon" >
 			<intent-filter>
 				<action android:name="android.intent.action.VIEW" />
 				<category android:name="android.intent.category.ALTERNATIVE" />
@@ -95,7 +95,7 @@
 			</intent-filter>
 		</activity>
 
-		<activity android:excludeFromRecents="true" android:name=".Dashboard">
+		<activity android:screenOrientation="portrait" android:excludeFromRecents="true" android:name=".Dashboard">
 			<intent-filter>
 				<action android:name="android.intent.action.MAIN" />
 				<category android:name="android.intent.category.LAUNCHER" />

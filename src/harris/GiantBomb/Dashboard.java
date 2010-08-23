@@ -18,10 +18,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.MenuItem.OnMenuItemClickListener;
 import android.view.View.OnClickListener;
-import android.view.ViewGroup.LayoutParams;
 import android.widget.BaseAdapter;
 import android.widget.Button;
-import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -33,7 +31,6 @@ public class Dashboard extends Activity {
 		super.onCreate(savedInstanceState);
 		this.setContentView(R.layout.dashboard);		
 		LinearLayout iconGrid = (LinearLayout) this.findViewById(R.id.iconGrid);
-		
 		DashboardIcon news = new DashboardIcon(R.drawable.iconnews, "News", NewsList.class);
 		DashboardIcon reviews = new DashboardIcon(R.drawable.iconreview, "Reviews", ReviewList.class);
 		DashboardIcon videos = new DashboardIcon(R.drawable.iconvideo, "Videos", VideoList.class);
@@ -48,12 +45,17 @@ public class Dashboard extends Activity {
 		while (it.hasNext()) {
 			LinearLayout row = new LinearLayout(this);
 			row.setOrientation(LinearLayout.HORIZONTAL);
-			row.setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
+			LinearLayout.LayoutParams params  = new LinearLayout.LayoutParams(
+				     LinearLayout.LayoutParams.FILL_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+			row.setLayoutParams(params);
 			row.setGravity(Gravity.CENTER_HORIZONTAL);
-			
-			row.addView(getIconView(it.next(), this));
+			View icon = getIconView(it.next(), this);
+			icon.setPadding(10, 0, 10, 0);
+			row.addView(icon);
 			if (it.hasNext()) {
-				row.addView(getIconView(it.next(), this));
+				icon = getIconView(it.next(), this);
+				icon.setPadding(10, 0, 10, 0);
+				row.addView(icon);
 			}
 			
 			iconGrid.addView(row);
@@ -99,7 +101,7 @@ public class Dashboard extends Activity {
 			public boolean onMenuItemClick(MenuItem item) {
 				LinearLayout aboutView = (LinearLayout) LinearLayout.inflate(context, R.layout.about, null);
 				
-				final String[] devs = {"Harris Munir", "Programming", "http://www.twitter.com/h4rris", "Drew Schrauf", "Programming", "http://www.twitter.com/drewschrauf", "poserdonut", "Programming", "http://www.twitter.com/poserdonut" };
+				final String[] devs = {"Harris Munir", "Programming", "http://www.twitter.com/h4rris", "Drew Schrauf", "Programming", "http://www.twitter.com/drewschrauf", "poserdonut", "Programming", "http://www.twitter.com/poserdonut", "Jojo Mendoza", "Dashboard Icons", "http://twitter.com/deleket"};
 				for (int i = 0; i < devs.length; i = i+3) {
 					final int index = i;
 					LinearLayout aboutRow = (LinearLayout) LinearLayout.inflate(context, R.layout.aboutrow, null);

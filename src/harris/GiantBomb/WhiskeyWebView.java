@@ -12,7 +12,6 @@ import android.os.Bundle;
 import android.util.AttributeSet;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-import android.widget.Toast;
 
 public class WhiskeyWebView extends WebView {
 
