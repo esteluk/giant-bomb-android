@@ -93,20 +93,21 @@ public class VideoFeedParser implements api {
 		item.getChild("url").setEndTextElementListener(
 				new EndTextElementListener() {
 					public void end(String body) {
-						// template:
+						// template: 
+						// http://media.giantbomb.com/video/vf_buzzquizworld_ql_350.mp4
 						// http://media.giantbomb.com/video/vf_buzzquizworld_ql_ip.m4v?api_key=98a36880538752a0bc32691ff737a408bc82fd94
-						if (body.indexOf(".flv") != -1) { // Get the iPhone
+						if (body.indexOf(".mp4") != -1) { // Get the iPhone
 															// formatted GB
 															// video. Some
 															// videos are
 															// formatted a
 															// little different.
 							body = "http://media.giantbomb.com/video/"
-									+ body.substring(0, body.indexOf(".flv"))
-									+ "_ip.m4v?api_key=" + API_KEY;
+									+ body.substring(0, body.indexOf(".mp4"))
+									+ "_350.mp4?api_key=" + API_KEY;
 						} else {
 							body = "http://media.giantbomb.com/video/" + body
-									+ "_ip.m4v?api_key=" + API_KEY;
+									+ "_350.mp4?api_key=" + API_KEY;
 						}
 						currentVideo.setLink(body);
 					}
