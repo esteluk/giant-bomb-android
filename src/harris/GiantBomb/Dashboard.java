@@ -101,7 +101,7 @@ public class Dashboard extends Activity {
 			public boolean onMenuItemClick(MenuItem item) {
 				LinearLayout aboutView = (LinearLayout) LinearLayout.inflate(context, R.layout.about, null);
 				
-				final String[] devs = {"Harris Munir", "Programming", "http://www.twitter.com/h4rris", "Drew Schrauf", "Programming", "http://www.twitter.com/drewschrauf", "poserdonut", "Programming", "http://www.twitter.com/poserdonut", "Jojo Mendoza", "Dashboard Icons", "http://twitter.com/deleket"};
+				final String[] devs = {"Harris Munir", "Programming", "http://www.twitter.com/Hanoran", "Drew Schrauf", "Programming", "http://www.twitter.com/drewschrauf", "poserdonut", "Programming", "http://www.twitter.com/poserdonut", "Jojo Mendoza", "Dashboard Icons", "http://twitter.com/deleket"};
 				for (int i = 0; i < devs.length; i = i+3) {
 					final int index = i;
 					LinearLayout aboutRow = (LinearLayout) LinearLayout.inflate(context, R.layout.aboutrow, null);

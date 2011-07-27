@@ -15,6 +15,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.ContextMenu;
 import android.view.KeyEvent;
 import android.view.Menu;
@@ -41,6 +42,7 @@ public class VideoList extends ListActivity implements api {
 	ProgressDialog pd;
 	private int offset = 0;
 	private int lastItemIndex = 0;
+	private boolean highQuality;
 	
 	private String searchString;
 
@@ -48,6 +50,8 @@ public class VideoList extends ListActivity implements api {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.videolist);
+		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
+		highQuality = prefs.getBoolean("highQuality", true);
 		videos = new ArrayList<Video>();
 		
 		Bundle bundle = getIntent().getExtras();
@@ -146,7 +150,8 @@ public class VideoList extends ListActivity implements api {
 							"http://api.giantbomb.com/videos/?api_key="
 									+ API_KEY
 									+ "&sort=-publish_date&limit=25&field_list=name,deck,id,url,image,site_detail_url&format=xml&offset="
-									+ offset, searchString, offset);
+									+ offset, searchString, offset, highQuality);
+					
 					offset = offset + 25;
 					ArrayList<Video> add = new ArrayList<Video>(25);
 					add = (ArrayList<Video>) parser.parse();

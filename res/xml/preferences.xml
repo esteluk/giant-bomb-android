@@ -5,6 +5,11 @@
 			android:defaultValue="true" android:summaryOn="Hide the menu bar during video playback"
 			android:summaryOff="Show the menu bar during video playback"
 			android:key="fullScreenVideo" />
+		<CheckBoxPreference
+                       android:title="High quality video"
+                       android:summary="Uncheck for low quality"
+                       android:key="highQuality"
+                       android:defaultValue="true" />
 		<EditTextPreference android:title="Quick Searches"
 			android:defaultValue="Trailer,Review,Quick Look,Endurance Run" android:summary="Comma separated list of keywords for video searches"
 			android:key="searchStrings" />

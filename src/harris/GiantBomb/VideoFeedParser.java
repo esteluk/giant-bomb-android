@@ -7,6 +7,9 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.sax.Element;
 import android.sax.EndElementListener;
 import android.sax.EndTextElementListener;
@@ -21,10 +24,12 @@ public class VideoFeedParser implements api {
 
 	private final URL feedUrl;
 	private boolean singleItem;
+	private boolean highQuality;
 	
-	public VideoFeedParser(String feedUrl, String searchString, int offset) {
+	public VideoFeedParser(String feedUrl, String searchString, int offset, boolean highQuality) {
 		String search = searchString;
 		String feed = feedUrl;
+		this.highQuality = highQuality;
 		
 		if (search != null) {
 			search = search.replace(" ", "%20");
@@ -96,6 +101,13 @@ public class VideoFeedParser implements api {
 						// template: 
 						// http://media.giantbomb.com/video/vf_buzzquizworld_ql_350.mp4
 						// http://media.giantbomb.com/video/vf_buzzquizworld_ql_ip.m4v?api_key=98a36880538752a0bc32691ff737a408bc82fd94
+						String quality;
+						if(highQuality)
+						{
+							quality = "1500";
+						} else {
+							quality = "350";
+						}
 						if (body.indexOf(".mp4") != -1) { // Get the iPhone
 															// formatted GB
 															// video. Some
@@ -104,10 +116,10 @@ public class VideoFeedParser implements api {
 															// little different.
 							body = "http://media.giantbomb.com/video/"
 									+ body.substring(0, body.indexOf(".mp4"))
-									+ "_350.mp4?api_key=" + API_KEY;
+									+ "_"+ quality +".mp4?api_key=" + API_KEY;
 						} else {
 							body = "http://media.giantbomb.com/video/" + body
-									+ "_350.mp4?api_key=" + API_KEY;
+									+ "_"+ quality +".mp4?api_key=" + API_KEY;
 						}
 						currentVideo.setLink(body);
 					}
