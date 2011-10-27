@@ -13,12 +13,10 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
-import android.view.MenuItem.OnMenuItemClickListener;
 import android.view.View.OnClickListener;
-import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -70,72 +68,79 @@ public class Dashboard extends Activity {
 			}
 			
 		});
-		
-		//iconGrid.setAdapter(new IconAdapter(icons));		
+				
 	}
 	
 	@Override
-	public boolean onPrepareOptionsMenu(Menu menu) {
+	public boolean onCreateOptionsMenu(Menu menu) {
+		
+		MenuInflater inflater = getMenuInflater();
+		inflater.inflate(R.menu.homemenu, menu);
+		
+		return true;
+	}
+	
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
 		final Context context = this;
 		
-		menu.clear();
+		// So we'll do what we want with each of our two menu items here
+		switch(item.getItemId()) {
+		case R.id.menu_settings:
+			startSettingsActivity(context);
+			return true;
+		case R.id.menu_about:
+			showAboutDialog(context);
+			return true;
+		default:
+			return super.onOptionsItemSelected(item);
+		}
+	}
+
+	boolean startSettingsActivity(Context ctxt) {
+		Intent preferences = new Intent(ctxt, Preferences.class);
+		ctxt.startActivity(preferences);
+		return true;
+	}
 		
-		MenuItem settings = menu.add("Settings");
-		settings.setIcon(android.R.drawable.ic_menu_preferences);
-		settings.setOnMenuItemClickListener(new OnMenuItemClickListener() {
-
-			@Override
-			public boolean onMenuItemClick(MenuItem arg0) {
-				Intent preferences = new Intent(context, Preferences.class);
-				context.startActivity(preferences);
-				return true;
-			}
-			
-		});
+	boolean showAboutDialog(final Context ctxt) {
+		// Inflate the dialog's layout
+		LinearLayout aboutView = (LinearLayout) LinearLayout.inflate(ctxt, R.layout.about, null);
 		
-		MenuItem about = menu.add("About").setIcon(android.R.drawable.ic_menu_info_details);
+		// Get the list of developers from our resources
+		final String[] devs = ctxt.getResources().getStringArray(R.array.about_developers);
+		
+		// Parse it peculiarly to do stuff with it
+		for (int i = 0; i < devs.length; i = i+3) {
+			final int index = i;
+			LinearLayout aboutRow = (LinearLayout) LinearLayout.inflate(ctxt, R.layout.aboutrow, null);
+			ImageView twitterIcon = (ImageView) aboutRow.findViewById(R.id.twitterIcon);
+			twitterIcon.setOnClickListener(new OnClickListener() {
 
-		about.setOnMenuItemClickListener(new OnMenuItemClickListener() {
-
-			@Override
-			public boolean onMenuItemClick(MenuItem item) {
-				LinearLayout aboutView = (LinearLayout) LinearLayout.inflate(context, R.layout.about, null);
-				
-				final String[] devs = {"Harris Munir", "Programming", "http://www.twitter.com/Hanoran", "Drew Schrauf", "Programming", "http://www.twitter.com/drewschrauf", "poserdonut", "Programming", "http://www.twitter.com/poserdonut", "Jojo Mendoza", "Dashboard Icons", "http://twitter.com/deleket"};
-				for (int i = 0; i < devs.length; i = i+3) {
-					final int index = i;
-					LinearLayout aboutRow = (LinearLayout) LinearLayout.inflate(context, R.layout.aboutrow, null);
-					ImageView twitterIcon = (ImageView) aboutRow.findViewById(R.id.twitterIcon);
-					twitterIcon.setOnClickListener(new OnClickListener() {
-	
-						@Override
-						public void onClick(View arg0) {
-							Intent viewIntent = new Intent("android.intent.action.VIEW", Uri.parse(devs[index + 2]));
-							context.startActivity(viewIntent);
-						}
-						
-					});
-					TextView name = (TextView) aboutRow.findViewById(R.id.name);
-					name.setText(devs[i]);
-					TextView role = (TextView) aboutRow.findViewById(R.id.role);
-					role.setText(devs[i+1]);
-					aboutView.addView(aboutRow);
+				@Override
+				public void onClick(View arg0) {
+					Intent viewIntent = new Intent("android.intent.action.VIEW", Uri.parse(devs[index + 2]));
+					ctxt.startActivity(viewIntent);
 				}
-				AlertDialog alert = new AlertDialog.Builder(context).setView(aboutView).create();
-				alert.setTitle("About");
-				//alert.setMessage(context.getString(R.string.about));
-				alert.setButton("OK", new DialogInterface.OnClickListener() {
-					@Override
-					public void onClick(DialogInterface dialog, int which) {
-						return;
-					}
-				});
-				alert.show();
+				
+			});
+			TextView name = (TextView) aboutRow.findViewById(R.id.name);
+			name.setText(devs[i]);
+			TextView role = (TextView) aboutRow.findViewById(R.id.role);
+			role.setText(devs[i+1]);
+			aboutView.addView(aboutRow);
+		}
 
-				return true;
+		AlertDialog alert = new AlertDialog.Builder(ctxt).setView(aboutView).create();
+		alert.setTitle("About");
+		alert.setButton("OK", new DialogInterface.OnClickListener() {
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				return;
 			}
-
 		});
+		alert.show();
+
 		return true;
 	}
 	
@@ -156,54 +161,6 @@ public class Dashboard extends Activity {
 			
 		});
 		return ret;
-	}
-	
-	private class IconAdapter extends BaseAdapter {
-		List<DashboardIcon> icons;
-		
-		public IconAdapter(List<DashboardIcon> icons) {
-			this.icons = icons;
-		}
-
-		@Override
-		public int getCount() {
-			return icons.size();
-		}
-
-		@Override
-		public Object getItem(int arg0) {
-			return icons.get(arg0);
-		}
-
-		@Override
-		public long getItemId(int arg0) {
-			// TODO Auto-generated method stub
-			return 0;
-		}
-
-		@Override
-		public View getView(int arg0, View arg1, ViewGroup arg2) {
-			final Context activity = arg2.getContext();
-			final int i = arg0;
-			
-			View ret = View.inflate(activity, R.layout.dashboardicon, null);
-			ImageView pic = (ImageView) ret.findViewById(R.id.iconpic);
-			pic.setImageResource(icons.get(arg0).getResId());
-			TextView text = (TextView) ret.findViewById(R.id.icontext);
-			text.setText(icons.get(arg0).getTitle());
-			
-			ret.setOnClickListener(new OnClickListener() {
-
-				@Override
-				public void onClick(View arg0) {
-					Intent myIntent = new Intent(activity, icons.get(i).getClazz());
-					activity.startActivity(myIntent);
-				}
-				
-			});
-			return ret;
-		}
-		
 	}
 
 }
