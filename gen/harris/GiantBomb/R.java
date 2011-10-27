@@ -41,43 +41,43 @@ public final class R {
         public static final int videos=0x7f020012;
     }
     public static final class id {
-        public static final int button=0x7f09000b;
-        public static final int byline=0x7f090013;
-        public static final int bylinedate=0x7f090014;
-        public static final int content=0x7f090017;
-        public static final int desc=0x7f090011;
-        public static final int description=0x7f090009;
-        public static final int disclaimer=0x7f09000c;
-        public static final int forumtitle=0x7f090010;
-        public static final int iconGrid=0x7f090005;
-        public static final int iconpic=0x7f090007;
-        public static final int icontext=0x7f090008;
-        public static final int info=0x7f090012;
-        public static final int itemtitle=0x7f09001e;
-        public static final int itemtype=0x7f09001f;
-        public static final int lastbyline=0x7f090015;
-        public static final int lastbylinedate=0x7f090016;
-        public static final int menu_about=0x7f090024;
-        public static final int menu_settings=0x7f090023;
-        public static final int name=0x7f090001;
-        public static final int newsdate=0x7f090018;
-        public static final int newsdesc=0x7f090004;
-        public static final int newstitle=0x7f090003;
-        public static final int post=0x7f090019;
-        public static final int progressBar=0x7f09000a;
-        public static final int relrow=0x7f09000e;
-        public static final int reviewername=0x7f09001b;
-        public static final int reviewtitle=0x7f09001a;
-        public static final int role=0x7f090002;
-        public static final int searchBar=0x7f090006;
-        public static final int stars=0x7f09001c;
-        public static final int surface_view=0x7f090022;
-        public static final int threadtitle=0x7f090020;
-        public static final int thumb=0x7f09000f;
-        public static final int title=0x7f09001d;
-        public static final int twitterIcon=0x7f090000;
-        public static final int urlBox=0x7f09000d;
-        public static final int videotitle=0x7f090021;
+        public static final int button=0x7f0a000b;
+        public static final int byline=0x7f0a0013;
+        public static final int bylinedate=0x7f0a0014;
+        public static final int content=0x7f0a0017;
+        public static final int desc=0x7f0a0011;
+        public static final int description=0x7f0a0009;
+        public static final int disclaimer=0x7f0a000c;
+        public static final int forumtitle=0x7f0a0010;
+        public static final int iconGrid=0x7f0a0005;
+        public static final int iconpic=0x7f0a0007;
+        public static final int icontext=0x7f0a0008;
+        public static final int info=0x7f0a0012;
+        public static final int itemtitle=0x7f0a001e;
+        public static final int itemtype=0x7f0a001f;
+        public static final int lastbyline=0x7f0a0015;
+        public static final int lastbylinedate=0x7f0a0016;
+        public static final int menu_about=0x7f0a0024;
+        public static final int menu_settings=0x7f0a0023;
+        public static final int name=0x7f0a0001;
+        public static final int newsdate=0x7f0a0018;
+        public static final int newsdesc=0x7f0a0004;
+        public static final int newstitle=0x7f0a0003;
+        public static final int post=0x7f0a0019;
+        public static final int progressBar=0x7f0a000a;
+        public static final int relrow=0x7f0a000e;
+        public static final int reviewername=0x7f0a001b;
+        public static final int reviewtitle=0x7f0a001a;
+        public static final int role=0x7f0a0002;
+        public static final int searchBar=0x7f0a0006;
+        public static final int stars=0x7f0a001c;
+        public static final int surface_view=0x7f0a0022;
+        public static final int threadtitle=0x7f0a0020;
+        public static final int thumb=0x7f0a000f;
+        public static final int title=0x7f0a001d;
+        public static final int twitterIcon=0x7f0a0000;
+        public static final int urlBox=0x7f0a000d;
+        public static final int videotitle=0x7f0a0021;
     }
     public static final class layout {
         public static final int about=0x7f030000;
@@ -104,7 +104,7 @@ public final class R {
         public static final int videoview=0x7f030015;
     }
     public static final class menu {
-        public static final int homemenu=0x7f080000;
+        public static final int homemenu=0x7f090000;
     }
     public static final class string {
         public static final int about=0x7f060007;
@@ -122,6 +122,9 @@ public final class R {
         public static final int sax=0x7f060002;
         public static final int search_hint=0x7f060006;
         public static final int search_label=0x7f060005;
+    }
+    public static final class style {
+        public static final int NoTitleThemeSelector=0x7f080000;
     }
     public static final class xml {
         public static final int preferences=0x7f040000;
