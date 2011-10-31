@@ -3,38 +3,48 @@ package harris.GiantBomb;
 import java.util.ArrayList;
 import java.util.List;
 
-import android.app.ListActivity;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.DialogInterface.OnCancelListener;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.v4.app.ListFragment;
 import android.view.ContextMenu;
+import android.view.ContextMenu.ContextMenuInfo;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ContextMenu.ContextMenuInfo;
+import android.view.ViewGroup;
+import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.AdapterView.AdapterContextMenuInfo;
 
-public class NewsList extends ListActivity {
+public class NewsList extends ListFragment {
 	private ArrayList<News> news;
+	private Context context = this.getActivity();
 	ProgressDialog pd;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.newslist);
 		loadFeed();
+	}
+	
+	@Override
+	public View onCreateView(LayoutInflater inflater, ViewGroup viewgroup, Bundle savedInstanceState) {
+		View view = inflater.inflate(R.layout.newslist, viewgroup, false);
+		
+		return view;
 	}
 
 	@Override
-	protected void onListItemClick(ListView l, View v, int position, long id) {
+	public void onListItemClick(ListView l, View v, int position, long id) {
 		super.onListItemClick(l, v, position, id);
 		News newsItem = news.get(position);
-		Intent myIntent = new Intent(this, WebPlayer.class);
+		Intent myIntent = new Intent(context, WebPlayer.class);
 		Bundle bundle = new Bundle();
 		bundle.putString("URL", newsItem.getLink());
 
@@ -85,18 +95,17 @@ public class NewsList extends ListActivity {
 		return super.onContextItemSelected(item);
 	}
 
-	@SuppressWarnings("unchecked")
 	private void loadFeed() {
-		final ListActivity list = this;
+		final NewsList list = this;
 		
 		//Toast.makeText(NewsList.this, "Loading..." , Toast.LENGTH_SHORT).show();
-		pd = ProgressDialog.show(this, "Loading...", "Please wait");
+		pd = ProgressDialog.show(list.getActivity(), "Loading...", "Please wait");
 		pd.setCancelable(true);
 		pd.setOnCancelListener(new OnCancelListener() {
 
 			@Override
 			public void onCancel(DialogInterface arg0) {
-				list.finish();
+				list.getActivity().finish();
 			}
 			
 		});
@@ -120,7 +129,7 @@ public class NewsList extends ListActivity {
 					news = (ArrayList<News>) parser.parse();
 					Message message;
 					message = handler.obtainMessage(-1, new NewsListAdapter(
-							list, R.layout.newsrow, news));
+							context, R.layout.newsrow, news));
 					handler.sendMessage(message);
 				} catch (Throwable t) {
 				}

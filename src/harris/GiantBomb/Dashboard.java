@@ -29,7 +29,7 @@ public class Dashboard extends Activity {
 		super.onCreate(savedInstanceState);
 		this.setContentView(R.layout.dashboard);		
 		LinearLayout iconGrid = (LinearLayout) this.findViewById(R.id.iconGrid);
-		DashboardIcon news = new DashboardIcon(R.drawable.iconnews, "News", NewsList.class);
+		DashboardIcon news = new DashboardIcon(R.drawable.iconnews, "News", NewsActivity.class);
 		DashboardIcon reviews = new DashboardIcon(R.drawable.iconreview, "Reviews", ReviewList.class);
 		DashboardIcon videos = new DashboardIcon(R.drawable.iconvideo, "Videos", VideoList.class);
 		DashboardIcon bombcast = new DashboardIcon(R.drawable.iconpodcast, "Bombcast", BombcastList.class);
